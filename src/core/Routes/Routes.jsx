@@ -8,6 +8,7 @@ import Login from "../../views/pages/Auth/Login.jsx";
 import Register from "../../views/pages/Auth/Register.jsx";
 import ForgotPassword from "../../views/pages/Auth/ForgetPassword.jsx";
 import ResetPassword from "../../views/pages/Auth/RestPassword.jsx";
+import NotItems from "../../views/pages/NotReadyItems/NotItems.jsx";
 
 export const routes = [
   /* auth routes */
@@ -92,7 +93,10 @@ export const routes = [
     path: "/non-ready-items",
     page: (
       <ProtectedRoute>
-        <PageWrapper isSidebar={true}>{/* <Home /> */}</PageWrapper>
+        <PageWrapper isSidebar={true}>{/* <Home /> */}
+        
+     <NotItems />
+        </PageWrapper>
       </ProtectedRoute>
     ),
     header: <MainHeader />,
