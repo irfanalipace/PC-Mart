@@ -77,6 +77,39 @@ export const routes = [
     // footer: <MainFooter />,
     aside: <MainAside />,
   },
+  {
+    path: "/inventory",
+    page: (
+      <ProtectedRoute>
+        <PageWrapper isSidebar={true}>{/* <Home /> */}</PageWrapper>
+      </ProtectedRoute>
+    ),
+    header: <MainHeader />,
+    // footer: <MainFooter />,
+    aside: <MainAside />,
+  },
+  {
+    path: "/non-ready-items",
+    page: (
+      <ProtectedRoute>
+        <PageWrapper isSidebar={true}>{/* <Home /> */}</PageWrapper>
+      </ProtectedRoute>
+    ),
+    header: <MainHeader />,
+    // footer: <MainFooter />,
+    aside: <MainAside />,
+  },
+  {
+    path: "/ready-items",
+    page: (
+      <ProtectedRoute>
+        <PageWrapper isSidebar={true}>{/* <Home /> */}</PageWrapper>
+      </ProtectedRoute>
+    ),
+    header: <MainHeader />,
+    // footer: <MainFooter />,
+    aside: <MainAside />,
+  },
 
   /* Items All Routes Start From here*/
   // items module routes
