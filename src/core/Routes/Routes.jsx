@@ -9,6 +9,7 @@ import Register from "../../views/pages/Auth/Register.jsx";
 import ForgotPassword from "../../views/pages/Auth/ForgetPassword.jsx";
 import ResetPassword from "../../views/pages/Auth/RestPassword.jsx";
 import NotItems from "../../views/pages/NotReadyItems/NotItems.jsx";
+import ReadyItemsTable from "../../views/pages/ReadyItems/ReadyItemsTables.jsx";
 
 export const routes = [
   /* auth routes */
@@ -107,7 +108,10 @@ export const routes = [
     path: "/ready-items",
     page: (
       <ProtectedRoute>
-        <PageWrapper isSidebar={true}>{/* <Home /> */}</PageWrapper>
+        <PageWrapper isSidebar={true}>
+<ReadyItemsTable />
+
+        </PageWrapper>
       </ProtectedRoute>
     ),
     header: <MainHeader />,
@@ -115,6 +119,7 @@ export const routes = [
     aside: <MainAside />,
   },
 
+  
   /* Items All Routes Start From here*/
   // items module routes
 ];
