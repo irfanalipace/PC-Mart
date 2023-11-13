@@ -8,20 +8,20 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import LocalMallIcon from "@mui/icons-material/LocalMall";
-import HomeIcon from "@mui/icons-material/Home";
 import Collapse from "@mui/material/Collapse";
 import "./MainAside.css";
 import { Divider } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { Box } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
+import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 export default function Sidebar() {
   const theme = useTheme();
   const list = [
-    { name: "Dashboard", icon: <HomeIcon />, path: "/" },
-    { name: "File Upload", icon: <LocalMallIcon />, path: "/file-upload" },
+    { name: "Dashboard", icon: <SpaceDashboardRoundedIcon />, path: "/" },
+    { name: "File Upload", icon: <UploadFileIcon />, path: "/file-upload" },
     {
       name: "Not Ready Items",
       icon: <ShoppingCartIcon />,
