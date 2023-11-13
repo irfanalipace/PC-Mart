@@ -21,7 +21,7 @@ export default function Sidebar() {
   const theme = useTheme();
   const list = [
     { name: "Dashboard", icon: <HomeIcon />, path: "/" },
-    { name: "Inventory", icon: <LocalMallIcon />, path: "/inventory" },
+    { name: "File Upload", icon: <LocalMallIcon />, path: "/file-upload" },
     {
       name: "Not Ready Items",
       icon: <ShoppingCartIcon />,

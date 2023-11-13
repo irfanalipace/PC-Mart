@@ -2,7 +2,7 @@ import React from 'react'
 import ItemsTable from './ItemsTable'
 import { Box } from '@mui/material'
 
-const Items = () => {
+const NotItems = () => {
   return (
  <Box>
   <ItemsTable />
@@ -10,4 +10,4 @@ const Items = () => {
   )
 }
 
-export default Items
+export default NotItems
