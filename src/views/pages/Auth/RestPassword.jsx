@@ -75,7 +75,7 @@ export default function ResetPassword() {
     <AuthMainContainer>
       <Grid container>
         <AuthLogoContainer />
-        <Grid item container display='flex' justifyContent='center'>
+        <Grid item container display='flex' justifyContent='center' mt={6}>
           <Grid item>
             <AuthSection>
               <RouterLink

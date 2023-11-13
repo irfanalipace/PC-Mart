@@ -16,26 +16,8 @@ export function loginApi({ email, password }) {
 }
 
 export function registerApi(credentials) {
-  
-//   ApiService.setHeader("content-type", "multipart/form-data");
-//   const {first_name , last_name , email , password , password_confirmation , company_name , company_phone_number , company_logo , company_create , company_code} = credentials
-//   const formData = new FormData();
-//   formData.append('first_name' , first_name)
-//   formData.append('last_name' , last_name)
-//   formData.append('email' ,email)
-//   formData.append('password' , password)
-//   formData.append('password_confirmation' , password_confirmation)
-//   if (company_create == 1) {
-//     formData.append('company_name', company_name);
-//     formData.append('company_phone_number', company_phone_number);
-//   }
-//   formData.append('company_logo', company_logo)
-//   formData.append('company_create' ,company_create)
-//   formData.append('company_code' ,company_code)
-// console.log(company_logo)
-
   return new Promise((resolve, reject) => {
-    ApiService.post(`/register`, credentials , null,  true )
+    ApiService.post(`/register`, credentials, null, true)
       .then((response) => {
         // console.print('file: auth.module.js | register| response', response);
         resolve(response);
@@ -46,41 +28,6 @@ export function registerApi(credentials) {
       });
   });
 }
-// export function registerApi(credentials) {
-//   ApiService.setHeader("content-type", "multipart/form-data");
-//   const formData = new FormData();
-
-//   const fieldsToInclude = [
-//     "first_name",
-//     "last_name",
-//     "email",
-//     "password",
-//     "password_confirmation",
-//     "company_name",
-//     "company_phone_number",
-//     "company_logo",
-//     "company_create",
-//     "company_code",
-//   ];
-
-//   // Loop through the fields and append them to the form data
-//   fieldsToInclude.forEach((fieldName) => {
-//     if (credentials[fieldName] !== undefined) {
-//       formData.append(fieldName, credentials[fieldName]);
-//     }
-//   });
-
-//   return new Promise((resolve, reject) => {
-//     ApiService.post(`/register`, formData)
-//       .then((response) => {
-//         resolve(response);
-//       })
-//       .catch((e) => {
-//         reject(e);
-//       });
-//   });
-// }
-
 
 export function logoutApi() {
   return new Promise((resolve, reject) => {
@@ -153,13 +100,13 @@ export function resetPasswordApi(credentials) {
   const token = params.get("token");
   const email = params.get("email");
 
- const updatedCredentials = {
+  const updatedCredentials = {
     ...credentials,
     email,
-    token
+    token,
   };
   return new Promise((resolve, reject) => {
-    ApiService.post("reset-password" , updatedCredentials)
+    ApiService.post("reset-password", updatedCredentials)
       .then((response) => {
         // console.print(
         //   'file: auth.module.js | resetPasswordApi| response',
@@ -173,8 +120,6 @@ export function resetPasswordApi(credentials) {
       });
   });
 }
-
-
 
 export function updateProfileApi(formData) {
   ApiService.setHeader("content-type", "multipart/form-data");
