@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
   Button,
+  CircularProgress,
 } from "@mui/material";
 
 import FormControl from "@mui/material/FormControl";
@@ -29,18 +30,14 @@ import { importItemsFile } from "../../../core/api/readyItems";
 
 const FileUploadTable = () => {
   const [viewItem, setViewItem] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
   const [selectedValue, setSelectedValue] = useState("");
-  const [searchText, setSearchText] = useState("");
   const [file, setFile] = useState(null);
 
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-    // Add any additional logic you need based on the search text
-  };
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -128,8 +125,15 @@ const FileUploadTable = () => {
 
   const [columns, setColumns] = useState(intialColumns);
 
-  const importFile = () => {
-    importItemsFile(file);
+  const importFile = async () => {
+    try {
+      setLoading(true);
+      await importItemsFile(file);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -238,11 +242,13 @@ const FileUploadTable = () => {
                   spacing={0}
                 >
                   <Stack sx={{ marginTop: "22px", marginBottom: "12px" }}>
-                    <label htmlFor='upload-image'>
-                      <Button variant='contained' onClick={importFile}>
-                        IMPORT FILE
-                      </Button>
-                    </label>
+                    <Button
+                      variant='contained'
+                      onClick={importFile}
+                      disabled={!file || loading}
+                    >
+                      {loading ? <CircularProgress size={25} /> : "IMPORT FILE"}
+                    </Button>
                   </Stack>
                 </Grid>
               </Grid>
