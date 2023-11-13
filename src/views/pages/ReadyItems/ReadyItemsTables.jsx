@@ -9,6 +9,7 @@ import {
 	Typography,
 	Menu,
 	MenuItem,
+	TextField,
     Button,
 } from '@mui/material';
 import HeaderPaper from '../../Components/Containers/HeaderPaper';
@@ -27,6 +28,8 @@ import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 import MUIButton from '../../Components/Button/MUIButton';
 import { styled } from '@mui/material/styles';
 import { getNonReadyItems } from '../../../core/api/nonreadyitems';
+import SearchIcon from '@mui/icons-material/Search';
+import SearchBar from '../../Components/SearchBar/SearchBar';
 const CustomMUIButton = styled(MUIButton)(({ theme, viewItem }) => ({
 	fontSize: viewItem ? '0.75rem' : '1rem',
 	width: viewItem ? '55%' : '70%',
@@ -50,7 +53,12 @@ const ReadyItemsTable = () => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [anchorE2, setAnchorE2] = React.useState(null);
 	const [selectedValue, setSelectedValue] = useState('');
+	const [searchText, setSearchText] = useState('');
 
+	const handleSearchChange = (event) => {
+	  setSearchText(event.target.value);
+	  // Add any additional logic you need based on the search text
+	};
 	const handleChange = (event) => {
 	  setSelectedValue(event.target.value);
 	};
@@ -96,7 +104,7 @@ const ReadyItemsTable = () => {
 		},
         {
 			accessorKey: 'price',
-			header: 'Price',
+			header: 'Cost',
 			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
@@ -282,6 +290,21 @@ const ReadyItemsTable = () => {
 					<TableContainer>
 					<Box sx={{padding:'23px'}}>
       <Grid container spacing={2}>
+	  <Grid item xs={3}>
+          <TextField
+            id="search"
+            label="Search"
+            variant="outlined"
+            fullWidth
+            value={searchText}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+              ),
+            }}
+          />
+        </Grid>
         <Grid item xs={2}>
           <FormControl fullWidth>
             <InputLabel id="dropdown-label">Batch No</InputLabel>
@@ -301,8 +324,11 @@ const ReadyItemsTable = () => {
             </Select>
           </FormControl>
         </Grid>
+	
       </Grid>
     </Box>
+
+	
 					
 						<DataTable
 							api={getNonReadyItems}

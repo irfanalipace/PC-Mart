@@ -9,8 +9,10 @@ import {
 	Typography,
 	Menu,
 	MenuItem,
+	TextField,
     Button,
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -50,7 +52,12 @@ const ItemsTable = () => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [anchorE2, setAnchorE2] = React.useState(null);
 	const [selectedValue, setSelectedValue] = useState('');
+	const [searchText, setSearchText] = useState('');
 
+	const handleSearchChange = (event) => {
+	  setSearchText(event.target.value);
+	  // Add any additional logic you need based on the search text
+	};
 	const handleChange = (event) => {
 	  setSelectedValue(event.target.value);
 	};
@@ -96,7 +103,7 @@ const ItemsTable = () => {
 		},
         {
 			accessorKey: 'price',
-			header: 'Price',
+			header: 'Cost',
 			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
@@ -282,6 +289,21 @@ const ItemsTable = () => {
 					<TableContainer>
 					<Box sx={{padding:'23px'}}>
       <Grid container spacing={2}>
+	  <Grid item xs={3}>
+          <TextField
+            id="search"
+            label="Search"
+            variant="outlined"
+            fullWidth
+            value={searchText}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+              ),
+            }}
+          />
+        </Grid>
         <Grid item xs={2}>
           <FormControl fullWidth>
             <InputLabel id="dropdown-label">Batch No</InputLabel>
@@ -301,9 +323,9 @@ const ItemsTable = () => {
             </Select>
           </FormControl>
         </Grid>
+	
       </Grid>
     </Box>
-			
 						<DataTable
 							api={getNonReadyItems}
 							columns={columns}
