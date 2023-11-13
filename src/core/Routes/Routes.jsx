@@ -10,6 +10,7 @@ import ForgotPassword from "../../views/pages/Auth/ForgetPassword.jsx";
 import ResetPassword from "../../views/pages/Auth/RestPassword.jsx";
 import NotItems from "../../views/pages/NotReadyItems/NotItems.jsx";
 import ReadyItemsTable from "../../views/pages/ReadyItems/ReadyItemsTables.jsx";
+import FileUpload from "../../views/pages/FileUpload/FileUpload.jsx";
 
 export const routes = [
   /* auth routes */
@@ -80,10 +81,12 @@ export const routes = [
     aside: <MainAside />,
   },
   {
-    path: "/inventory",
+    path: "/file-upload",
     page: (
       <ProtectedRoute>
-        <PageWrapper isSidebar={true}>{/* <Home /> */}</PageWrapper>
+        <PageWrapper isSidebar={true}>{/* <Home /> */}
+        <FileUpload />
+        </PageWrapper>
       </ProtectedRoute>
     ),
     header: <MainHeader />,
