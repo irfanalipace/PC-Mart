@@ -44,7 +44,7 @@ const DataTable = ({
     };
     try {
       const response = await api(params);
-      setData(response.data);
+      setData(response.data.data);
 
       setRowCount(response.data.total);
       setIsMounted(true); // to prevent refetching on first mount

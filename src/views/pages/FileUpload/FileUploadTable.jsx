@@ -21,16 +21,11 @@ import { Download } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { getUploadFile } from "../../../core/api/fileupload";
 import { useNavigate } from "react-router-dom";
-import { getCondition, deleteCondition } from "../../../core/api/condition";
-import {
-  extractNumberFromHash,
-  generateEncryptedID,
-} from "../../../core/utils/helpers";
-import SearchIcon from "@mui/icons-material/Search";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
 import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import MUIButton from "../../Components/Button/MUIButton";
+import { importItemsFile } from "../../../core/api/readyItems";
 
 const FileUploadTable = () => {
   const [viewItem, setViewItem] = useState(false);
@@ -40,6 +35,7 @@ const FileUploadTable = () => {
   const [dialogProps, setDialogProps] = useState({});
   const [selectedValue, setSelectedValue] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [file, setFile] = useState(null);
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
@@ -54,6 +50,7 @@ const FileUploadTable = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    setFile(file);
     const reader = new FileReader();
     setFileName(file?.name);
     reader.onloadend = () => {};
@@ -130,6 +127,10 @@ const FileUploadTable = () => {
   };
 
   const [columns, setColumns] = useState(intialColumns);
+
+  const importFile = () => {
+    importItemsFile(file);
+  };
 
   return (
     <>
@@ -223,8 +224,9 @@ const FileUploadTable = () => {
                         type='file'
                         onChange={handleFileUpload}
                       />
+                      &ensp;
+                      {fileName && <>{fileName}</>}
                     </label>
-                    {fileName && <>{fileName}</>}
                   </Stack>
                 </Grid>
                 <Grid
@@ -237,7 +239,7 @@ const FileUploadTable = () => {
                 >
                   <Stack sx={{ marginTop: "22px", marginBottom: "12px" }}>
                     <label htmlFor='upload-image'>
-                      <Button variant='contained' component='span'>
+                      <Button variant='contained' onClick={importFile}>
                         IMPORT FILE
                       </Button>
                     </label>
