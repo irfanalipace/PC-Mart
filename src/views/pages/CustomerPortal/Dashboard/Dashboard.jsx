@@ -1,45 +1,46 @@
-import {
-  Grid,
-  Typography,
-} from "@mui/material";
-import HeaderPaper from "../../../Components/Containers/HeaderPaper";
-import Profile from "./Profile/Profile";
-import AccountInformation from "./AccountInformation/AccountInformation";
-import { useDispatch, useSelector } from "react-redux";
-import { getCustomerDetails } from "../../../../core/store/auth/customerPortalThunks";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Box, Grid } from "@mui/material";
+import DashboardCard from "../../../Components/DashboardCard/DashboardCard";
+import ApexChart from "../../../Components/DashboardChart/DashboardChart";
+
 const Dashboard = () => {
-  const dispatch = useDispatch();
-  const {customerId} = useParams()
-  const customerDetails = useSelector(state=>state.customer.customer)
-   console.log('customerId' , customerId , customerDetails)
-  useEffect(() => {
-    dispatch(getCustomerDetails({customer_id:customerId , customerDetails}))
-  }, [])
-  
   return (
     <Grid container columnGap={1}>
-      {/* left side  */}
-      <Grid item lg={2.5}>
-        <Grid item container>
-          <Grid item xs={12} >
-            <HeaderPaper>
-              <Typography variant='h6'>Customer Information</Typography>
-            </HeaderPaper>
-          </Grid>
-          {
-            customerDetails?.id && <Profile customerId={customerId} customerDetails={customerDetails} />
-          }
-         
+      <Grid container spacing={2} p={3}>
+        <Grid item lg={3}>
+          <DashboardCard name={"All Items"} total={7064} percent={"+60.8%"} />
+        </Grid>
+        <Grid item lg={3}>
+          <Box>
+            <DashboardCard
+              name={"Non Ready Items"}
+              total={5012}
+              percent={"+15.03%"}
+            />
+          </Box>
+        </Grid>
+        <Grid item lg={3}>
+          <Box>
+            <DashboardCard
+              name={"Ready Items"}
+              total={2052}
+              percent={"-0.03%"}
+            />
+          </Box>
+        </Grid>
+        <Grid item lg={3}>
+          <Box>
+            <DashboardCard
+              name={"Total Inventory Value"}
+              total={"$205k"}
+              percent={"-0.03%"}
+            />
+          </Box>
         </Grid>
       </Grid>
-      {/* right side  */}
-      <Grid item lg={9}>
-        <HeaderPaper>
-          <Typography variant='h6'>Account Information</Typography>
-        </HeaderPaper>
-        <AccountInformation customerId={customerId}/>
+      <Grid container spacing={2} p={3}>
+        <Grid item lg={12}>
+          <ApexChart />
+        </Grid>
       </Grid>
     </Grid>
   );

@@ -10,6 +10,7 @@ import ForgotPassword from "../../views/pages/Auth/ForgetPassword.jsx";
 import ResetPassword from "../../views/pages/Auth/RestPassword.jsx";
 import NotItems from "../../views/pages/NotReadyItems/NotItems.jsx";
 import ReadyItemsTable from "../../views/pages/ReadyItems/ReadyItemsTables.jsx";
+import Dashboard from "../../views/pages/CustomerPortal/Dashboard/Dashboard.jsx";
 
 export const routes = [
   /* auth routes */
@@ -72,7 +73,9 @@ export const routes = [
     path: "/home",
     page: (
       <ProtectedRoute>
-        <PageWrapper isSidebar={true}>{/* <Home /> */}</PageWrapper>
+        <PageWrapper isSidebar={true}>
+          <Dashboard />
+        </PageWrapper>
       </ProtectedRoute>
     ),
     header: <MainHeader />,
@@ -94,9 +97,10 @@ export const routes = [
     path: "/non-ready-items",
     page: (
       <ProtectedRoute>
-        <PageWrapper isSidebar={true}>{/* <Home /> */}
-        
-     <NotItems />
+        <PageWrapper isSidebar={true}>
+          {/* <Home /> */}
+
+          <NotItems />
         </PageWrapper>
       </ProtectedRoute>
     ),
@@ -109,8 +113,7 @@ export const routes = [
     page: (
       <ProtectedRoute>
         <PageWrapper isSidebar={true}>
-<ReadyItemsTable />
-
+          <ReadyItemsTable />
         </PageWrapper>
       </ProtectedRoute>
     ),
@@ -119,7 +122,6 @@ export const routes = [
     aside: <MainAside />,
   },
 
-  
   /* Items All Routes Start From here*/
   // items module routes
 ];
