@@ -26,6 +26,7 @@ import {
   extractNumberFromHash,
   generateEncryptedID,
 } from "../../../core/utils/helpers";
+import SearchIcon from "@mui/icons-material/Search";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
 import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
@@ -38,7 +39,12 @@ const FileUploadTable = () => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
   const [selectedValue, setSelectedValue] = useState("");
+  const [searchText, setSearchText] = useState("");
 
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+    // Add any additional logic you need based on the search text
+  };
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
