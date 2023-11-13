@@ -28,7 +28,7 @@ const ReadyItemsTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState("option1");
 	const [searchText, setSearchText] = useState('');
 
 	const handleSearchChange = (event) => {
@@ -194,9 +194,9 @@ const ReadyItemsTable = () => {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value="option1">Option 1</MenuItem>
-              <MenuItem value="option2">Option 2</MenuItem>
-              <MenuItem value="option3">Option 3</MenuItem>
+              <MenuItem value="option1">Item 1</MenuItem>
+              <MenuItem value="option2">Item 2</MenuItem>
+              <MenuItem value="option3">Item 3</MenuItem>
             </Select>
           </FormControl>
         </Grid>
