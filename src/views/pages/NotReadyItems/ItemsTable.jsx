@@ -4,16 +4,14 @@ import {
   Box,
   IconButton,
   Grid,
+  TextField,
   Stack,
   Typography,
   MenuItem,
 } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+
 import HeaderPaper from "../../Components/Containers/HeaderPaper";
 import CloseIcon from "@mui/icons-material/Close";
-
 import { useNavigate } from "react-router-dom";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
@@ -158,31 +156,8 @@ const ItemsTable = () => {
               </Grid>
             )}
           </HeaderPaper>
-          <TableContainer>
-            <Box sx={{ padding: "23px" }}>
-              <Grid container spacing={2}>
-                <Grid item xs={2}>
-                  <FormControl fullWidth>
-                    <InputLabel id='dropdown-label'>Batch No</InputLabel>
-                    <Select
-                      labelId='dropdown-label'
-                      id='dropdown'
-                      value={selectedValue}
-                      label='Select an Option'
-                      onChange={handleChange}
-                    >
-                      <MenuItem value=''>
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value='option1'>Option 1</MenuItem>
-                      <MenuItem value='option2'>Option 2</MenuItem>
-                      <MenuItem value='option3'>Option 3</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </Box>
 
+          <TableContainer>
             <DataTable
               api={getNonReadyItems}
               columns={columns}

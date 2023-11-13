@@ -16,7 +16,7 @@ const DataTable = ({
   ...rest
 }) => {
   //data and fetching state
-
+  console.log(api, "iiii");
   const [data, setData] = useState([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +44,7 @@ const DataTable = ({
     };
     try {
       const response = await api(params);
-      setData(response.data.data);
+      setData(response?.data?.data);
 
       setRowCount(response.data.total);
       setIsMounted(true); // to prevent refetching on first mount

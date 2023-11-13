@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-
+import SearchIcon from "@mui/icons-material/Search";
 import notyf from "../../Components/NotificationMessage/notyfInstance";
 import {
   Box,
   IconButton,
   Grid,
+  TextField,
   Stack,
   Typography,
   MenuItem,
@@ -28,6 +29,12 @@ const ReadyItemsTable = () => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
   const [selectedValue, setSelectedValue] = useState("");
+  const [searchText, setSearchText] = useState("");
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+    // Add any additional logic you need based on the search text
+  };
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
