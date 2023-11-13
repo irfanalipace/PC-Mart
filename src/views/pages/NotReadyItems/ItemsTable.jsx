@@ -193,6 +193,7 @@ const ItemsTable = () => {
             />
           </TableContainer>
         </Grid>
+	
       </Grid>
       <ConfirmDialog
         title='Are you sure you want to delete'

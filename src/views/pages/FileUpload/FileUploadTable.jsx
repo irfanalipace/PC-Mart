@@ -8,7 +8,7 @@ import {
   Grid,
   Stack,
   Typography,
-
+TextField,
   Menu,
   MenuItem,
   Button,
@@ -28,6 +28,7 @@ import {
   extractNumberFromHash,
   generateEncryptedID,
 } from "../../../core/utils/helpers";
+import SearchIcon from '@mui/icons-material/Search';
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
 import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
@@ -56,7 +57,12 @@ const FileUploadTable = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorE2, setAnchorE2] = React.useState(null);
   const [selectedValue, setSelectedValue] = useState("");
+  const [searchText, setSearchText] = useState('');
 
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+    // Add any additional logic you need based on the search text
+  };
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -368,7 +374,7 @@ const FileUploadTable = () => {
           <TableContainer>
           <Grid item container>
                 <>
-                  <Grid item sm={6} display="flex" alignItems="center">
+                  <Grid item sm={4} display="flex" alignItems="center">
                     <Stack
                       direction="row"
                       display="flex"
@@ -383,7 +389,7 @@ const FileUploadTable = () => {
 
                   <Grid
                     item
-                    sm={6}
+                    sm={8}
                     sx={{
                       display: "flex",
                       justifyContent: "end",
@@ -391,9 +397,45 @@ const FileUploadTable = () => {
                     }}
                   >
 
-        <Box sx={{width:'400px', marginRight:'22px'}}>
+        <Box sx={{width:'600px', marginRight:'22px'}}>
     
       
+          {/* <FormControl fullWidth>
+            <InputLabel id="dropdown-label">Batch No</InputLabel>
+            <Select
+              labelId="dropdown-label"
+              id="dropdown"
+              value={selectedValue}
+              label="Select an Option"
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="option1">Option 1</MenuItem>
+              <MenuItem value="option2">Option 2</MenuItem>
+              <MenuItem value="option3">Option 3</MenuItem>
+            </Select>
+          </FormControl> */}
+       
+          
+      <Grid container spacing={2}>
+	  <Grid item xs={6}>
+          <TextField
+            id="search"
+            label="Search"
+            variant="outlined"
+            fullWidth
+            value={searchText}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+              ),
+            }}
+          />
+        </Grid>
+        <Grid item xs={6}>
           <FormControl fullWidth>
             <InputLabel id="dropdown-label">Batch No</InputLabel>
             <Select
@@ -411,8 +453,11 @@ const FileUploadTable = () => {
               <MenuItem value="option3">Option 3</MenuItem>
             </Select>
           </FormControl>
-       
-     
+        </Grid>
+	
+      </Grid>
+   
+
     </Box>
                     {/* {viewItem ? (
 											<IconButton onClick={goBack}>
