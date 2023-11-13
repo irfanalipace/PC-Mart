@@ -15,6 +15,9 @@ import HeaderPaper from '../../Components/Containers/HeaderPaper';
 import { Add, Edit, Delete } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import { useNavigate } from 'react-router-dom';
 import { getCondition, deleteCondition } from '../../../core/api/condition';
 import { extractNumberFromHash,generateEncryptedID, } from '../../../core/utils/helpers';
@@ -46,7 +49,11 @@ const ReadyItemsTable = () => {
 	const [dialogProps, setDialogProps] = useState({});
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [anchorE2, setAnchorE2] = React.useState(null);
+	const [selectedValue, setSelectedValue] = useState('');
 
+	const handleChange = (event) => {
+	  setSelectedValue(event.target.value);
+	};
 	const navigate = useNavigate();
 
 	
@@ -201,7 +208,7 @@ const ReadyItemsTable = () => {
 								<Grid item sm={12}>
 									<Grid item container>
 										<Grid item sm={6} display='flex' alignItems='center'>
-                                            <Button>Delete</Button>
+                                            {/* <Button>Delete</Button> */}
                                         </Grid>
 										<Grid
 											item
@@ -273,6 +280,30 @@ const ReadyItemsTable = () => {
 						)}
 					</HeaderPaper>
 					<TableContainer>
+					<Box sx={{padding:'23px'}}>
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <FormControl fullWidth>
+            <InputLabel id="dropdown-label">Batch No</InputLabel>
+            <Select
+              labelId="dropdown-label"
+              id="dropdown"
+              value={selectedValue}
+              label="Select an Option"
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="option1">Option 1</MenuItem>
+              <MenuItem value="option2">Option 2</MenuItem>
+              <MenuItem value="option3">Option 3</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+    </Box>
+					
 						<DataTable
 							api={getNonReadyItems}
 							columns={columns}
