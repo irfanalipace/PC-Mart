@@ -9,12 +9,9 @@ import {
   Typography,
   MenuItem,
 } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+
 import HeaderPaper from "../../Components/Containers/HeaderPaper";
 import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from "react-router-dom";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
@@ -27,14 +24,8 @@ const ItemsTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
-	const [searchText, setSearchText] = useState('');
 
-	const handleSearchChange = (event) => {
-	  setSearchText(event.target.value);
-	  // Add any additional logic you need based on the search text
-	};
-
-  const [selectedValue, setSelectedValue] = useState("option1");
+  const [selectedValue, setSelectedValue] = useState("");
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -167,49 +158,6 @@ const ItemsTable = () => {
           </HeaderPaper>
 
           <TableContainer>
-
-          <Box sx={{padding:'23px'}}>
-      <Grid container spacing={2}>
-	  <Grid item xs={3}>
-          <TextField
-            id="search"
-            label="Search"
-            variant="outlined"
-            fullWidth
-            value={searchText}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <FormControl fullWidth>
-            <InputLabel id="dropdown-label">Batch No</InputLabel>
-            <Select
-              labelId="dropdown-label"
-              id="dropdown"
-              value={selectedValue}
-              label="Select an Option"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="option1">Item 1</MenuItem>
-              <MenuItem value="option2">Item 2</MenuItem>
-              <MenuItem value="option3">Item 3</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-	
-      </Grid>
-    </Box>
-
-
-
             <DataTable
               api={getNonReadyItems}
               columns={columns}
@@ -220,7 +168,6 @@ const ItemsTable = () => {
             />
           </TableContainer>
         </Grid>
-	
       </Grid>
       <ConfirmDialog
         title='Are you sure you want to delete'

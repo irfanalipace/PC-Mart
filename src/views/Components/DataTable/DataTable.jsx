@@ -16,7 +16,7 @@ const DataTable = ({
   ...rest
 }) => {
   //data and fetching state
-console.log(api,'iiii')
+  console.log(api, "iiii");
   const [data, setData] = useState([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

@@ -8,75 +8,49 @@ import {
   Grid,
   Stack,
   Typography,
-TextField,
   Menu,
   MenuItem,
   Button,
+  CircularProgress,
 } from "@mui/material";
 
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import HeaderPaper from "../../Components/Containers/HeaderPaper";
-import { Add, Edit, Delete, Download } from "@mui/icons-material";
-import UploadFile from "../../Components/UploadFile/UploadFile";
+import { Download } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { getUploadFile } from "../../../core/api/fileupload";
 import { useNavigate } from "react-router-dom";
-import { getCondition, deleteCondition } from "../../../core/api/condition";
-import {
-  extractNumberFromHash,
-  generateEncryptedID,
-} from "../../../core/utils/helpers";
-import SearchIcon from '@mui/icons-material/Search';
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
 import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import MUIButton from "../../Components/Button/MUIButton";
-import { styled } from "@mui/material/styles";
-import { Container } from "@mui/material";
-import { getNonReadyItems } from "../../../core/api/nonreadyitems";
-import DownloadCustomerTemplate from "../CustomerPortal/DownloadCustomerTemplate";
-const CustomMUIButton = styled(MUIButton)(({ theme, viewItem }) => ({
-  fontSize: viewItem ? "0.75rem" : "1rem",
-  width: viewItem ? "55%" : "70%",
-  height: viewItem ? "30px" : "35px",
-  padding: "8px 16px",
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-}));
+import { importItemsFile } from "../../../core/api/readyItems";
 
 const FileUploadTable = () => {
-  const [id, setId] = useState(null);
   const [viewItem, setViewItem] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [anchorE2, setAnchorE2] = React.useState(null);
   const [selectedValue, setSelectedValue] = useState("");
-  const [searchText, setSearchText] = useState('');
+  const [file, setFile] = useState(null);
 
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-    // Add any additional logic you need based on the search text
-  };
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
   const navigate = useNavigate();
 
-  const [imageUrl, setImageUrl] = useState(null);
+  const [fileName, setFileName] = useState("");
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    setFile(file);
     const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setImageUrl(reader.result);
-    };
+    setFileName(file?.name);
+    reader.onloadend = () => {};
 
     reader.readAsDataURL(file);
   };
@@ -124,25 +98,8 @@ const FileUploadTable = () => {
       size: 200,
       Cell: ({ row }) => (
         <Box>
-          <IconButton
-            variant="outlined"
-            // onClick={e => {
-            // 	e.stopPropagation();
-            // 	setOpenConfirmDialog(true);
-            // 	setDialogProps({
-            // 		onConfirm: handleDelete,
-            // 		onConfirmParams: row.original.id,
-            // 	});
-            // }}
-          >
-            {/* <Delete sx={{ color: 'red' }} fontSize='small' /> */}
-          </IconButton>
-          {/* <IconButton
-						onClick={e => handleEditModal(e, row?.original.id)}
-						variant='outlined'
-					>
-						<Edit fontSize='small' color='primary' />
-					</IconButton> */}
+          <IconButton variant='outlined'></IconButton>
+
           <MUIButton>
             <Download />
           </MUIButton>
@@ -166,69 +123,18 @@ const FileUploadTable = () => {
     }
   };
 
-  const handleDelete = async (Id) => {
-    try {
-      await deleteCondition(Id);
-      setRefresh((prev) => prev + 1);
-      notyf.success("conditions Item deleted");
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-  const handleEditModal = (e, id) => {
-    e.stopPropagation(); // Stop the event from propagating
-    navigate(`/conditions/edit/${generateEncryptedID(id)}`);
-  };
   const [columns, setColumns] = useState(intialColumns);
 
-  const collapsedColumns = [
-    {
-      accessorKey: "name",
-      header: "Name",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
-    },
-  ];
-
-  const goBack = () => {
-    navigate("/conditions");
+  const importFile = async () => {
+    try {
+      setLoading(true);
+      await importItemsFile(file);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  // bulk menu oprn close
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  // tansaction menu
-  const tansactionOpen = Boolean(anchorE2);
-  const handleTransactions = (event) => {
-    setAnchorE2(event.currentTarget);
-  };
-  const closeTransactions = () => {
-    setAnchorE2(null);
-  };
-
-  // const changingStatus = async status => {
-  // 	try {
-  // 		await BulkUpdateStatusMarketplace({ ids: selectedRows, action: status });
-  // 		notyf.success('Status Updated Successfully');
-  // 		setRefresh(prev => prev + 1);
-  // 	} catch (error) {
-  // 		console.log('error', error);
-  // 	}
-  // };
-
-  // const handleBulkDelete = async () => {
-  // 	try {
-  // 		await bulkdeleteCondition({ ids: selectedRows });
-  // 		setRefresh(prev => prev + 1);
-  // 	} catch (err) {
-  // 		console.log('err', err);
-  // 	}
-  // };
 
   return (
     <>
@@ -239,7 +145,7 @@ const FileUploadTable = () => {
               <Grid item container>
                 <Grid item sm={12}>
                   <Grid item container>
-                    <Grid item sm={6} display="flex" alignItems="center">
+                    <Grid item sm={6} display='flex' alignItems='center'>
                       {/* <Button>Delete</Button> */}
                     </Grid>
                     <Grid
@@ -268,14 +174,14 @@ const FileUploadTable = () => {
             {selectedRows.length === 0 && (
               <Grid item container>
                 <>
-                  <Grid item sm={6} display="flex" alignItems="center">
+                  <Grid item sm={6} display='flex' alignItems='center'>
                     <Stack
-                      direction="row"
-                      display="flex"
-                      alignItems="center"
+                      direction='row'
+                      display='flex'
+                      alignItems='center'
                       spacing={0}
                     >
-                      <Typography variant="h6" component="span">
+                      <Typography variant='h6' component='span'>
                         Upload Inventory File
                       </Typography>
                     </Stack>
@@ -290,20 +196,6 @@ const FileUploadTable = () => {
                       alignItems: "center",
                     }}
                   >
-                    {/* {viewItem ? (
-											<IconButton onClick={goBack}>
-												<CloseIcon />
-											</IconButton>
-										) : (
-											<MUIButton
-												size='medium'
-												onClick={() => navigate('/conditions/new')}
-												variant='contained'
-											>
-												<Add fontSize='small' />
-												New
-											</MUIButton>
-										)} */}
                     <Box sx={{ margin: "12px" }}>
                       <MUIButton sx={{ padding: "6px" }}>
                         <Download />
@@ -315,170 +207,104 @@ const FileUploadTable = () => {
                 <Grid
                   item
                   sm={12}
-                  direction="row"
-                  display="flex"
-                  alignItems="center"
+                  direction='row'
+                  display='flex'
+                  alignItems='center'
                   spacing={0}
                 >
                   <Stack sx={{ marginTop: "22px" }}>
-                    <label htmlFor="upload-image">
+                    <label htmlFor='upload-image'>
                       <Button
-                        variant=""
-                        component="span"
+                        variant=''
+                        component='span'
                         sx={{ border: "1px solid #1976d2", color: "#1976d2" }}
                       >
                         CHOOSE FILE
                       </Button>
                       <input
-                        id="upload-image"
+                        id='upload-image'
                         hidden
-                        accept="image/*"
-                        type="file"
+                        accept='/*'
+                        type='file'
                         onChange={handleFileUpload}
                       />
+                      &ensp;
+                      {fileName && <>{fileName}</>}
                     </label>
-                    {imageUrl && (
-                      <img src={imageUrl} alt="Uploaded Image" height="300" />
-                    )}
                   </Stack>
                 </Grid>
                 <Grid
                   item
                   sm={12}
-                  direction="row"
-                  display="flex"
-                  alignItems="center"
+                  direction='row'
+                  display='flex'
+                  alignItems='center'
                   spacing={0}
                 >
                   <Stack sx={{ marginTop: "22px", marginBottom: "12px" }}>
-                    <label htmlFor="upload-image">
-                      <Button variant="contained" component="span">
-                        IMPORT FILE
-                      </Button>
-                      {/* <input
-                        id="upload-image"
-                        hidden
-                        accept="image/*"
-                        type="file"
-                        onChange={handleFileUpload}
-                      /> */}
-                    </label>
-                    {imageUrl && (
-                      <img src={imageUrl} alt="Uploaded Image" height="300" />
-                    )}
+                    <Button
+                      variant='contained'
+                      onClick={importFile}
+                      disabled={!file || loading}
+                    >
+                      {loading ? <CircularProgress size={25} /> : "IMPORT FILE"}
+                    </Button>
                   </Stack>
                 </Grid>
               </Grid>
             )}
           </HeaderPaper>
           <TableContainer>
-          <Grid item container>
-                <>
-                  <Grid item sm={4} display="flex" alignItems="center">
-                    <Stack
-                      direction="row"
-                      display="flex"
-                      alignItems="center"
-                      spacing={0}
-                    >
-                      <Typography variant="h6" component="span" sx={{padding:'24px'}}>
-                        Uploaded Inventory Files
-                      </Typography>
-                    </Stack>
-                  </Grid>
-
-                  <Grid
-                    item
-                    sm={8}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "end",
-                      alignItems: "center",
-                    }}
+            <Grid item container>
+              <>
+                <Grid item sm={6} display='flex' alignItems='center'>
+                  <Stack
+                    direction='row'
+                    display='flex'
+                    alignItems='center'
+                    spacing={0}
                   >
+                    <Typography
+                      variant='h6'
+                      component='span'
+                      sx={{ padding: "24px" }}
+                    >
+                      Uploaded Inventory Files
+                    </Typography>
+                  </Stack>
+                </Grid>
 
-        <Box sx={{width:'600px', marginRight:'22px'}}>
-    
-      
-          {/* <FormControl fullWidth>
-            <InputLabel id="dropdown-label">Batch No</InputLabel>
-            <Select
-              labelId="dropdown-label"
-              id="dropdown"
-              value={selectedValue}
-              label="Select an Option"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="option1">Option 1</MenuItem>
-              <MenuItem value="option2">Option 2</MenuItem>
-              <MenuItem value="option3">Option 3</MenuItem>
-            </Select>
-          </FormControl> */}
-       
-          
-      <Grid container spacing={2}>
-	  <Grid item xs={6}>
-          <TextField
-            id="search"
-            label="Search"
-            variant="outlined"
-            fullWidth
-            value={searchText}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="dropdown-label">Batch No</InputLabel>
-            <Select
-              labelId="dropdown-label"
-              id="dropdown"
-              value={selectedValue}
-              label="Select an Option"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="option1">Option 1</MenuItem>
-              <MenuItem value="option2">Option 2</MenuItem>
-              <MenuItem value="option3">Option 3</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-	
-      </Grid>
-   
-
-    </Box>
-                    {/* {viewItem ? (
-											<IconButton onClick={goBack}>
-												<CloseIcon />
-											</IconButton>
-										) : (
-											<MUIButton
-												size='medium'
-												onClick={() => navigate('/conditions/new')}
-												variant='contained'
-											>
-												<Add fontSize='small' />
-												New
-											</MUIButton>
-										)} */}
-    
-                  </Grid>
-      
-                </>
-             
-              </Grid>
+                <Grid
+                  item
+                  sm={6}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "end",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box sx={{ width: "400px", marginRight: "22px" }}>
+                    <FormControl fullWidth>
+                      <InputLabel id='dropdown-label'>Batch No</InputLabel>
+                      <Select
+                        labelId='dropdown-label'
+                        id='dropdown'
+                        value={selectedValue}
+                        label='Select an Option'
+                        onChange={handleChange}
+                      >
+                        <MenuItem value=''>
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value='option1'>Option 1</MenuItem>
+                        <MenuItem value='option2'>Option 2</MenuItem>
+                        <MenuItem value='option3'>Option 3</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Grid>
+              </>
+            </Grid>
             <DataTable
               api={getUploadFile}
               columns={columns}
@@ -491,7 +317,7 @@ const FileUploadTable = () => {
         </Grid>
       </Grid>
       <ConfirmDialog
-        title="Are you sure you want to delete"
+        title='Are you sure you want to delete'
         isOpen={openConfirmDialog}
         onClose={() => setOpenConfirmDialog(false)}
         {...dialogProps}
@@ -499,12 +325,5 @@ const FileUploadTable = () => {
     </>
   );
 };
-
-// const headerIconButton = {
-// 	backgroundColor: '#EEEEEE',
-// 	border: '1px solid #d1d1d1',
-// 	borderRadius: '4px',
-// 	textTransform: 'none',
-// };
 
 export default FileUploadTable;
