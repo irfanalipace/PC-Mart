@@ -29,7 +29,7 @@ export function importItemsFile(data) {
   const formData = new FormData();
   formData.append("file", data);
   return new Promise((resolve, reject) => {
-    ApiService.post("/file-upload", formData)
+    ApiService.post("/file-upload", null, formData)
       .then((response) => {
         resolve(response);
       })
