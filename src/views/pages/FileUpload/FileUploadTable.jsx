@@ -31,6 +31,7 @@ import { importItemsFile } from "../../../core/api/readyItems";
 const FileUploadTable = () => {
   const [viewItem, setViewItem] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
@@ -57,9 +58,12 @@ const FileUploadTable = () => {
 
   const FileDownload = async (id) => {
     try {
+      setDownloading(true);
       await downloadFile(id);
+      setDownloading(false);
     } catch (err) {
       console.log(err);
+    } finally {
     }
   };
 
@@ -99,17 +103,15 @@ const FileUploadTable = () => {
     {
       accessorKey: " ",
       header: "ACTIONS",
-      enableColumnActions: false,
-      enableColumnFilter: false,
-      enableColumnOrdering: false,
-      enableSorting: false,
       size: 200,
       Cell: ({ row }) => (
-        <Box>
-          <MUIButton onClick={() => FileDownload(row?.original?.id)}>
-            <Download />
-          </MUIButton>
-        </Box>
+        <Button
+          variant='contained'
+          onClick={() => FileDownload(row?.original?.id)}
+          disabled={downloading}
+        >
+          {downloading ? <>...</> : <Download />}
+        </Button>
       ),
     },
   ];
@@ -135,6 +137,7 @@ const FileUploadTable = () => {
     try {
       setLoading(true);
       await importItemsFile(file);
+      notyf.success("File Imported Successfully");
     } catch (err) {
       console.log(err);
     } finally {
