@@ -1,8 +1,8 @@
 import ApiService from "../services/apiService";
 
-export function getReadyItems() {
+export function getReadyItems(params) {
   return new Promise((resolve, reject) => {
-    ApiService.post("/filter-items", { status: "ready" })
+    ApiService.post("/filter-items", params, { status: "ready" })
       .then((response) => {
         resolve(response);
       })
@@ -12,9 +12,9 @@ export function getReadyItems() {
   });
 }
 
-export function getNonReadyItems() {
+export function getNonReadyItems(params) {
   return new Promise((resolve, reject) => {
-    ApiService.post("/filter-items", { status: "non_ready" })
+    ApiService.post("/filter-items", params, { status: "non_ready" })
       .then((response) => {
         resolve(response);
       })
@@ -29,7 +29,7 @@ export function importItemsFile(data) {
   const formData = new FormData();
   formData.append("file", data);
   return new Promise((resolve, reject) => {
-    ApiService.post("/file-upload", formData)
+    ApiService.post("/file-upload", null, formData)
       .then((response) => {
         resolve(response);
       })

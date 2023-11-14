@@ -20,7 +20,7 @@ import Select from "@mui/material/Select";
 import HeaderPaper from "../../Components/Containers/HeaderPaper";
 import { Download } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
-import { getUploadFile } from "../../../core/api/fileupload";
+import { downloadFile, getUploadFile } from "../../../core/api/fileupload";
 import { useNavigate } from "react-router-dom";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
@@ -55,16 +55,24 @@ const FileUploadTable = () => {
     reader.readAsDataURL(file);
   };
 
+  const FileDownload = async (id) => {
+    try {
+      await downloadFile(id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const intialColumns = [
     {
-      accessorKey: "file_name",
+      accessorKey: "name",
       header: "File Name",
       //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
-      accessorKey: "upload_date",
+      accessorKey: "uploaded_date_time",
       header: "Upload Date, Time",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
+      Cell: ({ renderedCellValue }) => <>{renderedCellValue}</>,
     },
 
     {
@@ -83,7 +91,7 @@ const FileUploadTable = () => {
       ),
     },
     {
-      accessorKey: "batch_no",
+      accessorKey: "batch_number",
       header: "Batch No",
       //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
@@ -98,9 +106,7 @@ const FileUploadTable = () => {
       size: 200,
       Cell: ({ row }) => (
         <Box>
-          <IconButton variant='outlined'></IconButton>
-
-          <MUIButton>
+          <MUIButton onClick={() => FileDownload(row?.original?.id)}>
             <Download />
           </MUIButton>
         </Box>
