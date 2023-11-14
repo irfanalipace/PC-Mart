@@ -21,6 +21,7 @@ import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
 import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import { getReadyItems } from "../../../core/api/readyItems";
+import { getBatchNumber } from "../../../core/api/batchNumber";
 
 const ReadyItemsTable = () => {
   const [viewItem, setViewItem] = useState(false);
@@ -29,7 +30,8 @@ const ReadyItemsTable = () => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
   const [selectedValue, setSelectedValue] = useState("option1");
-	const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [batchList, setBatchList] = useState([]);
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
@@ -99,7 +101,15 @@ const ReadyItemsTable = () => {
   ];
 
   const [columns, setColumns] = useState(intialColumns);
-
+  useEffect(() => {
+    fetchBatchNumbers();
+  }, []);
+  const fetchBatchNumbers = async () => {
+    try {
+      const resp = await getBatchNumber();
+      setBatchList(resp?.data);
+    } catch (err) {}
+  };
   return (
     <>
       <Grid container>
@@ -164,46 +174,43 @@ const ReadyItemsTable = () => {
             )}
           </HeaderPaper>
           <TableContainer>
-          <Box sx={{padding:'23px'}}>
-      <Grid container spacing={2}>
-	  <Grid item xs={3}>
-          <TextField
-            id="search"
-            label="Search"
-            variant="outlined"
-            fullWidth
-            value={searchText}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <FormControl fullWidth>
-            <InputLabel id="dropdown-label">Batch No</InputLabel>
-            <Select
-              labelId="dropdown-label"
-              id="dropdown"
-              value={selectedValue}
-              label="Select an Option"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="option1">Item 1</MenuItem>
-              <MenuItem value="option2">Item 2</MenuItem>
-              <MenuItem value="option3">Item 3</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-	
-      </Grid>
-    </Box>
-
+            <Box sx={{ padding: "23px" }}>
+              <Grid container spacing={2}>
+                <Grid item xs={3}>
+                  <TextField
+                    id='search'
+                    label='Search'
+                    variant='outlined'
+                    fullWidth
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    InputProps={{
+                      startAdornment: (
+                        <SearchIcon
+                          sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                        />
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <FormControl fullWidth>
+                    <InputLabel id='dropdown-label'>Batch No</InputLabel>
+                    <Select
+                      labelId='dropdown-label'
+                      id='dropdown'
+                      value={selectedValue}
+                      label='Select an Option'
+                      onChange={handleChange}
+                    >
+                      {batchList?.map((row) => (
+                        <MenuItem value={row?.id}>{row?.batch_number}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Box>
 
             <DataTable
               api={getReadyItems}
