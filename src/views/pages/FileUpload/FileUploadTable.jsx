@@ -57,14 +57,14 @@ const FileUploadTable = () => {
 
   const intialColumns = [
     {
-      accessorKey: "file_name",
+      accessorKey: "name",
       header: "File Name",
       //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
-      accessorKey: "upload_date",
+      accessorKey: "uploaded_date_time",
       header: "Upload Date, Time",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
+      Cell: ({ renderedCellValue }) => <>{renderedCellValue}</>,
     },
 
     {
@@ -83,7 +83,7 @@ const FileUploadTable = () => {
       ),
     },
     {
-      accessorKey: "batch_no",
+      accessorKey: "batch_number",
       header: "Batch No",
       //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },

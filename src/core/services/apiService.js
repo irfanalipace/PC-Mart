@@ -1,19 +1,19 @@
 import axios from "axios";
 // import { toast } from "react-toastify";
 import { destroyToken } from "./authService";
- 
+
 /**
  * Service to call HTTP request via Axios
  */
- 
+
 const ACCEPTED_ERROR_CODES = [400, 401, 404, 403, 422];
- 
+
 const ApiService = {
   instance: null,
   init() {
     if (!this.instance) {
       const envbaseURL = process.env.REACT_APP_API_BASE_URL;
-      console.log(envbaseURL,'envbaseURL')
+      console.log(envbaseURL, "envbaseURL");
       this.instance = axios.create({
         withCredentials: false,
         baseURL: envbaseURL,
@@ -23,19 +23,19 @@ const ApiService = {
       this.instance.defaults.headers["content-type"] = "application/json";
     }
   },
- 
+
   /**
    * Set the default HTTP request headers
    */
- 
+
   setHeader(header, val) {
     this.instance.defaults.headers[header] = val;
   },
- 
+
   setAuthToken(token) {
     this.instance.defaults.headers["Authorization"] = `Bearer ${token}`;
   },
- 
+
   /**
    * Send the GET HTTP request
    * @param resource
@@ -43,7 +43,7 @@ const ApiService = {
    * @param params
    * @returns {*}
    */
- 
+
   get(resource, slug = "", params = {}) {
     return new Promise((resolve, reject) => {
       const url = `${resource}${slug ? `/${slug}` : ""}`;
@@ -63,18 +63,17 @@ const ApiService = {
         });
     });
   },
- 
+
   /**
    * Set the POST HTTP request
    * @param resource
    * @param params
    * @returns {*}
    */
- 
-  post(resource, params = {}) {
+  post(resource, params = {}, data = {}) {
     return new Promise((resolve, reject) => {
       this.instance
-        .post(`${resource}`, params)
+        .post(`${resource}`, data, { params })
         .then((res) => {
           resolve(res.data);
         })
@@ -90,14 +89,14 @@ const ApiService = {
         });
     });
   },
- 
+
   /**
    * Send the PUT HTTP request
    * @param resource
    * @param params
    * @returns {IDBRequest<IDBValidKey> | Promise<void>}
    */
- 
+
   put(resource, params) {
     return new Promise((resolve, reject) => {
       this.instance
@@ -116,7 +115,7 @@ const ApiService = {
         });
     });
   },
- 
+
   delete(resource) {
     return new Promise((resolve, reject) => {
       this.instance
@@ -137,6 +136,6 @@ const ApiService = {
     });
   },
 };
- 
+
 ApiService.init();
 export default ApiService;
