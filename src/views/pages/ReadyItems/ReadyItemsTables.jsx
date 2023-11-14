@@ -28,8 +28,8 @@ const ReadyItemsTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
-  const [selectedValue, setSelectedValue] = useState("");
-  const [searchText, setSearchText] = useState("");
+  const [selectedValue, setSelectedValue] = useState("option1");
+	const [searchText, setSearchText] = useState('');
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
@@ -164,29 +164,46 @@ const ReadyItemsTable = () => {
             )}
           </HeaderPaper>
           <TableContainer>
-            <Box sx={{ padding: "23px" }}>
-              <Grid container spacing={2}>
-                <Grid item xs={2}>
-                  <FormControl fullWidth>
-                    <InputLabel id='dropdown-label'>Batch No</InputLabel>
-                    <Select
-                      labelId='dropdown-label'
-                      id='dropdown'
-                      value={selectedValue}
-                      label='Select an Option'
-                      onChange={handleChange}
-                    >
-                      <MenuItem value=''>
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value='option1'>Option 1</MenuItem>
-                      <MenuItem value='option2'>Option 2</MenuItem>
-                      <MenuItem value='option3'>Option 3</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </Box>
+          <Box sx={{padding:'23px'}}>
+      <Grid container spacing={2}>
+	  <Grid item xs={3}>
+          <TextField
+            id="search"
+            label="Search"
+            variant="outlined"
+            fullWidth
+            value={searchText}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+              ),
+            }}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <FormControl fullWidth>
+            <InputLabel id="dropdown-label">Batch No</InputLabel>
+            <Select
+              labelId="dropdown-label"
+              id="dropdown"
+              value={selectedValue}
+              label="Select an Option"
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="option1">Item 1</MenuItem>
+              <MenuItem value="option2">Item 2</MenuItem>
+              <MenuItem value="option3">Item 3</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+	
+      </Grid>
+    </Box>
+
 
             <DataTable
               api={getReadyItems}
