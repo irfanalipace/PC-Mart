@@ -68,10 +68,10 @@ const FileUploadTable = () => {
       setDownloading(true);
       const resp = await DownloadSingleFile(id);
       downloadFile(resp?.data?.route);
-      console.log("SDSDSD", resp?.data?.route);
     } catch (err) {
       console.log(err);
     } finally {
+      setDownloading(false);
     }
   };
 
@@ -79,7 +79,6 @@ const FileUploadTable = () => {
     {
       accessorKey: "name",
       header: "File Name",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "uploaded_date_time",
@@ -105,7 +104,6 @@ const FileUploadTable = () => {
     {
       accessorKey: "batch_number",
       header: "Batch No",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: " ",
@@ -113,6 +111,7 @@ const FileUploadTable = () => {
       size: 200,
       Cell: ({ row }) => (
         <Button
+          key={row?.original?.id}
           variant='contained'
           onClick={() => FileDownload(row?.original?.id)}
           disabled={downloading}
