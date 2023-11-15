@@ -1,8 +1,11 @@
 import ApiService from "../services/apiService";
 
-export function getReadyItems(params) {
+export function getReadyItems(params, batchNumber) {
   return new Promise((resolve, reject) => {
-    ApiService.post("/filter-items", params, { status: "ready" })
+    ApiService.post("/filter-items", params, {
+      status: "ready",
+      batch_number: batchNumber,
+    })
       .then((response) => {
         resolve(response);
       })
@@ -12,9 +15,12 @@ export function getReadyItems(params) {
   });
 }
 
-export function getNonReadyItems(params) {
+export function getNonReadyItems(params, batchNumber) {
   return new Promise((resolve, reject) => {
-    ApiService.post("/filter-items", params, { status: "non_ready" })
+    ApiService.post("/filter-items", params, {
+      status: "non_ready",
+      batch_number: batchNumber,
+    })
       .then((response) => {
         resolve(response);
       })

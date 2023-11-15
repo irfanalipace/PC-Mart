@@ -7,7 +7,6 @@ import {
   TextField,
   Stack,
   Typography,
-
   MenuItem,
 } from "@mui/material";
 import Select from "@mui/material/Select";
@@ -26,7 +25,9 @@ const ItemsTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
-	const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [batchList, setBatchList] = useState([]);
+  const [bathcNumber, setBatchNumber] = useState(null);
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
@@ -165,47 +166,61 @@ const ItemsTable = () => {
           </HeaderPaper>
 
           <TableContainer>
-          <Box sx={{padding:'23px'}}>
-      <Grid container spacing={2}>
-	  <Grid item xs={3}>
-          <TextField
-            id="search"
-            label="Search"
-            variant="outlined"
-            fullWidth
-            value={searchText}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <FormControl fullWidth>
-            <InputLabel id="dropdown-label">Batch No</InputLabel>
-            <Select
-              labelId="dropdown-label"
-              id="dropdown"
-              value={selectedValue}
-              label="Select an Option"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="option1">Item 1</MenuItem>
-              <MenuItem value="option2">Item 2</MenuItem>
-              <MenuItem value="option3">Item 3</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-	
-      </Grid>
-    </Box>
+            <Box sx={{ padding: "23px" }}>
+              <Grid container spacing={2}>
+                <Grid item xs={3}>
+                  <TextField
+                    id='search'
+                    label='Search'
+                    variant='outlined'
+                    fullWidth
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    InputProps={{
+                      startAdornment: (
+                        <SearchIcon
+                          sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                        />
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <FormControl fullWidth>
+                    <InputLabel id='dropdown-label'>Batch No</InputLabel>
+                    <Select
+                      labelId='dropdown-label'
+                      id='dropdown'
+                      value={selectedValue}
+                      label='Select an Option'
+                      onChange={handleChange}
+                    >
+                      <MenuItem
+                        onClick={() => {
+                          setBatchNumber(null);
+                          setRefresh((prev) => prev + 1);
+                        }}
+                      >
+                        All Non Ready Items
+                      </MenuItem>
+                      {batchList?.map((row) => (
+                        <MenuItem
+                          value={row?.id}
+                          onClick={() => {
+                            setBatchNumber(row?.batch_number);
+                            setRefresh((prev) => prev + 1);
+                          }}
+                        >
+                          {row?.batch_number}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Box>
             <DataTable
-              api={getNonReadyItems}
+              api={(e) => getNonReadyItems(e, bathcNumber)}
               columns={columns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import notyf from "../../Components/NotificationMessage/notyfInstance";
 import {
   Box,
   IconButton,
@@ -29,7 +28,9 @@ const ReadyItemsTable = () => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [dialogProps, setDialogProps] = useState({});
   const [selectedValue, setSelectedValue] = useState("option1");
-	const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [batchList, setBatchList] = useState([]);
+  const [bathcNumber, setBatchNumber] = useState(null);
 
   const handleSearchChange = (event) => {
     setSearchText(event.target.value);
@@ -45,42 +46,34 @@ const ReadyItemsTable = () => {
     {
       accessorKey: "make",
       header: "Batch No",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "serial_number",
       header: "Serial No",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "type",
       header: "Make",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "model",
       header: "Model",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "cpu",
       header: "CPU",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "ram",
       header: "RAM",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "hdd",
       header: "HDD",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "price",
       header: "Price",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: " ",
@@ -164,49 +157,62 @@ const ReadyItemsTable = () => {
             )}
           </HeaderPaper>
           <TableContainer>
-          <Box sx={{padding:'23px'}}>
-      <Grid container spacing={2}>
-	  <Grid item xs={3}>
-          <TextField
-            id="search"
-            label="Search"
-            variant="outlined"
-            fullWidth
-            value={searchText}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <FormControl fullWidth>
-            <InputLabel id="dropdown-label">Batch No</InputLabel>
-            <Select
-              labelId="dropdown-label"
-              id="dropdown"
-              value={selectedValue}
-              label="Select an Option"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="option1">Item 1</MenuItem>
-              <MenuItem value="option2">Item 2</MenuItem>
-              <MenuItem value="option3">Item 3</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-	
-      </Grid>
-    </Box>
-
+            <Box sx={{ padding: "23px" }}>
+              <Grid container spacing={2}>
+                <Grid item xs={3}>
+                  <TextField
+                    id='search'
+                    label='Search'
+                    variant='outlined'
+                    fullWidth
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    InputProps={{
+                      startAdornment: (
+                        <SearchIcon
+                          sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                        />
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <FormControl fullWidth>
+                    <InputLabel id='dropdown-label'>Batch No</InputLabel>
+                    <Select
+                      labelId='dropdown-label'
+                      id='dropdown'
+                      value={selectedValue}
+                      label='Select an Option'
+                      onChange={handleChange}
+                    >
+                      <MenuItem
+                        onClick={() => {
+                          setBatchNumber(null);
+                          setRefresh((prev) => prev + 1);
+                        }}
+                      >
+                        All Ready Items
+                      </MenuItem>
+                      {batchList?.map((row) => (
+                        <MenuItem
+                          value={row?.id}
+                          onClick={() => {
+                            setBatchNumber(row?.batch_number);
+                            setRefresh((prev) => prev + 1);
+                          }}
+                        >
+                          {row?.batch_number}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Box>
 
             <DataTable
-              api={getReadyItems}
+              api={(e) => getReadyItems(e, bathcNumber)}
               columns={columns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}

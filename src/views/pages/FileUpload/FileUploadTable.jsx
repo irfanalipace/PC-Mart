@@ -53,7 +53,7 @@ const FileUploadTable = () => {
     setFileName(file?.name);
     reader.onloadend = () => {};
 
-    reader.readAsDataURL(file);
+    // reader.readAsDataURL(file);
   };
 
   const FileDownload = async (id) => {
@@ -99,7 +99,6 @@ const FileUploadTable = () => {
       header: "Batch No",
       //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
-
     {
       accessorKey: " ",
       header: "ACTIONS",
