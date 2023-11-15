@@ -368,6 +368,7 @@ const FileUploadTable = () => {
               onRowClick={() => {}}
               collapsed={viewItem}
               refresh={refresh}
+              manualFilter
             />
           </TableContainer>
         </Grid>
