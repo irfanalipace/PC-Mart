@@ -20,6 +20,7 @@ import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
 import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import { getReadyItems } from "../../../core/api/readyItems";
+import { getBatchNumber } from "../../../core/api/batchNumber";
 
 const ReadyItemsTable = () => {
   const [viewItem, setViewItem] = useState(false);
@@ -92,7 +93,15 @@ const ReadyItemsTable = () => {
   ];
 
   const [columns, setColumns] = useState(intialColumns);
-
+  useEffect(() => {
+    fetchBatchNumbers();
+  }, []);
+  const fetchBatchNumbers = async () => {
+    try {
+      const resp = await getBatchNumber();
+      setBatchList(resp?.data);
+    } catch (err) {}
+  };
   return (
     <>
       <Grid container>

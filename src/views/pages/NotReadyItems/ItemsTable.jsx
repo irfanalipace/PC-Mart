@@ -19,6 +19,8 @@ import TableContainer from "../../Components/Containers/TableContainer";
 import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import { getNonReadyItems } from "../../../core/api/readyItems";
 import InputLabel from "@mui/material/InputLabel";
+import { useEffect } from "react";
+import { getBatchNumber } from "../../../core/api/batchNumber";
 const ItemsTable = () => {
   const [viewItem, setViewItem] = useState(false);
   const [refresh, setRefresh] = useState(0);
@@ -100,7 +102,15 @@ const ItemsTable = () => {
   ];
 
   const [columns, setColumns] = useState(intialColumns);
-
+  useEffect(() => {
+    fetchBatchNumbers();
+  }, []);
+  const fetchBatchNumbers = async () => {
+    try {
+      const resp = await getBatchNumber();
+      setBatchList(resp?.data);
+    } catch (err) {}
+  };
   return (
     <>
       <Grid container>
