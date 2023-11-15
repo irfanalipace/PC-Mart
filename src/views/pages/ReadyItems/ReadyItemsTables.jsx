@@ -15,20 +15,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { useNavigate } from "react-router-dom";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
-import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import { getReadyItems } from "../../../core/api/readyItems";
 import { getBatchNumber } from "../../../core/api/batchNumber";
 
 const ReadyItemsTable = () => {
-  const [viewItem, setViewItem] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [dialogProps, setDialogProps] = useState({});
-  const [selectedValue, setSelectedValue] = useState("option1");
   const [searchText, setSearchText] = useState("");
   const [batchList, setBatchList] = useState([]);
   const [bathcNumber, setBatchNumber] = useState(null);
@@ -38,22 +32,18 @@ const ReadyItemsTable = () => {
     setRefresh((prev) => prev + 1);
   };
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-  const navigate = useNavigate();
-
   const intialColumns = [
     {
       accessorKey: "make",
       header: "Batch No",
+      Cell: ({ row }) => <>{row?.original?.file?.batch_number}</>,
     },
     {
       accessorKey: "serial_number",
       header: "Serial No",
     },
     {
-      accessorKey: "type",
+      accessorKey: "make",
       header: "Make",
     },
     {
@@ -76,23 +66,7 @@ const ReadyItemsTable = () => {
       accessorKey: "price",
       header: "Price",
     },
-    {
-      accessorKey: " ",
-      header: "ACTIONS",
-      enableColumnActions: false,
-      enableColumnFilter: false,
-      enableColumnOrdering: false,
-      enableSorting: false,
-      size: 200,
-      Cell: ({ row }) => (
-        <Box>
-          <IconButton variant='outlined'></IconButton>
-        </Box>
-      ),
-    },
   ];
-
-  const [columns, setColumns] = useState(intialColumns);
   useEffect(() => {
     fetchBatchNumbers();
   }, []);
@@ -105,7 +79,7 @@ const ReadyItemsTable = () => {
   return (
     <>
       <Grid container>
-        <Grid item sm={viewItem ? 3 : 12}>
+        <Grid item>
           <HeaderPaper sx={{ padding: "10px 20px" }}>
             {selectedRows?.length > 0 && (
               <Grid item container>
@@ -123,13 +97,7 @@ const ReadyItemsTable = () => {
                         alignItems: "center",
                       }}
                     >
-                      <IconButton
-                        onClick={() =>
-                          viewItem
-                            ? navigate(`/conditions`)
-                            : setRefresh((prev) => prev + 1)
-                        }
-                      >
+                      <IconButton>
                         <CloseIcon />
                       </IconButton>
                     </Grid>
@@ -193,9 +161,7 @@ const ReadyItemsTable = () => {
                     <Select
                       labelId='dropdown-label'
                       id='dropdown'
-                      value={selectedValue}
                       label='Select an Option'
-                      onChange={handleChange}
                     >
                       <MenuItem
                         onClick={() => {
@@ -224,21 +190,15 @@ const ReadyItemsTable = () => {
 
             <DataTable
               api={(e) => getReadyItems(e, bathcNumber, searchText)}
-              columns={columns}
+              columns={intialColumns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}
-              collapsed={viewItem}
+              // collapsed={viewItem}
               refresh={refresh}
             />
           </TableContainer>
         </Grid>
       </Grid>
-      <ConfirmDialog
-        title='Are you sure you want to delete'
-        isOpen={openConfirmDialog}
-        onClose={() => setOpenConfirmDialog(false)}
-        {...dialogProps}
-      />
     </>
   );
 };

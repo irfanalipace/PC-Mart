@@ -47,6 +47,7 @@ const FileUploadTable = () => {
   const [batchList, setBatchList] = useState([]);
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
+  const [bathcNumber, setBatchNumber] = useState(null);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -143,12 +144,13 @@ const FileUploadTable = () => {
       await importItemsFile(file);
       setRefresh((prev) => prev + 1);
       notyf.success("File Imported Successfully");
-      setFile(null);
-      setFileName("");
     } catch (err) {
       console.log(err);
+      notyf.error(err?.data?.message);
     } finally {
       setLoading(false);
+      setFile(null);
+      setFileName("");
     }
   };
 
@@ -334,8 +336,22 @@ const FileUploadTable = () => {
                         label='Select an Option'
                         onChange={handleChange}
                       >
+                        <MenuItem
+                          onClick={() => {
+                            setBatchNumber(null);
+                            setRefresh((prev) => prev + 1);
+                          }}
+                        >
+                          All Files
+                        </MenuItem>
                         {batchList?.map((row) => (
-                          <MenuItem value={row?.id}>
+                          <MenuItem
+                            value={row?.id}
+                            onClick={() => {
+                              setBatchNumber(row?.batch_number);
+                              setRefresh((prev) => prev + 1);
+                            }}
+                          >
                             {row?.batch_number}
                           </MenuItem>
                         ))}
@@ -346,7 +362,7 @@ const FileUploadTable = () => {
               </>
             </Grid>
             <DataTable
-              api={getUploadFile}
+              api={(e) => getUploadFile(e, bathcNumber)}
               columns={intialColumns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}

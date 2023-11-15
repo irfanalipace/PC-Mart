@@ -1,10 +1,9 @@
-import axios from "axios";
 import ApiService from "../services/apiService";
-import { downloadFile } from "../utils/helpers";
 
-export function getUploadFile(params) {
+export function getUploadFile(params, batchNum) {
   return new Promise((resolve, reject) => {
-    ApiService.get("/get-files", null, params)
+    const queryParams = { ...params, batch_number: batchNum };
+    ApiService.get("/get-files", null, queryParams)
       .then((response) => {
         resolve(response);
       })
@@ -13,7 +12,6 @@ export function getUploadFile(params) {
       });
   });
 }
-
 export function DownloadSingleFile(id) {
   return new Promise((resolve, reject) => {
     ApiService.get(`/file-download/${id}`)
