@@ -33,9 +33,9 @@ const ReadyItemsTable = () => {
   const [batchList, setBatchList] = useState([]);
   const [bathcNumber, setBatchNumber] = useState(null);
 
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-    // Add any additional logic you need based on the search text
+  const handleSearchChange = (e) => {
+    e.preventDefault();
+    setRefresh((prev) => prev + 1);
   };
 
   const handleChange = (event) => {
@@ -169,21 +169,23 @@ const ReadyItemsTable = () => {
             <Box sx={{ padding: "23px" }}>
               <Grid container spacing={2}>
                 <Grid item xs={3}>
-                  <TextField
-                    id='search'
-                    label='Search'
-                    variant='outlined'
-                    fullWidth
-                    value={searchText}
-                    onChange={handleSearchChange}
-                    InputProps={{
-                      startAdornment: (
-                        <SearchIcon
-                          sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                        />
-                      ),
-                    }}
-                  />
+                  <form onSubmit={(e) => handleSearchChange(e)}>
+                    <TextField
+                      id='search'
+                      label='Search'
+                      variant='outlined'
+                      fullWidth
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                      InputProps={{
+                        startAdornment: (
+                          <SearchIcon
+                            sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                          />
+                        ),
+                      }}
+                    />
+                  </form>
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl fullWidth>
@@ -221,7 +223,7 @@ const ReadyItemsTable = () => {
             </Box>
 
             <DataTable
-              api={(e) => getReadyItems(e, bathcNumber)}
+              api={(e) => getReadyItems(e, bathcNumber, searchText)}
               columns={columns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}

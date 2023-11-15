@@ -21,6 +21,7 @@ import HeaderPaper from "../../Components/Containers/HeaderPaper";
 import { Download } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  DownloadSampleFile,
   DownloadSingleFile,
   getUploadFile,
 } from "../../../core/api/fileupload";
@@ -31,6 +32,7 @@ import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import MUIButton from "../../Components/Button/MUIButton";
 import { importItemsFile } from "../../../core/api/readyItems";
 import { getBatchNumber } from "../../../core/api/batchNumber";
+import { downloadFile } from "../../../core/utils/helpers";
 
 const FileUploadTable = () => {
   const [viewItem, setViewItem] = useState(false);
@@ -43,13 +45,12 @@ const FileUploadTable = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const [file, setFile] = useState(null);
   const [batchList, setBatchList] = useState([]);
+  const navigate = useNavigate();
+  const [fileName, setFileName] = useState("");
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
-  const navigate = useNavigate();
-
-  const [fileName, setFileName] = useState("");
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -64,8 +65,9 @@ const FileUploadTable = () => {
   const FileDownload = async (id) => {
     try {
       setDownloading(true);
-      DownloadSingleFile(id);
-      setDownloading(false);
+      const resp = await DownloadSingleFile(id);
+      downloadFile(resp?.data?.route);
+      console.log("SDSDSD", resp?.data?.route);
     } catch (err) {
       console.log(err);
     } finally {
@@ -135,8 +137,6 @@ const FileUploadTable = () => {
     }
   };
 
-  const [columns, setColumns] = useState(intialColumns);
-
   const importFile = async () => {
     try {
       setLoading(true);
@@ -155,12 +155,21 @@ const FileUploadTable = () => {
   useEffect(() => {
     fetchBatchNumbers();
   }, []);
+
   const fetchBatchNumbers = async () => {
     try {
       const resp = await getBatchNumber();
       setBatchList(resp?.data);
     } catch (err) {}
   };
+
+  const downloadSample = async () => {
+    try {
+      const resp = await DownloadSampleFile();
+      console.log(resp);
+    } catch (e) {}
+  };
+
   return (
     <>
       <Grid container>
@@ -222,7 +231,10 @@ const FileUploadTable = () => {
                     }}
                   >
                     <Box sx={{ margin: "12px" }}>
-                      <MUIButton sx={{ padding: "10px" }}>
+                      <MUIButton
+                        sx={{ padding: "10px" }}
+                        onClick={() => downloadSample()}
+                      >
                         <Download />
                         &ensp;Download Sample
                       </MUIButton>
@@ -331,7 +343,7 @@ const FileUploadTable = () => {
             </Grid>
             <DataTable
               api={getUploadFile}
-              columns={columns}
+              columns={intialColumns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}
               collapsed={viewItem}

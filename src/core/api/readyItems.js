@@ -1,10 +1,11 @@
 import ApiService from "../services/apiService";
 
-export function getReadyItems(params, batchNumber) {
+export function getReadyItems(params, batchNumber, serialNumber) {
   return new Promise((resolve, reject) => {
     ApiService.post("/filter-items", params, {
       status: "ready",
       batch_number: batchNumber,
+      serial_number: serialNumber,
     })
       .then((response) => {
         resolve(response);
@@ -15,11 +16,12 @@ export function getReadyItems(params, batchNumber) {
   });
 }
 
-export function getNonReadyItems(params, batchNumber) {
+export function getNonReadyItems(params, batchNumber, serialNumber) {
   return new Promise((resolve, reject) => {
     ApiService.post("/filter-items", params, {
       status: "non_ready",
       batch_number: batchNumber,
+      serial_number: serialNumber,
     })
       .then((response) => {
         resolve(response);
