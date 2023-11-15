@@ -15,14 +15,25 @@ export function getUploadFile(params) {
 }
 
 export function DownloadSingleFile(id) {
-  const apiUrl = `http://localhost:8000/file-download/${id}`;
-  axios
-    .get(apiUrl)
-    .then((response) => {
-      downloadFile(apiUrl);
-    })
-    .catch((error) => {
-      // Handle errors here
-      console.error("Error fetching data:", error);
-    });
+  return new Promise((resolve, reject) => {
+    ApiService.get(`/file-download/${id}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((e) => {
+        reject(e);
+      });
+  });
+}
+
+export function DownloadSampleFile() {
+  return new Promise((resolve, reject) => {
+    ApiService.get(`/sample-download`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((e) => {
+        reject(e);
+      });
+  });
 }

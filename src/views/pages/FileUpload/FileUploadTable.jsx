@@ -21,6 +21,7 @@ import HeaderPaper from "../../Components/Containers/HeaderPaper";
 import { Download } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  DownloadSampleFile,
   DownloadSingleFile,
   getUploadFile,
 } from "../../../core/api/fileupload";
@@ -31,11 +32,12 @@ import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import MUIButton from "../../Components/Button/MUIButton";
 import { importItemsFile } from "../../../core/api/readyItems";
 import { getBatchNumber } from "../../../core/api/batchNumber";
+import { downloadFile } from "../../../core/utils/helpers";
 
 const FileUploadTable = () => {
   const [viewItem, setViewItem] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loading2, setLoading2] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
@@ -43,13 +45,12 @@ const FileUploadTable = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const [file, setFile] = useState(null);
   const [batchList, setBatchList] = useState([]);
+  const navigate = useNavigate();
+  const [fileName, setFileName] = useState("");
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
-  const navigate = useNavigate();
-
-  const [fileName, setFileName] = useState("");
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -58,7 +59,19 @@ const FileUploadTable = () => {
     setFileName(file?.name);
     reader.onloadend = () => {};
 
-    reader.readAsDataURL(file);
+    // reader.readAsDataURL(file);
+  };
+
+  const FileDownload = async (id) => {
+    try {
+      setDownloading(true);
+      const resp = await DownloadSingleFile(id);
+      downloadFile(resp?.data?.route);
+      console.log("SDSDSD", resp?.data?.route);
+    } catch (err) {
+      console.log(err);
+    } finally {
+    }
   };
 
   const intialColumns = [
@@ -93,27 +106,19 @@ const FileUploadTable = () => {
       header: "Batch No",
       //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
-
     {
       accessorKey: " ",
       header: "ACTIONS",
-      enableColumnActions: false,
-      enableColumnFilter: false,
-      enableColumnOrdering: false,
-      enableSorting: false,
       size: 200,
-      Cell: ({ row }) =>
-        loading2 ? (
-          <>sddss</>
-        ) : (
-          <Button
-            variant='contained'
-            onClick={() => FileDownload(row?.original?.id)}
-            disabled={loading2}
-          >
-            <Download />
-          </Button>
-        ),
+      Cell: ({ row }) => (
+        <Button
+          variant='contained'
+          onClick={() => FileDownload(row?.original?.id)}
+          disabled={downloading}
+        >
+          {downloading ? <>...</> : <Download />}
+        </Button>
+      ),
     },
   ];
 
@@ -132,14 +137,14 @@ const FileUploadTable = () => {
     }
   };
 
-  const [columns, setColumns] = useState(intialColumns);
-
   const importFile = async () => {
     try {
       setLoading(true);
       await importItemsFile(file);
       setRefresh((prev) => prev + 1);
-      setFile(null), setFileName("");
+      notyf.success("File Imported Successfully");
+      setFile(null);
+      setFileName("");
     } catch (err) {
       console.log(err);
     } finally {
@@ -147,24 +152,24 @@ const FileUploadTable = () => {
     }
   };
 
-  const FileDownload = (id) => {
-    try {
-      setLoading2(true);
-      DownloadSingleFile(id);
-    } catch (err) {
-      console.error("Error during file download:", err);
-    } finally {
-    }
-  };
   useEffect(() => {
     fetchBatchNumbers();
   }, []);
+
   const fetchBatchNumbers = async () => {
     try {
       const resp = await getBatchNumber();
       setBatchList(resp?.data);
     } catch (err) {}
   };
+
+  const downloadSample = async () => {
+    try {
+      const resp = await DownloadSampleFile();
+      console.log(resp);
+    } catch (e) {}
+  };
+
   return (
     <>
       <Grid container>
@@ -226,7 +231,10 @@ const FileUploadTable = () => {
                     }}
                   >
                     <Box sx={{ margin: "12px" }}>
-                      <MUIButton sx={{ padding: "10px" }}>
+                      <MUIButton
+                        sx={{ padding: "10px" }}
+                        onClick={() => downloadSample()}
+                      >
                         <Download />
                         &ensp;Download Sample
                       </MUIButton>
@@ -335,7 +343,7 @@ const FileUploadTable = () => {
             </Grid>
             <DataTable
               api={getUploadFile}
-              columns={columns}
+              columns={intialColumns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}
               collapsed={viewItem}
