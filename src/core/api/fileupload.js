@@ -30,6 +30,14 @@ export function DownloadSampleFile() {
   return new Promise((resolve, reject) => {
     ApiService.get(`/sample-download`)
       .then((response) => {
+        const blob = new Blob([response.data], {
+          type: response.headers["content-type"],
+        });
+
+        // Use window.open with a data URL to trigger the download
+        const fileURL = window.URL.createObjectURL(blob);
+        window.open(fileURL, "_blank");
+
         resolve(response);
       })
       .catch((e) => {

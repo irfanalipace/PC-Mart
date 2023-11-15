@@ -165,9 +165,13 @@ const FileUploadTable = () => {
 
   const downloadSample = async () => {
     try {
-      const resp = await DownloadSampleFile();
-      console.log(resp);
-    } catch (e) {}
+      const url = import.meta.env.VITE_API_BASE_URL + "/sample-download";
+      const modifiedUrl = url.replace("/api/", "/");
+      window.open(modifiedUrl);
+      // console.log(modifiedUrl);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
