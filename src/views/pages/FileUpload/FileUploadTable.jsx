@@ -47,6 +47,7 @@ const FileUploadTable = () => {
   const [batchList, setBatchList] = useState([]);
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
+  const [bathcNumber, setBatchNumber] = useState(null);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -67,10 +68,10 @@ const FileUploadTable = () => {
       setDownloading(true);
       const resp = await DownloadSingleFile(id);
       downloadFile(resp?.data?.route);
-      console.log("SDSDSD", resp?.data?.route);
     } catch (err) {
       console.log(err);
     } finally {
+      setDownloading(false);
     }
   };
 
@@ -78,7 +79,6 @@ const FileUploadTable = () => {
     {
       accessorKey: "name",
       header: "File Name",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "uploaded_date_time",
@@ -104,7 +104,6 @@ const FileUploadTable = () => {
     {
       accessorKey: "batch_number",
       header: "Batch No",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: " ",
@@ -112,6 +111,7 @@ const FileUploadTable = () => {
       size: 200,
       Cell: ({ row }) => (
         <Button
+          key={row?.original?.id}
           variant='contained'
           onClick={() => FileDownload(row?.original?.id)}
           disabled={downloading}
@@ -143,12 +143,13 @@ const FileUploadTable = () => {
       await importItemsFile(file);
       setRefresh((prev) => prev + 1);
       notyf.success("File Imported Successfully");
-      setFile(null);
-      setFileName("");
     } catch (err) {
       console.log(err);
+      notyf.error(err?.data?.message);
     } finally {
       setLoading(false);
+      setFile(null);
+      setFileName("");
     }
   };
 
@@ -165,9 +166,13 @@ const FileUploadTable = () => {
 
   const downloadSample = async () => {
     try {
-      const resp = await DownloadSampleFile();
-      console.log(resp);
-    } catch (e) {}
+      const url = import.meta.env.VITE_API_BASE_URL + "/sample-download";
+      const modifiedUrl = url.replace("/api/", "/");
+      window.open(modifiedUrl);
+      // console.log(modifiedUrl);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -330,8 +335,22 @@ const FileUploadTable = () => {
                         label='Select an Option'
                         onChange={handleChange}
                       >
+                        <MenuItem
+                          onClick={() => {
+                            setBatchNumber(null);
+                            setRefresh((prev) => prev + 1);
+                          }}
+                        >
+                          All Files
+                        </MenuItem>
                         {batchList?.map((row) => (
-                          <MenuItem value={row?.id}>
+                          <MenuItem
+                            value={row?.id}
+                            onClick={() => {
+                              setBatchNumber(row?.batch_number);
+                              setRefresh((prev) => prev + 1);
+                            }}
+                          >
                             {row?.batch_number}
                           </MenuItem>
                         ))}
@@ -342,12 +361,13 @@ const FileUploadTable = () => {
               </>
             </Grid>
             <DataTable
-              api={getUploadFile}
+              api={(e) => getUploadFile(e, bathcNumber)}
               columns={intialColumns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}
               collapsed={viewItem}
               refresh={refresh}
+              manualFilter
             />
           </TableContainer>
         </Grid>

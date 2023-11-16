@@ -35,69 +35,42 @@ const ItemsTable = () => {
     e.preventDefault();
     setRefresh((prev) => prev + 1);
   };
-  const [selectedValue, setSelectedValue] = useState("");
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
   const navigate = useNavigate();
 
   const intialColumns = [
     {
       accessorKey: "make",
       header: "Batch No",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
+      Cell: ({ row }) => <>{row?.original?.file?.batch_number}</>,
     },
     {
       accessorKey: "serial_number",
       header: "Serial No",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
-      accessorKey: "type",
+      accessorKey: "make",
       header: "Make",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "model",
       header: "Model",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "cpu",
       header: "CPU",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "ram",
       header: "RAM",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "hdd",
       header: "HDD",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
     },
     {
       accessorKey: "price",
       header: "Price",
-      //      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
-    },
-    {
-      accessorKey: " ",
-      header: "ACTIONS",
-      enableColumnActions: false,
-      enableColumnFilter: false,
-      enableColumnOrdering: false,
-      enableSorting: false,
-      size: 200,
-      Cell: ({ row }) => (
-        <Box>
-          <IconButton variant='outlined'>
-            {/* <Delete sx={{ color: 'red' }} fontSize='small' /> */}
-          </IconButton>
-        </Box>
-      ),
     },
   ];
 
@@ -204,9 +177,7 @@ const ItemsTable = () => {
                     <Select
                       labelId='dropdown-label'
                       id='dropdown'
-                      value={selectedValue}
                       label='Select an Option'
-                      onChange={handleChange}
                     >
                       <MenuItem
                         onClick={() => {
