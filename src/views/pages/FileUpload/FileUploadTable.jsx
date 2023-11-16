@@ -4,11 +4,9 @@ import TableCell from '@mui/material/TableCell';
 import notyf from '../../Components/NotificationMessage/notyfInstance';
 import {
 	Box,
-	IconButton,
 	Grid,
 	Stack,
 	Typography,
-	Menu,
 	MenuItem,
 	Button,
 	CircularProgress,
@@ -19,33 +17,27 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import HeaderPaper from '../../Components/Containers/HeaderPaper';
 import { Download } from '@mui/icons-material';
-import CloseIcon from '@mui/icons-material/Close';
 import {
-	DownloadSampleFile,
 	DownloadSingleFile,
 	getUploadFile,
 } from '../../../core/api/fileupload';
-import { useNavigate } from 'react-router-dom';
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
-import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 import MUIButton from '../../Components/Button/MUIButton';
 import { importItemsFile } from '../../../core/api/readyItems';
 import { getBatchNumber } from '../../../core/api/batchNumber';
 import { downloadFile } from '../../../core/utils/helpers';
+import LinearProgressWithLabel from '../../Components/Progress/Progress.jsx';
 
 const FileUploadTable = () => {
-	const [viewItem, setViewItem] = useState(false);
+	const [progress, setProgress] = useState(10);
 	const [loading, setLoading] = useState(false);
-	const [downloading, setDownloading] = useState(false);
+	const [downloading, setDownloading] = useState(null);
 	const [refresh, setRefresh] = useState(0);
 	const [selectedRows, setSelectedRows] = useState([]);
-	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-	const [dialogProps, setDialogProps] = useState({});
 	const [selectedValue, setSelectedValue] = useState('');
 	const [file, setFile] = useState(null);
 	const [batchList, setBatchList] = useState([]);
-	const navigate = useNavigate();
 	const [fileName, setFileName] = useState('');
 	const [bathcNumber, setBatchNumber] = useState(null);
 
@@ -59,19 +51,23 @@ const FileUploadTable = () => {
 		const reader = new FileReader();
 		setFileName(file?.name);
 		reader.onloadend = () => {};
-
-		// reader.readAsDataURL(file);
 	};
 
 	const FileDownload = async (id) => {
 		try {
-			setDownloading(true);
-			const resp = await DownloadSingleFile(id);
-			downloadFile(resp?.data?.route);
+			setDownloading(id);
+			for (let i = 0; i <= 100; i += 10) {
+				await new Promise((resolve) => setTimeout(resolve, 1));
+				setProgress(i);
+				if (i === 100) {
+					const resp = await DownloadSingleFile(id);
+					downloadFile(resp?.data?.route);
+				}
+			}
 		} catch (err) {
 			console.log(err);
 		} finally {
-			setDownloading(false);
+			setDownloading(null);
 		}
 	};
 
@@ -105,16 +101,22 @@ const FileUploadTable = () => {
 			header: 'Batch No',
 		},
 		{
-			accessorKey: ' ',
+			accessorKey: 'batch_number',
 			header: 'ACTIONS',
 			size: 200,
 			Cell: ({ row }) => (
 				<Button
-					key={row?.original?.id}
+					id={row?.original?.id}
 					variant='contained'
 					onClick={() => FileDownload(row?.original?.id)}
-					disabled={downloading}>
-					{downloading ? <>...</> : <Download />}
+					disabled={downloading === row?.original?.id}>
+					{downloading === row?.original?.id ? (
+						<Box sx={{ width: '100%' }}>
+							<LinearProgressWithLabel value={progress} />
+						</Box>
+					) : (
+						<Download />
+					)}
 				</Button>
 			),
 		},
@@ -167,123 +169,96 @@ const FileUploadTable = () => {
 			const url = import.meta.env.VITE_API_BASE_URL + '/sample-download';
 			const modifiedUrl = url.replace('/api/', '/');
 			window.open(modifiedUrl);
-			// console.log(modifiedUrl);
 		} catch (e) {
 			console.log(e);
 		}
 	};
-
+	useEffect(() => {
+		// return () => {
+		//   clearInterval(timer);
+		// };
+	}, []);
 	return (
 		<>
 			<Grid container>
-				<Grid item sm={viewItem ? 3 : 12}>
+				<Grid item sm={12}>
 					<HeaderPaper sx={{ padding: '10px 20px' }}>
-						{selectedRows.length > 0 && (
-							<Grid item container>
-								<Grid item sm={12}>
-									<Grid item container>
-										<Grid item sm={6} display='flex' alignItems='center'>
-											{/* <Button>Delete</Button> */}
-										</Grid>
-										<Grid
-											item
-											sm={6}
-											sx={{
-												display: 'flex',
-												justifyContent: 'end',
-												alignItems: 'center',
-											}}>
-											<IconButton
-												onClick={() =>
-													viewItem
-														? navigate(`/conditions`)
-														: setRefresh((prev) => prev + 1)
-												}>
-												<CloseIcon />
-											</IconButton>
-										</Grid>
-									</Grid>
+						<Grid item container>
+							<>
+								<Grid item sm={6} display='flex' alignItems='center'>
+									<Stack
+										direction='row'
+										display='flex'
+										alignItems='center'
+										spacing={0}>
+										<Typography variant='h6' component='span'>
+											Upload Inventory File
+										</Typography>
+									</Stack>
 								</Grid>
-							</Grid>
-						)}
-						{selectedRows.length === 0 && (
-							<Grid item container>
-								<>
-									<Grid item sm={6} display='flex' alignItems='center'>
-										<Stack
-											direction='row'
-											display='flex'
-											alignItems='center'
-											spacing={0}>
-											<Typography variant='h6' component='span'>
-												Upload Inventory File
-											</Typography>
-										</Stack>
-									</Grid>
 
-									<Grid
-										item
-										sm={6}
-										sx={{
-											display: 'flex',
-											justifyContent: 'end',
-											alignItems: 'center',
-										}}>
-										<Box sx={{ margin: '12px' }}>
-											<MUIButton
-												sx={{ padding: '10px' }}
-												onClick={() => downloadSample()}>
-												<Download />
-												&ensp;Download Sample
-											</MUIButton>
-										</Box>
-									</Grid>
-								</>
 								<Grid
 									item
-									sm={12}
-									direction='row'
-									display='flex'
-									alignItems='center'
-									spacing={0}>
-									<Stack sx={{ marginTop: '22px' }}>
-										<label htmlFor='upload-image'>
-											<Button
-												variant=''
-												component='span'
-												sx={{ border: '1px solid #1976d2', color: '#1976d2' }}>
-												CHOOSE FILE
-											</Button>
-											<input
-												id='upload-image'
-												hidden
-												accept='/*'
-												type='file'
-												onChange={handleFileUpload}
-											/>
-											&ensp;
-											{fileName && <>{fileName}</>}
-										</label>
-									</Stack>
+									sm={6}
+									sx={{
+										display: 'flex',
+										justifyContent: 'end',
+										alignItems: 'center',
+									}}>
+									<Box sx={{ margin: '12px' }}>
+										<MUIButton
+											sx={{ padding: '10px' }}
+											onClick={() => downloadSample()}>
+											<Download />
+											&ensp;Download Sample
+										</MUIButton>
+									</Box>
 								</Grid>
-								<Grid
-									item
-									sm={12}
-									direction='row'
-									display='flex'
-									alignItems='center'
-									spacing={0}>
-									<Stack sx={{ marginTop: '22px', marginBottom: '12px' }}>
+							</>
+							<Grid
+								item
+								sm={12}
+								direction='row'
+								display='flex'
+								alignItems='center'
+								spacing={0}>
+								<Stack sx={{ marginTop: '22px' }}>
+									<label htmlFor='upload-image'>
 										<Button
-											variant='contained'
-											onClick={importFile}
-											disabled={!file || loading}>
-											{loading ? <CircularProgress size={25} /> : 'IMPORT FILE'}
+											variant=''
+											component='span'
+											sx={{ border: '1px solid #1976d2', color: '#1976d2' }}>
+											CHOOSE FILE
 										</Button>
-									</Stack>
-								</Grid>
+										<input
+											id='upload-image'
+											hidden
+											accept='/*'
+											type='file'
+											onChange={handleFileUpload}
+										/>
+										&ensp;
+										{fileName && <>{fileName}</>}
+									</label>
+								</Stack>
 							</Grid>
-						)}
+							<Grid
+								item
+								sm={12}
+								direction='row'
+								display='flex'
+								alignItems='center'
+								spacing={0}>
+								<Stack sx={{ marginTop: '22px', marginBottom: '12px' }}>
+									<Button
+										variant='contained'
+										onClick={importFile}
+										disabled={!file || loading}>
+										{loading ? <CircularProgress size={25} /> : 'IMPORT FILE'}
+									</Button>
+								</Stack>
+							</Grid>
+						</Grid>
 					</HeaderPaper>
 					<TableContainer>
 						<Grid item container>
@@ -348,19 +323,12 @@ const FileUploadTable = () => {
 							columns={intialColumns}
 							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
-							collapsed={viewItem}
 							refresh={refresh}
 							manualFilter
 						/>
 					</TableContainer>
 				</Grid>
 			</Grid>
-			<ConfirmDialog
-				title='Are you sure you want to delete'
-				isOpen={openConfirmDialog}
-				onClose={() => setOpenConfirmDialog(false)}
-				{...dialogProps}
-			/>
 		</>
 	);
 };
