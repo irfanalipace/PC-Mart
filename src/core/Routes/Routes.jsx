@@ -12,6 +12,7 @@ import NotItems from "../../views/pages/NotReadyItems/NotItems.jsx";
 import ReadyItemsTable from "../../views/pages/ReadyItems/ReadyItemsTables.jsx";
 import Dashboard from "../../views/pages/CustomerPortal/Dashboard/Dashboard.jsx";
 import FileUpload from "../../views/pages/FileUpload/FileUpload.jsx";
+import PageNotFound from "../../views/pages/404/PageNotFound.tsx";
 
 export const routes = [
   /* auth routes */
@@ -71,7 +72,7 @@ export const routes = [
 
   /*  All protected routes */
   {
-    path: "/home",
+    path: "/",
     page: (
       <ProtectedRoute>
         <PageWrapper isSidebar={true}>
@@ -125,6 +126,17 @@ export const routes = [
     // footer: <MainFooter />,
     aside: <MainAside />,
   },
+  {
+    path: "*",
+    page: (
+      <PageWrapper isSidebar={false}>
+        <PageNotFound />
+      </PageWrapper>
+    ),
+    header: null,
+    footer: null,
+    aside: null,
+  },
 
   /* Items All Routes Start From here*/
   // items module routes
@@ -145,7 +157,7 @@ export function ProtectedRoute({ children }) {
 
 export function AuthRoute({ children }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  let redirectRoute = "/home";
+  let redirectRoute = "/";
 
   if (isAuthenticated) {
     const redirectURL = localStorage.getItem("redirectURL");
