@@ -1,8 +1,24 @@
 import { Box, Grid } from "@mui/material";
 import DashboardCard from "../../../Components/DashboardCard/DashboardCard";
 import ApexChart from "../../../Components/DashboardChart/DashboardChart";
+import { useState } from "react";
+import { useEffect } from "react";
+import { getDashboard } from "../../../../core/api/dashboard";
 
 const Dashboard = () => {
+  const [data, setData] = useState();
+  const [data2, setData2] = useState();
+  const fetchData = async () => {
+    const resp = await getDashboard(1);
+    setData(resp?.data);
+    const resp2 = await getDashboard(2);
+    setData2(resp2?.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Grid container columnGap={1}>
       <Grid container spacing={2} p={3}>

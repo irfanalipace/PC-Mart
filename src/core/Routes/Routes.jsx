@@ -72,7 +72,7 @@ export const routes = [
 
   /*  All protected routes */
   {
-    path: "/home",
+    path: "/",
     page: (
       <ProtectedRoute>
         <PageWrapper isSidebar={true}>

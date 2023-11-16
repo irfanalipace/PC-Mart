@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
-  IconButton,
   Grid,
   TextField,
   Stack,
@@ -12,7 +11,6 @@ import {
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import HeaderPaper from "../../Components/Containers/HeaderPaper";
-import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
@@ -84,30 +82,6 @@ const ItemsTable = () => {
       <Grid container>
         <Grid item sm={12}>
           <HeaderPaper sx={{ padding: "10px 20px" }}>
-            {selectedRows.length > 0 && (
-              <Grid item container>
-                <Grid item sm={12}>
-                  <Grid item container>
-                    <Grid item sm={6} display='flex' alignItems='center'>
-                      {/* <Button>Delete</Button> */}
-                    </Grid>
-                    <Grid
-                      item
-                      sm={6}
-                      sx={{
-                        display: "flex",
-                        justifyContent: "end",
-                        alignItems: "center",
-                      }}
-                    >
-                      <IconButton>
-                        <CloseIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            )}
             {selectedRows.length === 0 && (
               <Grid item container>
                 <>

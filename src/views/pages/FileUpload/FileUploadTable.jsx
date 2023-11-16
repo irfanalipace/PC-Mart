@@ -4,11 +4,9 @@ import TableCell from "@mui/material/TableCell";
 import notyf from "../../Components/NotificationMessage/notyfInstance";
 import {
   Box,
-  IconButton,
   Grid,
   Stack,
   Typography,
-  Menu,
   MenuItem,
   Button,
   CircularProgress,
@@ -19,16 +17,12 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import HeaderPaper from "../../Components/Containers/HeaderPaper";
 import { Download } from "@mui/icons-material";
-import CloseIcon from "@mui/icons-material/Close";
 import {
-  DownloadSampleFile,
   DownloadSingleFile,
   getUploadFile,
 } from "../../../core/api/fileupload";
-import { useNavigate } from "react-router-dom";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
-import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import MUIButton from "../../Components/Button/MUIButton";
 import { importItemsFile } from "../../../core/api/readyItems";
 import { getBatchNumber } from "../../../core/api/batchNumber";
@@ -36,7 +30,7 @@ import { downloadFile } from "../../../core/utils/helpers";
 
 const FileUploadTable = () => {
   const [loading, setLoading] = useState(false);
-  const [downloading, setDownloading] = useState(false);
+  const [downloading, setDownloading] = useState(null);
   const [refresh, setRefresh] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedValue, setSelectedValue] = useState("");
@@ -61,13 +55,13 @@ const FileUploadTable = () => {
 
   const FileDownload = async (id) => {
     try {
-      setDownloading(true);
+      setDownloading(id);
       const resp = await DownloadSingleFile(id);
       downloadFile(resp?.data?.route);
     } catch (err) {
       console.log(err);
     } finally {
-      setDownloading(false);
+      setDownloading(null);
     }
   };
 
@@ -102,17 +96,21 @@ const FileUploadTable = () => {
       header: "Batch No",
     },
     {
-      accessorKey: " ",
+      accessorKey: "batch_number",
       header: "ACTIONS",
       size: 200,
       Cell: ({ row }) => (
         <Button
-          key={row?.original?.id}
+          id={row?.original?.id}
           variant='contained'
           onClick={() => FileDownload(row?.original?.id)}
-          disabled={downloading}
+          disabled={downloading === row?.original?.id}
         >
-          {downloading ? <>...</> : <Download />}
+          {downloading === row?.original?.id ? (
+            <CircularProgress size={22} />
+          ) : (
+            <Download />
+          )}
         </Button>
       ),
     },
@@ -165,7 +163,6 @@ const FileUploadTable = () => {
       const url = import.meta.env.VITE_API_BASE_URL + "/sample-download";
       const modifiedUrl = url.replace("/api/", "/");
       window.open(modifiedUrl);
-      // console.log(modifiedUrl);
     } catch (e) {
       console.log(e);
     }
@@ -176,31 +173,6 @@ const FileUploadTable = () => {
       <Grid container>
         <Grid item sm={12}>
           <HeaderPaper sx={{ padding: "10px 20px" }}>
-            {selectedRows.length > 0 && (
-              <Grid item container>
-                <Grid item sm={12}>
-                  <Grid item container>
-                    <Grid item sm={6} display='flex' alignItems='center'>
-                      {/* <Button>Delete</Button> */}
-                    </Grid>
-                    <Grid
-                      item
-                      sm={6}
-                      sx={{
-                        display: "flex",
-                        justifyContent: "end",
-                        alignItems: "center",
-                      }}
-                    >
-                      <IconButton>
-                        <CloseIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            )}
-
             <Grid item container>
               <>
                 <Grid item sm={6} display='flex' alignItems='center'>
