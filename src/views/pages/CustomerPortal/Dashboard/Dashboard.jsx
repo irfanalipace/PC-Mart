@@ -63,7 +63,7 @@ const Dashboard = () => {
 			</Grid>
 			<Grid
 				container
-				sx={{ width: '30%' }}
+				sx={{ width: '40%' }}
 				justifyContent={'space-around'}
 				pl={3}>
 				<Grid item>
