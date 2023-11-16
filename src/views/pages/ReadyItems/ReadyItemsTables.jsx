@@ -79,7 +79,7 @@ const ReadyItemsTable = () => {
   return (
     <>
       <Grid container>
-        <Grid item>
+        <Grid item sm={12}>
           <HeaderPaper sx={{ padding: "10px 20px" }}>
             {selectedRows?.length > 0 && (
               <Grid item container>

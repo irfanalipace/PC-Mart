@@ -16,17 +16,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import DataTable from "../../Components/DataTable/DataTable";
 import TableContainer from "../../Components/Containers/TableContainer";
-import ConfirmDialog from "../../Components/ConfirmDialog/ConfirmDialog";
 import { getNonReadyItems } from "../../../core/api/readyItems";
 import InputLabel from "@mui/material/InputLabel";
 import { useEffect } from "react";
 import { getBatchNumber } from "../../../core/api/batchNumber";
 const ItemsTable = () => {
-  const [viewItem, setViewItem] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [dialogProps, setDialogProps] = useState({});
   const [searchText, setSearchText] = useState("");
   const [batchList, setBatchList] = useState([]);
   const [bathcNumber, setBatchNumber] = useState(null);
@@ -74,7 +70,6 @@ const ItemsTable = () => {
     },
   ];
 
-  const [columns, setColumns] = useState(intialColumns);
   useEffect(() => {
     fetchBatchNumbers();
   }, []);
@@ -87,7 +82,7 @@ const ItemsTable = () => {
   return (
     <>
       <Grid container>
-        <Grid item sm={viewItem ? 3 : 12}>
+        <Grid item sm={12}>
           <HeaderPaper sx={{ padding: "10px 20px" }}>
             {selectedRows.length > 0 && (
               <Grid item container>
@@ -105,13 +100,7 @@ const ItemsTable = () => {
                         alignItems: "center",
                       }}
                     >
-                      <IconButton
-                        onClick={() =>
-                          viewItem
-                            ? navigate(`/conditions`)
-                            : setRefresh((prev) => prev + 1)
-                        }
-                      >
+                      <IconButton>
                         <CloseIcon />
                       </IconButton>
                     </Grid>
@@ -205,21 +194,14 @@ const ItemsTable = () => {
             </Box>
             <DataTable
               api={(e) => getNonReadyItems(e, bathcNumber, searchText)}
-              columns={columns}
+              columns={intialColumns}
               setSelectedRows={setSelectedRows}
               onRowClick={() => {}}
-              collapsed={viewItem}
               refresh={refresh}
             />
           </TableContainer>
         </Grid>
       </Grid>
-      <ConfirmDialog
-        title='Are you sure you want to delete'
-        isOpen={openConfirmDialog}
-        onClose={() => setOpenConfirmDialog(false)}
-        {...dialogProps}
-      />
     </>
   );
 };
