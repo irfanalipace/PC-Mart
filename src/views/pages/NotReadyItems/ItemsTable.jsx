@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import {
 	Box,
-	IconButton,
 	Grid,
 	TextField,
 	Stack,
@@ -13,19 +12,16 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import HeaderPaper from '../../Components/Containers/HeaderPaper';
 import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate } from 'react-router-dom';
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
-import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 import { getNonReadyItems } from '../../../core/api/readyItems';
 import InputLabel from '@mui/material/InputLabel';
 import { useEffect } from 'react';
 import { getBatchNumber } from '../../../core/api/batchNumber';
 const ItemsTable = () => {
-	const [viewItem, setViewItem] = useState(false);
 	const [refresh, setRefresh] = useState(0);
 	const [selectedRows, setSelectedRows] = useState([]);
-	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-	const [dialogProps, setDialogProps] = useState({});
 	const [searchText, setSearchText] = useState('');
 	const [batchList, setBatchList] = useState([]);
 	const [bathcNumber, setBatchNumber] = useState(null);
@@ -87,55 +83,29 @@ const ItemsTable = () => {
 			<Grid container>
 				<Grid item sm={12}>
 					<HeaderPaper sx={{ padding: '10px 20px' }}>
-						{selectedRows.length > 0 && (
-							<Grid item container>
-								<Grid item sm={12}>
-									<Grid item container>
-										<Grid item sm={6} display='flex' alignItems='center'>
-											{/* <Button>Delete</Button> */}
-										</Grid>
-										<Grid
-											item
-											sm={6}
-											sx={{
-												display: 'flex',
-												justifyContent: 'end',
-												alignItems: 'center',
-											}}>
-											<IconButton
-												onClick={() => setRefresh((prev) => prev + 1)}>
-												<CloseIcon />
-											</IconButton>
-										</Grid>
-									</Grid>
+						<Grid item container>
+							<>
+								<Grid item sm={6} display='flex' alignItems='center'>
+									<Stack
+										direction='row'
+										display='flex'
+										alignItems='center'
+										spacing={0}>
+										<Typography variant='h6' component='span'>
+											Non Ready Items
+										</Typography>
+									</Stack>
 								</Grid>
-							</Grid>
-						)}
-						{selectedRows.length === 0 && (
-							<Grid item container>
-								<>
-									<Grid item sm={6} display='flex' alignItems='center'>
-										<Stack
-											direction='row'
-											display='flex'
-											alignItems='center'
-											spacing={0}>
-											<Typography variant='h6' component='span'>
-												Non Ready Items
-											</Typography>
-										</Stack>
-									</Grid>
-									<Grid
-										item
-										sm={6}
-										sx={{
-											display: 'flex',
-											justifyContent: 'end',
-											alignItems: 'center',
-										}}></Grid>
-								</>
-							</Grid>
-						)}
+								<Grid
+									item
+									sm={6}
+									sx={{
+										display: 'flex',
+										justifyContent: 'end',
+										alignItems: 'center',
+									}}></Grid>
+							</>
+						</Grid>
 					</HeaderPaper>
 
 					<TableContainer>
@@ -197,18 +167,12 @@ const ItemsTable = () => {
 							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
 							manualFilter
-							collapsed={viewItem}
+							collapsed={false}
 							refresh={refresh}
 						/>
 					</TableContainer>
 				</Grid>
 			</Grid>
-			<ConfirmDialog
-				title='Are you sure you want to delete'
-				isOpen={openConfirmDialog}
-				onClose={() => setOpenConfirmDialog(false)}
-				{...dialogProps}
-			/>
 		</>
 	);
 };

@@ -79,31 +79,8 @@ const ReadyItemsTable = () => {
 	return (
 		<>
 			<Grid container>
-				<Grid item>
+				<Grid item sm={12}>
 					<HeaderPaper sx={{ padding: '10px 20px' }}>
-						{selectedRows?.length > 0 && (
-							<Grid item container>
-								<Grid item sm={12}>
-									<Grid item container>
-										<Grid item sm={6} display='flex' alignItems='center'>
-											{/* <Button>Delete</Button> */}
-										</Grid>
-										<Grid
-											item
-											sm={6}
-											sx={{
-												display: 'flex',
-												justifyContent: 'end',
-												alignItems: 'center',
-											}}>
-											<IconButton>
-												<CloseIcon />
-											</IconButton>
-										</Grid>
-									</Grid>
-								</Grid>
-							</Grid>
-						)}
 						{selectedRows?.length === 0 && (
 							<Grid item container>
 								<>
