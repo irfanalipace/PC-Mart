@@ -157,7 +157,7 @@ export function ProtectedRoute({ children }) {
 
 export function AuthRoute({ children }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  let redirectRoute = "/home";
+  let redirectRoute = "/";
 
   if (isAuthenticated) {
     const redirectURL = localStorage.getItem("redirectURL");
