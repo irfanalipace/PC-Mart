@@ -57,9 +57,7 @@ const ApexChart = ({ seriesOne, seriesTwo, monthArray }) => {
       },
       xaxis: {
         categories: monthArray,
-        title: {
-          text: "",
-        },
+        title: {},
       },
       yaxis: {
         title: {
@@ -83,6 +81,7 @@ const ApexChart = ({ seriesOne, seriesTwo, monthArray }) => {
       },
     },
   });
+  console.log("hello", ...monthArray);
 
   return (
     <Box
