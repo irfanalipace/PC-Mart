@@ -13,7 +13,6 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import HeaderPaper from '../../Components/Containers/HeaderPaper';
 import CloseIcon from '@mui/icons-material/Close';
-import { useNavigate } from 'react-router-dom';
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
@@ -35,12 +34,6 @@ const ItemsTable = () => {
 		e.preventDefault();
 		setRefresh((prev) => prev + 1);
 	};
-	const [selectedValue, setSelectedValue] = useState('');
-
-	const handleChange = (event) => {
-		setSelectedValue(event.target.value);
-	};
-	const navigate = useNavigate();
 
 	const intialColumns = [
 		{
@@ -51,53 +44,30 @@ const ItemsTable = () => {
 		{
 			accessorKey: 'serial_number',
 			header: 'Serial No',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
 			accessorKey: 'make',
 			header: 'Make',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
 			accessorKey: 'model',
 			header: 'Model',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
 			accessorKey: 'cpu',
 			header: 'CPU',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
 			accessorKey: 'ram',
 			header: 'RAM',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
 			accessorKey: 'hdd',
 			header: 'HDD',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
 			accessorKey: 'price',
 			header: 'Price',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
-		},
-		{
-			accessorKey: ' ',
-			header: 'ACTIONS',
-			enableColumnActions: false,
-			enableColumnFilter: false,
-			enableColumnOrdering: false,
-			enableSorting: false,
-			size: 200,
-			Cell: ({ row }) => (
-				<Box>
-					<IconButton variant='outlined'>
-						{/* <Delete sx={{ color: 'red' }} fontSize='small' /> */}
-					</IconButton>
-				</Box>
-			),
 		},
 	];
 
@@ -108,12 +78,14 @@ const ItemsTable = () => {
 		try {
 			const resp = await getBatchNumber();
 			setBatchList(resp?.data);
-		} catch (err) {}
+		} catch (err) {
+			console.error(err);
+		}
 	};
 	return (
 		<>
 			<Grid container>
-				<Grid item sm={viewItem ? 3 : 12}>
+				<Grid item sm={12}>
 					<HeaderPaper sx={{ padding: '10px 20px' }}>
 						{selectedRows.length > 0 && (
 							<Grid item container>
@@ -131,11 +103,7 @@ const ItemsTable = () => {
 												alignItems: 'center',
 											}}>
 											<IconButton
-												onClick={() =>
-													viewItem
-														? navigate(`/conditions`)
-														: setRefresh((prev) => prev + 1)
-												}>
+												onClick={() => setRefresh((prev) => prev + 1)}>
 												<CloseIcon />
 											</IconButton>
 										</Grid>
@@ -199,9 +167,7 @@ const ItemsTable = () => {
 										<Select
 											labelId='dropdown-label'
 											id='dropdown'
-											value={selectedValue}
-											label='Select an Option'
-											onChange={handleChange}>
+											label='Select an Option'>
 											<MenuItem
 												onClick={() => {
 													setBatchNumber(null);

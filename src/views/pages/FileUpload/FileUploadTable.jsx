@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 
 import notyf from '../../Components/NotificationMessage/notyfInstance';
@@ -20,18 +20,21 @@ import HeaderPaper from '../../Components/Containers/HeaderPaper';
 import { Download } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import {
-	DownloadSampleFile,
 	DownloadSingleFile,
+	convertNotReadyItemsToReady,
 	getUploadFile,
 } from '../../../core/api/fileupload';
-import { useNavigate } from 'react-router-dom';
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 import MUIButton from '../../Components/Button/MUIButton';
 import { importItemsFile } from '../../../core/api/readyItems';
 import { getBatchNumber } from '../../../core/api/batchNumber';
-import { downloadFile } from '../../../core/utils/helpers';
+import {
+	downloadFile,
+	formatDateToYYYYMMDD,
+} from '../../../core/utils/helpers';
+import OverlayLoader from '../../Components/OverlayLoader/OverlayLoader';
 
 const FileUploadTable = () => {
 	const [loading, setLoading] = useState(false);
@@ -44,6 +47,7 @@ const FileUploadTable = () => {
 	const [file, setFile] = useState(null);
 	const [batchList, setBatchList] = useState([]);
 	const [fileName, setFileName] = useState('');
+	const [bathcNumber, setBatchNumber] = useState(null);
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);
@@ -64,7 +68,6 @@ const FileUploadTable = () => {
 			setDownloading(true);
 			const resp = await DownloadSingleFile(id);
 			downloadFile(resp?.data?.route);
-			console.log('SDSDSD', resp?.data?.route);
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -76,12 +79,13 @@ const FileUploadTable = () => {
 		{
 			accessorKey: 'name',
 			header: 'File Name',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
 			accessorKey: 'uploaded_date_time',
 			header: 'Upload Date, Time',
-			Cell: ({ renderedCellValue }) => <>{renderedCellValue}</>,
+			Cell: ({ renderedCellValue }) => (
+				<>{formatDateToYYYYMMDD(renderedCellValue)}</>
+			),
 		},
 
 		{
@@ -94,26 +98,43 @@ const FileUploadTable = () => {
 						border: 'none',
 						background: 'none',
 					}}>
-					<Typography>{row.original.status?.toUpperCase()}</Typography>
+					<Typography sx={{ textTransform: 'capitalize' }}>
+						{row.original.status}
+					</Typography>
 				</TableCell>
 			),
 		},
 		{
 			accessorKey: 'batch_number',
 			header: 'Batch No',
-			//      Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>
 		},
 		{
 			accessorKey: ' ',
 			header: 'ACTIONS',
-			size: 200,
+			size: 300,
 			Cell: ({ row }) => (
-				<Button
-					variant='contained'
-					onClick={() => FileDownload(row?.original?.id)}
-					disabled={downloading}>
-					{downloading ? <>...</> : <Download />}
-				</Button>
+				<Stack direction='row' spacing={2}>
+					<Button
+						variant='contained'
+						onClick={() => FileDownload(row?.original?.id)}
+						disabled={downloading}>
+						<Download />
+					</Button>
+
+					{row?.original?.status === 'processed' && (
+						<Button
+							variant='contained'
+							onClick={() => {
+								setOpenConfirmDialog(true);
+								setDialogProps({
+									onConfirm: () => handleFileConvert(row?.original?.id),
+								});
+							}}
+							disabled={downloading}>
+							Convert to Ready
+						</Button>
+					)}
+				</Stack>
 			),
 		},
 	];
@@ -139,12 +160,13 @@ const FileUploadTable = () => {
 			await importItemsFile(file);
 			setRefresh((prev) => prev + 1);
 			notyf.success('File Imported Successfully');
-			setFile(null);
-			setFileName('');
 		} catch (err) {
 			console.log(err);
+			notyf.error(err?.data?.message);
 		} finally {
 			setLoading(false);
+			setFile(null);
+			setFileName('');
 		}
 	};
 
@@ -163,16 +185,36 @@ const FileUploadTable = () => {
 
 	const downloadSample = async () => {
 		try {
-			const resp = await DownloadSampleFile();
-			console.log(resp);
+			const url = import.meta.env.VITE_API_BASE_URL + '/sample-download';
+			const modifiedUrl = url.replace('/api/', '/');
+			window.open(modifiedUrl);
+			// console.log(modifiedUrl);
 		} catch (e) {
-			console.error(e);
+			console.log(e);
+		}
+	};
+
+	const handleFileConvert = async (id) => {
+		try {
+			setDownloading(true);
+			const res = await convertNotReadyItemsToReady(id);
+			if (res.success) {
+				notyf.success(res?.message);
+			} else {
+				notyf.error(res?.message || 'Somthing went wrong');
+			}
+		} catch (error) {
+			console.log(error);
+			notyf.error('Failed to convert item to ready state.');
+		} finally {
+			setDownloading(false);
 		}
 	};
 
 	return (
 		<>
 			<Grid container>
+				<OverlayLoader open={downloading} />
 				<Grid item sm={12}>
 					<HeaderPaper sx={{ padding: '10px 20px' }}>
 						{selectedRows.length > 0 && (
@@ -222,7 +264,7 @@ const FileUploadTable = () => {
 											justifyContent: 'end',
 											alignItems: 'center',
 										}}>
-										<Box sx={{ margin: '12px' }}>
+										<Box sx={{ margin: '5px' }}>
 											<MUIButton
 												sx={{ padding: '10px' }}
 												onClick={() => downloadSample()}>
@@ -313,8 +355,21 @@ const FileUploadTable = () => {
 												value={selectedValue}
 												label='Select an Option'
 												onChange={handleChange}>
+												<MenuItem
+													onClick={() => {
+														setBatchNumber(null);
+														setRefresh((prev) => prev + 1);
+													}}>
+													All Files
+												</MenuItem>
 												{batchList?.map((row) => (
-													<MenuItem key={row.id} value={row?.id}>
+													<MenuItem
+														key={row.id}
+														value={row?.id}
+														onClick={() => {
+															setBatchNumber(row?.batch_number);
+															setRefresh((prev) => prev + 1);
+														}}>
 														{row?.batch_number}
 													</MenuItem>
 												))}
@@ -324,19 +379,21 @@ const FileUploadTable = () => {
 								</Grid>
 							</>
 						</Grid>
+
 						<DataTable
-							api={getUploadFile}
+							api={(e) => getUploadFile(e, bathcNumber)}
 							columns={intialColumns}
 							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
 							collapsed={false}
 							refresh={refresh}
+							manualFilter
 						/>
 					</TableContainer>
 				</Grid>
 			</Grid>
 			<ConfirmDialog
-				title='Are you sure you want to delete'
+				title='Are you sure you want to convert all items to Reay state.'
 				isOpen={openConfirmDialog}
 				onClose={() => setOpenConfirmDialog(false)}
 				{...dialogProps}

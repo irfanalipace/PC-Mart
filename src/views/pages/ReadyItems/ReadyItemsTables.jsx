@@ -15,19 +15,15 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import { useNavigate } from 'react-router-dom';
+// import InputLabel from '@mui/material/InputLabel';
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
-import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 import { getReadyItems } from '../../../core/api/readyItems';
 import { getBatchNumber } from '../../../core/api/batchNumber';
 
 const ReadyItemsTable = () => {
 	const [refresh, setRefresh] = useState(0);
 	const [selectedRows, setSelectedRows] = useState([]);
-	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-	const [dialogProps, setDialogProps] = useState({});
-	const [selectedValue, setSelectedValue] = useState('');
 	const [searchText, setSearchText] = useState('');
 	const [batchList, setBatchList] = useState([]);
 	const [bathcNumber, setBatchNumber] = useState(null);
@@ -36,11 +32,6 @@ const ReadyItemsTable = () => {
 		e.preventDefault();
 		setRefresh((prev) => prev + 1);
 	};
-
-	const handleChange = (event) => {
-		setSelectedValue(event.target.value);
-	};
-	const navigate = useNavigate();
 
 	const intialColumns = [
 		{
@@ -75,22 +66,7 @@ const ReadyItemsTable = () => {
 			accessorKey: 'price',
 			header: 'Price',
 		},
-		{
-			accessorKey: ' ',
-			header: 'ACTIONS',
-			enableColumnActions: false,
-			enableColumnFilter: false,
-			enableColumnOrdering: false,
-			enableSorting: false,
-			size: 200,
-			Cell: ({ row }) => (
-				<Box>
-					<IconButton variant='outlined'></IconButton>
-				</Box>
-			),
-		},
 	];
-
 	useEffect(() => {
 		fetchBatchNumbers();
 	}, []);
@@ -98,20 +74,20 @@ const ReadyItemsTable = () => {
 		try {
 			const resp = await getBatchNumber();
 			setBatchList(resp?.data);
-		} catch (err) {
-			console.error(err);
-		}
+		} catch (err) {}
 	};
 	return (
 		<>
 			<Grid container>
-				<Grid item sm={12}>
+				<Grid item>
 					<HeaderPaper sx={{ padding: '10px 20px' }}>
 						{selectedRows?.length > 0 && (
 							<Grid item container>
 								<Grid item sm={12}>
 									<Grid item container>
-										<Grid item sm={6} display='flex' alignItems='center'></Grid>
+										<Grid item sm={6} display='flex' alignItems='center'>
+											{/* <Button>Delete</Button> */}
+										</Grid>
 										<Grid
 											item
 											sm={6}
@@ -120,8 +96,7 @@ const ReadyItemsTable = () => {
 												justifyContent: 'end',
 												alignItems: 'center',
 											}}>
-											<IconButton
-												onClick={() => setRefresh((prev) => prev + 1)}>
+											<IconButton>
 												<CloseIcon />
 											</IconButton>
 										</Grid>
@@ -183,9 +158,7 @@ const ReadyItemsTable = () => {
 										<Select
 											labelId='dropdown-label'
 											id='dropdown'
-											label='Batch No'
-											value={selectedValue}
-											onChange={handleChange}>
+											label='Select an Option'>
 											<MenuItem
 												onClick={() => {
 													setBatchNumber(null);
@@ -195,7 +168,6 @@ const ReadyItemsTable = () => {
 											</MenuItem>
 											{batchList?.map((row) => (
 												<MenuItem
-													key={row.id}
 													value={row?.id}
 													onClick={() => {
 														setBatchNumber(row?.batch_number);
@@ -206,20 +178,6 @@ const ReadyItemsTable = () => {
 											))}
 										</Select>
 									</FormControl>
-
-									{/* <FormControl fullWidth>
-										<InputLabel id='demo-simple-select-label'>Age</InputLabel>
-										<Select
-											labelId='demo-simple-select-label'
-											id='demo-simple-select'
-											value={selectedValue}
-											label='Age'
-											onChange={handleChange}>
-											<MenuItem value={10}>Ten</MenuItem>
-											<MenuItem value={20}>Twenty</MenuItem>
-											<MenuItem value={30}>Thirty</MenuItem>
-										</Select>
-									</FormControl> */}
 								</Grid>
 							</Grid>
 						</Box>
@@ -229,19 +187,12 @@ const ReadyItemsTable = () => {
 							columns={intialColumns}
 							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
-							collapsed={false}
-							manualFilter
+							// collapsed={viewItem}
 							refresh={refresh}
 						/>
 					</TableContainer>
 				</Grid>
 			</Grid>
-			<ConfirmDialog
-				title='Are you sure you want to delete'
-				isOpen={openConfirmDialog}
-				onClose={() => setOpenConfirmDialog(false)}
-				{...dialogProps}
-			/>
 		</>
 	);
 };

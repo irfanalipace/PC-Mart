@@ -44,21 +44,21 @@ const ApiService = {
 	 * @returns {*}
 	 */
 
-	get(resource, slug = '', params = {}) {
+	get(resource, slug = '', params = {}, payload = {}) {
 		return new Promise((resolve, reject) => {
 			const url = `${resource}${slug ? `/${slug}` : ''}`;
 			this.instance
-				.get(url, { params })
+				.get(url, { params, data: payload })
 				.then((res) => {
 					resolve(res.data);
 				})
 				.catch((error) => {
 					if (error?.response?.status === 401) {
 						destroyToken();
+						window.location.reload();
 					}
-					if (!ACCEPTED_ERROR_CODES.includes(error?.response?.status)) {
-						// toast.error("Something Went Wrong");
-					}
+					// if (!ACCEPTED_ERROR_CODES.includes(error?.response?.status)) {
+					// }
 					reject(error.response);
 				});
 		});
@@ -80,6 +80,7 @@ const ApiService = {
 				.catch((error) => {
 					if (error?.response?.status === 401) {
 						destroyToken();
+						window.location.reload();
 					}
 					if (!ACCEPTED_ERROR_CODES.includes(error?.response?.status)) {
 						console.log('in api service: ', error);
@@ -107,6 +108,7 @@ const ApiService = {
 				.catch((error) => {
 					if (error?.response?.status === 401) {
 						destroyToken();
+						window.location.reload();
 					}
 					if (!ACCEPTED_ERROR_CODES.includes(error?.response?.status)) {
 						// toast.error("Something Went Wrong");
@@ -126,7 +128,7 @@ const ApiService = {
 				.catch((error) => {
 					if (error?.response?.status === 401) {
 						destroyToken();
-						// window.reload.location
+						window.location.reload();
 					}
 					if (ACCEPTED_ERROR_CODES.includes(error?.response?.status)) {
 						// toast.error("Something Went Wrong");

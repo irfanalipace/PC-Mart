@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
+import { Box } from '@mui/system';
 
 const DataTable = ({
 	api, // Function that fetches data from an API.
