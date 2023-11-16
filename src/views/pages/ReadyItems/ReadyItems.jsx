@@ -1,12 +1,11 @@
-import React from 'react'
-import { Box } from '@mui/material'
-import ReadyItemsTable from './ReadyItemsTables'
+import { Box } from '@mui/material';
+import ReadyItemsTable from './ReadyItemsTables';
 const ReadyItems = () => {
-  return (
-    <Box>
-      <ReadyItemsTable />
-    </Box>
-  )
-}
+	return (
+		<Box>
+			<ReadyItemsTable />
+		</Box>
+	);
+};
 
-export default ReadyItems
+export default ReadyItems;
