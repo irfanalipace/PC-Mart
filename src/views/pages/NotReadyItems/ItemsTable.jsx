@@ -82,33 +82,31 @@ const ItemsTable = () => {
       <Grid container>
         <Grid item sm={12}>
           <HeaderPaper sx={{ padding: "10px 20px" }}>
-            {selectedRows.length === 0 && (
-              <Grid item container>
-                <>
-                  <Grid item sm={6} display='flex' alignItems='center'>
-                    <Stack
-                      direction='row'
-                      display='flex'
-                      alignItems='center'
-                      spacing={0}
-                    >
-                      <Typography variant='h6' component='span'>
-                        Non Ready Items
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid
-                    item
-                    sm={6}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "end",
-                      alignItems: "center",
-                    }}
-                  ></Grid>
-                </>
-              </Grid>
-            )}
+            <Grid item container>
+              <>
+                <Grid item sm={6} display='flex' alignItems='center'>
+                  <Stack
+                    direction='row'
+                    display='flex'
+                    alignItems='center'
+                    spacing={0}
+                  >
+                    <Typography variant='h6' component='span'>
+                      Non Ready Items
+                    </Typography>
+                  </Stack>
+                </Grid>
+                <Grid
+                  item
+                  sm={6}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "end",
+                    alignItems: "center",
+                  }}
+                ></Grid>
+              </>
+            </Grid>
           </HeaderPaper>
 
           <TableContainer>

@@ -27,8 +27,10 @@ import MUIButton from "../../Components/Button/MUIButton";
 import { importItemsFile } from "../../../core/api/readyItems";
 import { getBatchNumber } from "../../../core/api/batchNumber";
 import { downloadFile } from "../../../core/utils/helpers";
+import LinearProgressWithLabel from "../../Components/Progress/Progress.jsx";
 
 const FileUploadTable = () => {
+  const [progress, setProgress] = useState(10);
   const [loading, setLoading] = useState(false);
   const [downloading, setDownloading] = useState(null);
   const [refresh, setRefresh] = useState(0);
@@ -49,15 +51,19 @@ const FileUploadTable = () => {
     const reader = new FileReader();
     setFileName(file?.name);
     reader.onloadend = () => {};
-
-    // reader.readAsDataURL(file);
   };
 
   const FileDownload = async (id) => {
     try {
       setDownloading(id);
-      const resp = await DownloadSingleFile(id);
-      downloadFile(resp?.data?.route);
+      for (let i = 0; i <= 100; i += 10) {
+        await new Promise((resolve) => setTimeout(resolve, 1));
+        setProgress(i);
+        if (i === 100) {
+          const resp = await DownloadSingleFile(id);
+          downloadFile(resp?.data?.route);
+        }
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -107,7 +113,9 @@ const FileUploadTable = () => {
           disabled={downloading === row?.original?.id}
         >
           {downloading === row?.original?.id ? (
-            <CircularProgress size={22} />
+            <Box sx={{ width: "100%" }}>
+              <LinearProgressWithLabel value={progress} />
+            </Box>
           ) : (
             <Download />
           )}
@@ -167,7 +175,11 @@ const FileUploadTable = () => {
       console.log(e);
     }
   };
-
+  useEffect(() => {
+    // return () => {
+    //   clearInterval(timer);
+    // };
+  }, []);
   return (
     <>
       <Grid container>
