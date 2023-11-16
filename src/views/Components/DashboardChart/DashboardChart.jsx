@@ -2,20 +2,16 @@ import { Box } from "@mui/material";
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const ApexChart = () => {
+const ApexChart = ({ seriesOne, seriesTwo, monthArray }) => {
   const [chartData, setChartData] = useState({
     series: [
       {
         name: "This Year",
-        data: [
-          12000000, 6000000, 3000000, 6000000, 12000000, 6000000, 12000000,
-        ],
+        data: seriesOne,
       },
       {
         name: "Last Year",
-        data: [
-          6000000, 12000000, 17000000, 12000000, 6000000, 12000000, 24000000,
-        ],
+        data: seriesTwo,
         stroke: {
           dashArray: 0,
         },
@@ -46,7 +42,7 @@ const ApexChart = () => {
         width: 2,
       },
       title: {
-        text: "Total Products",
+        text: "",
         align: "left",
       },
       grid: {
@@ -60,7 +56,7 @@ const ApexChart = () => {
         size: 0,
       },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        categories: monthArray,
         title: {
           text: "",
         },

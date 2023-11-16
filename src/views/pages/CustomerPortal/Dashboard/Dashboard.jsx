@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import DashboardCard from "../../../Components/DashboardCard/DashboardCard";
 import ApexChart from "../../../Components/DashboardChart/DashboardChart";
 import { useState } from "react";
@@ -6,13 +6,17 @@ import { useEffect } from "react";
 import { getDashboard } from "../../../../core/api/dashboard";
 
 const Dashboard = () => {
-  const [data, setData] = useState();
-  const [data2, setData2] = useState();
-  const fetchData = async () => {
-    const resp = await getDashboard(1);
-    setData(resp?.data);
-    const resp2 = await getDashboard(2);
-    setData2(resp2?.data);
+  const [alldata, setAllData] = useState();
+  const [series, setSeries] = useState([]);
+  const [seriesX, setSeriesX] = useState([]);
+  const [months, setMonths] = useState([]);
+
+  const fetchData = async (type) => {
+    const resp = await getDashboard(type);
+    setAllData(resp?.data);
+    setSeries(resp?.data?.graph_data?.last_year.map((row) => row?.value));
+    setSeriesX(resp?.data?.graph_data?.current_year.map((row) => row?.value));
+    setMonths(resp?.data?.graph_data?.current_year.map((row) => row?.month));
   };
 
   useEffect(() => {
@@ -23,14 +27,18 @@ const Dashboard = () => {
     <Grid container columnGap={1}>
       <Grid container spacing={2} p={3}>
         <Grid item lg={3}>
-          <DashboardCard name={"All Items"} total={7064} percent={"+60.8%"} />
+          <DashboardCard
+            name={"All Items"}
+            total={alldata?.total_items}
+            // percent={"+60.8%"}
+          />
         </Grid>
         <Grid item lg={3}>
           <Box>
             <DashboardCard
               name={"Non Ready Items"}
-              total={5012}
-              percent={"+15.03%"}
+              total={alldata?.total_non_ready_items}
+              // percent={"+15.03%"}
             />
           </Box>
         </Grid>
@@ -38,8 +46,8 @@ const Dashboard = () => {
           <Box>
             <DashboardCard
               name={"Ready Items"}
-              total={2052}
-              percent={"-0.03%"}
+              total={alldata?.total_ready_items}
+              // percent={"-0.03%"}
             />
           </Box>
         </Grid>
@@ -47,15 +55,35 @@ const Dashboard = () => {
           <Box>
             <DashboardCard
               name={"Total Inventory Value"}
-              total={"$205k"}
-              percent={"-0.03%"}
+              total={"$" + alldata?.total_inventory_value}
+              // percent={"-0.03%"}
             />
           </Box>
         </Grid>
       </Grid>
-      <Grid container spacing={2} p={3}>
+      <Grid
+        container
+        sx={{ width: "30%" }}
+        justifyContent={"space-around"}
+        pl={3}
+      >
+        <Grid item>
+          <Typography fontWeight={600}>Total Products</Typography>
+        </Grid>
+        <Grid item>
+          <Typography>Non Ready Products</Typography>
+        </Grid>
+        <Grid item>
+          <Typography>Ready Products</Typography>
+        </Grid>
+      </Grid>
+      <Grid container p={3}>
         <Grid item lg={12}>
-          <ApexChart />
+          <ApexChart
+            seriesOne={series}
+            seriesTwo={seriesX}
+            monthArray={months}
+          />
         </Grid>
       </Grid>
     </Grid>
