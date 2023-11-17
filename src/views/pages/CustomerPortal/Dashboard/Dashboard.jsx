@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, CircularProgress, Grid, Typography } from '@mui/material';
 import DashboardCard from '../../../Components/DashboardCard/DashboardCard';
 import ApexChart from '../../../Components/DashboardChart/DashboardChart';
 import { useState } from 'react';
@@ -11,13 +11,21 @@ const Dashboard = () => {
 	const [seriesX, setSeriesX] = useState([]);
 	const [months, setMonths] = useState([]);
 	const [chart, setChart] = useState('all');
+	const [loading, setLoading] = useState(true);
 
 	const fetchData = async type => {
-		const resp = await getDashboard(type);
-		setAllData(resp?.data);
-		setSeries(resp?.data?.graph_data?.last_year.map(row => row?.value));
-		setSeriesX(resp?.data?.graph_data?.current_year.map(row => row?.value));
-		setMonths(resp?.data?.graph_data?.current_year.map(row => row?.month));
+		setLoading(true);
+		try {
+			const resp = await getDashboard(type);
+			setAllData(resp?.data);
+			setSeries(resp?.data?.graph_data?.last_year.map(row => row?.value));
+			setSeriesX(resp?.data?.graph_data?.current_year.map(row => row?.value));
+			setMonths(resp?.data?.graph_data?.current_year.map(row => row?.month));
+		} catch (err) {
+			console.log(err);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	useEffect(() => {
@@ -107,14 +115,23 @@ const Dashboard = () => {
 			</Grid>
 			<Grid container p={3}>
 				<Grid item lg={12}>
-					{alldata != null ? (
+					{!loading ? (
 						<ApexChart
 							seriesOne={series}
 							seriesTwo={seriesX}
 							monthArray={months}
 						/>
 					) : (
-						<>...loading</>
+						<Grid
+							container
+							direction='row'
+							justifyContent='center'
+							alignItems='center'
+						>
+							<Grid item mt={10}>
+								<CircularProgress />
+							</Grid>
+						</Grid>
 					)}
 				</Grid>
 			</Grid>
