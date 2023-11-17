@@ -14,10 +14,6 @@ export const AuthMainContainer = styled(Box)({
 export const AuthSection = styled(Paper)(({ theme }) => ({
 	width: useMediaQuery(theme.breakpoints.up('md')) ? '45vw' : '70vw',
 	padding: '2.5rem 3rem',
-	// border: ".5px solid #ccc",
-	// ".css-mhc70k-MuiGrid-root>.MuiGrid-item": {
-	//   paddingLeft: "0px",
-	// },
 }));
 
 export const FormContainer = styled(Box)({
@@ -32,7 +28,7 @@ export const AuthFooter = styled(Stack)(({ theme, justifyContent }) => ({
 	marginTop: theme.spacing(1),
 }));
 
-export const StyledCheckboxStack = styled(Stack)(({ theme }) => ({
+export const StyledCheckboxStack = styled(Stack)(() => ({
 	flexDirection: 'row',
 	display: 'flex',
 	alignItems: 'center',
@@ -56,7 +52,7 @@ export const AuthImg = styled(Grid)(({ theme }) => ({
 	},
 }));
 
-export const AuthSectionTwo = styled(Box)(({ theme }) => ({
+export const AuthSectionTwo = styled(Box)(() => ({
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'center',

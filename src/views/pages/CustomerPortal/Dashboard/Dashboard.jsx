@@ -11,12 +11,12 @@ const Dashboard = () => {
 	const [seriesX, setSeriesX] = useState([]);
 	const [months, setMonths] = useState([]);
 
-	const fetchData = async (type) => {
+	const fetchData = async type => {
 		const resp = await getDashboard(type);
 		setAllData(resp?.data);
-		setSeries(resp?.data?.graph_data?.last_year.map((row) => row?.value));
-		setSeriesX(resp?.data?.graph_data?.current_year.map((row) => row?.value));
-		setMonths(resp?.data?.graph_data?.current_year.map((row) => row?.month));
+		setSeries(resp?.data?.graph_data?.last_year.map(row => row?.value));
+		setSeriesX(resp?.data?.graph_data?.current_year.map(row => row?.value));
+		setMonths(resp?.data?.graph_data?.current_year.map(row => row?.month));
 	};
 
 	useEffect(() => {
@@ -65,7 +65,8 @@ const Dashboard = () => {
 				container
 				sx={{ width: '40%' }}
 				justifyContent={'space-around'}
-				pl={3}>
+				pl={3}
+			>
 				<Grid item>
 					<Typography fontWeight={600}>Total Products</Typography>
 				</Grid>
