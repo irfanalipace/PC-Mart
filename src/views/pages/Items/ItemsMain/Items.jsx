@@ -95,7 +95,7 @@ function Items() {
 	const openMore = Boolean(anchorE2);
 	const theme = useTheme();
 
-	const handleMoreClick = (event) => {
+	const handleMoreClick = event => {
 		setAnchorE2(event.currentTarget);
 	};
 	const handleMoreClose = () => {
@@ -121,7 +121,8 @@ function Items() {
 					href={renderedCellValue}
 					target='_blank'
 					rel='noopener noreferrer'
-					onClick={(e) => e.stopPropagation()}>
+					onClick={e => e.stopPropagation()}
+				>
 					<img
 						loading='lazy'
 						src={renderedCellValue}
@@ -149,8 +150,9 @@ function Items() {
 					style={{
 						textDecoration: 'none',
 					}}
-					onClick={(e) => e.stopPropagation()}
-					rel='noreferrer'>
+					onClick={e => e.stopPropagation()}
+					rel='noreferrer'
+				>
 					<Typography
 						variant='body2'
 						color={'black'}
@@ -158,7 +160,8 @@ function Items() {
 							'&:hover': {
 								color: theme.palette.primary.main,
 							},
-						}}>
+						}}
+					>
 						{renderedCellValue}
 					</Typography>
 				</a>
@@ -185,14 +188,16 @@ function Items() {
 						}}
 						dangerouslySetInnerHTML={{
 							__html: row.original.description,
-						}}></Box>
+						}}
+					></Box>
 					<MUIButton
-						onClick={(e) => {
+						onClick={e => {
 							e.stopPropagation();
 							setDescription(row.original.description);
 						}}
 						variant={'text'}
-						sx={{ padding: 0 }}>
+						sx={{ padding: 0 }}
+					>
 						Read More
 					</MUIButton>
 				</>
@@ -326,7 +331,8 @@ function Items() {
 								</Typography> */}
 								<Typography
 									component='span'
-									sx={{ fontSize: '12px', color: '#2196F3' }}>
+									sx={{ fontSize: '12px', color: '#2196F3' }}
+								>
 									{wholedata?.title || '--'}
 								</Typography>
 								<br />
@@ -369,18 +375,18 @@ function Items() {
 		navigate(`/item/edit/${row}`);
 	};
 
-	const handleDeleteModal = (params) => {
+	const handleDeleteModal = params => {
 		console.log('id: ' + params.id);
 	};
 
-	const handleRowClick = (row) => {
+	const handleRowClick = row => {
 		setHash('#/' + generateEncryptedID(row?.id));
 	};
 
 	const handleBulkDelete = async () => {
 		try {
 			await bulkDeleteItem({ ids: selectedRows });
-			setRefresh((prev) => prev + 1);
+			setRefresh(prev => prev + 1);
 		} catch (err) {}
 	};
 
@@ -398,15 +404,15 @@ function Items() {
 				// sx={{ textAlign:'right',marginRight:'80px' }}
 			>
 				<Dropdown>
-					<TriggerButton onClick={(e) => e.stopPropagation()}>
+					<TriggerButton onClick={e => e.stopPropagation()}>
 						<KeyboardArrowDown />
 					</TriggerButton>
 					<Menu slots={{ listbox: StyledListbox }}>
-						<StyledMenuItem onClick={(e) => handleEditModal(e, id)}>
+						<StyledMenuItem onClick={e => handleEditModal(e, id)}>
 							<Edit sx={{ fontSize: '16px', color: '#2196F3' }} /> Edit
 						</StyledMenuItem>
 						<StyledMenuItem
-							onClick={(e) => {
+							onClick={e => {
 								e.stopPropagation();
 								// setOpenConfirmDialog(true);
 								// setDialogProps({
@@ -415,7 +421,8 @@ function Items() {
 								//     id
 								//   }
 								// });
-							}}>
+							}}
+						>
 							<MailOutline
 								sx={{
 									fontSize: '16px',
@@ -431,7 +438,7 @@ function Items() {
 		);
 	};
 
-	const showingMenu = (event) => {
+	const showingMenu = event => {
 		setShowMenu(event.currentTarget);
 	};
 	const hidingMenu = () => {
@@ -447,12 +454,14 @@ function Items() {
 								<Grid
 									item
 									sm={10}
-									sx={{ display: 'flex', alignItems: 'center' }}>
+									sx={{ display: 'flex', alignItems: 'center' }}
+								>
 									<Stack
 										direction='row'
 										display='felx'
 										alignItems='center'
-										spacing={2}>
+										spacing={2}
+									>
 										{/* <ButtonGroup>
                           <IconButton
                             sx={{
@@ -479,7 +488,8 @@ function Items() {
 												setDialogProps({
 													onConfirm: () => handleBulkDelete(),
 												});
-											}}>
+											}}
+										>
 											<Delete /> Delete
 										</Button>
 										{/* <Button
@@ -531,8 +541,9 @@ function Items() {
 									sm={2}
 									container
 									justifyContent={'end'}
-									alignItems={'center'}>
-									<IconButton onClick={() => setRefresh((prev) => prev + 1)}>
+									alignItems={'center'}
+								>
+									<IconButton onClick={() => setRefresh(prev => prev + 1)}>
 										<CloseIcon />
 									</IconButton>
 								</Grid>
@@ -546,7 +557,8 @@ function Items() {
 											direction='row'
 											display='flex'
 											alignItems='center'
-											spacing={0}>
+											spacing={0}
+										>
 											<Typography variant='h6' component='span'>
 												All Items
 											</Typography>
@@ -559,7 +571,8 @@ function Items() {
 										justifyContent='end'
 										alignItems='center'
 										spacing={2}
-										paddingTop={'15px'}>
+										paddingTop={'15px'}
+									>
 										{/* {!viewItem && (
 											<>
 												<Button
@@ -583,16 +596,18 @@ function Items() {
 										<MUIButton
 											size='medium'
 											onClick={() => navigate('/items/new')}
-											variant='contained'>
+											variant='contained'
+										>
 											<Add fontSize='small' />
 											New
 										</MUIButton>{' '}
 										{!viewItem && (
 											<MUIButton
 												size='medium'
-												onClick={(e) => setOpenExport(true)}
+												onClick={e => setOpenExport(true)}
 												variant='outlined'
-												sx={{ marginLeft: '10px' }}>
+												sx={{ marginLeft: '10px' }}
+											>
 												<UploadFileIcon fontSize='small' />
 												Export Items
 											</MUIButton>
@@ -623,7 +638,8 @@ function Items() {
 												anchorOrigin={{
 													horizontal: 'left',
 													vertical: 'bottom',
-												}}>
+												}}
+											>
 												{/* <MenuItem>Name</MenuItem>
 												<MenuItem>Rate</MenuItem>
 												<MenuItem>Last Modified Time</MenuItem> */}
@@ -633,7 +649,7 @@ function Items() {
 													</ListItemIcon>
 													Import Items
 												</MenuItem> */}
-												<MenuItem onClick={(e) => setOpenExport(true)}>
+												<MenuItem onClick={e => setOpenExport(true)}>
 													<ListItemIcon>
 														<UploadFileIcon />
 													</ListItemIcon>
@@ -803,7 +819,8 @@ function DescriptionModal({ isOpen, onClose, description }) {
 				sx={{ padding: '10px' }}
 				dangerouslySetInnerHTML={{
 					__html: description,
-				}}></Box>
+				}}
+			></Box>
 		</Modal>
 	);
 }

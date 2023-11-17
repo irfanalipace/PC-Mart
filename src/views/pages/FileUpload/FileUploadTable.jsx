@@ -52,11 +52,11 @@ const FileUploadTable = () => {
 	const [dialogProps, setDialogProps] = useState({});
 	const [convertLoaidng, setconvertLoading] = useState('');
 
-	const handleChange = (event) => {
+	const handleChange = event => {
 		setSelectedValue(event.target.value);
 	};
 
-	const handleFileUpload = (event) => {
+	const handleFileUpload = event => {
 		const file = event.target.files[0];
 		setFile(file);
 		const reader = new FileReader();
@@ -64,11 +64,11 @@ const FileUploadTable = () => {
 		reader.onloadend = () => {};
 	};
 
-	const FileDownload = async (id) => {
+	const FileDownload = async id => {
 		try {
 			setDownloading(id);
 			for (let i = 0; i <= 100; i += 10) {
-				await new Promise((resolve) => setTimeout(resolve, 1));
+				await new Promise(resolve => setTimeout(resolve, 1));
 				setProgress(i);
 				if (i === 100) {
 					const resp = await DownloadSingleFile(id);
@@ -104,7 +104,8 @@ const FileUploadTable = () => {
 						color: getColorForStatus(row.original.status),
 						border: 'none',
 						background: 'none',
-					}}>
+					}}
+				>
 					<Typography sx={{ textTransform: 'capitalize' }}>
 						{row.original.status}
 					</Typography>
@@ -125,7 +126,8 @@ const FileUploadTable = () => {
 						id={row?.original?.id}
 						variant='contained'
 						onClick={() => FileDownload(row?.original?.id)}
-						disabled={downloading === row?.original?.id}>
+						disabled={downloading === row?.original?.id}
+					>
 						{downloading === row?.original?.id ? (
 							<Box sx={{ width: '100%' }}>
 								<LinearProgressWithLabel value={progress} />
@@ -144,7 +146,8 @@ const FileUploadTable = () => {
 									onConfirm: () => handleFileConvert(row?.original?.id),
 								});
 							}}
-							disabled={convertLoaidng === row?.original?.id}>
+							disabled={convertLoaidng === row?.original?.id}
+						>
 							{convertLoaidng === row?.original?.id ? (
 								<CircularProgress size={20} />
 							) : (
@@ -157,7 +160,7 @@ const FileUploadTable = () => {
 		},
 	];
 
-	const getColorForStatus = (status) => {
+	const getColorForStatus = status => {
 		switch (status) {
 			case 'error':
 				return 'red';
@@ -176,7 +179,7 @@ const FileUploadTable = () => {
 		try {
 			setLoading(true);
 			await importItemsFile(file);
-			setRefresh((prev) => prev + 1);
+			setRefresh(prev => prev + 1);
 			notyf.success('File Imported Successfully');
 		} catch (err) {
 			console.log(err);
@@ -216,7 +219,7 @@ const FileUploadTable = () => {
 		// };
 	}, []);
 
-	const handleFileConvert = async (id) => {
+	const handleFileConvert = async id => {
 		try {
 			setconvertLoading(id);
 			const res = await convertNotReadyItemsToReady(id);
@@ -244,7 +247,8 @@ const FileUploadTable = () => {
 										direction='row'
 										display='flex'
 										alignItems='center'
-										spacing={0}>
+										spacing={0}
+									>
 										<Typography variant='h6' component='span'>
 											Upload Inventory File
 										</Typography>
@@ -258,11 +262,13 @@ const FileUploadTable = () => {
 										display: 'flex',
 										justifyContent: 'end',
 										alignItems: 'center',
-									}}>
+									}}
+								>
 									<Box sx={{ margin: '5px' }}>
 										<MUIButton
 											sx={{ padding: '10px' }}
-											onClick={() => downloadSample()}>
+											onClick={() => downloadSample()}
+										>
 											<Download />
 											&ensp;Download Sample
 										</MUIButton>
@@ -276,7 +282,8 @@ const FileUploadTable = () => {
 									display: 'flex',
 									justifyContent: 'end',
 									alignItems: 'center',
-								}}></Grid>
+								}}
+							></Grid>
 
 							<Grid
 								item
@@ -284,13 +291,15 @@ const FileUploadTable = () => {
 								direction='row'
 								display='flex'
 								alignItems='center'
-								spacing={0}>
+								spacing={0}
+							>
 								<Stack sx={{ marginTop: '22px' }}>
 									<label htmlFor='upload-image'>
 										<Button
 											variant=''
 											component='span'
-											sx={{ border: '1px solid #1976d2', color: '#1976d2' }}>
+											sx={{ border: '1px solid #1976d2', color: '#1976d2' }}
+										>
 											CHOOSE FILE
 										</Button>
 										<input
@@ -311,12 +320,14 @@ const FileUploadTable = () => {
 								direction='row'
 								display='flex'
 								alignItems='center'
-								spacing={0}>
+								spacing={0}
+							>
 								<Stack sx={{ marginTop: '22px', marginBottom: '12px' }}>
 									<Button
 										variant='contained'
 										onClick={importFile}
-										disabled={!file || loading}>
+										disabled={!file || loading}
+									>
 										{loading ? <CircularProgress size={25} /> : 'IMPORT FILE'}
 									</Button>
 								</Stack>
@@ -331,11 +342,13 @@ const FileUploadTable = () => {
 										direction='row'
 										display='flex'
 										alignItems='center'
-										spacing={0}>
+										spacing={0}
+									>
 										<Typography
 											variant='h6'
 											component='span'
-											sx={{ padding: '24px' }}>
+											sx={{ padding: '24px' }}
+										>
 											Uploaded Inventory Files
 										</Typography>
 									</Stack>
@@ -348,7 +361,8 @@ const FileUploadTable = () => {
 										display: 'flex',
 										justifyContent: 'end',
 										alignItems: 'center',
-									}}>
+									}}
+								>
 									<Box sx={{ width: '400px', marginRight: '22px' }}>
 										<FormControl fullWidth>
 											<InputLabel id='dropdown-label'>Batch No</InputLabel>
@@ -357,22 +371,25 @@ const FileUploadTable = () => {
 												id='dropdown'
 												value={selectedValue}
 												label='Select an Option'
-												onChange={handleChange}>
+												onChange={handleChange}
+											>
 												<MenuItem
 													onClick={() => {
 														setBatchNumber(null);
-														setRefresh((prev) => prev + 1);
-													}}>
+														setRefresh(prev => prev + 1);
+													}}
+												>
 													All Files
 												</MenuItem>
-												{batchList?.map((row) => (
+												{batchList?.map(row => (
 													<MenuItem
 														key={row.id}
 														value={row?.id}
 														onClick={() => {
 															setBatchNumber(row?.batch_number);
-															setRefresh((prev) => prev + 1);
-														}}>
+															setRefresh(prev => prev + 1);
+														}}
+													>
 														{row?.batch_number}
 													</MenuItem>
 												))}
@@ -384,7 +401,7 @@ const FileUploadTable = () => {
 						</Grid>
 
 						<DataTable
-							api={(e) => getUploadFile(e, bathcNumber)}
+							api={e => getUploadFile(e, bathcNumber)}
 							columns={intialColumns}
 							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}

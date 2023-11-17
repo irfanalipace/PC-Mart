@@ -26,9 +26,9 @@ const ItemsTable = () => {
 	const [batchList, setBatchList] = useState([]);
 	const [bathcNumber, setBatchNumber] = useState(null);
 
-	const handleSearchChange = (e) => {
+	const handleSearchChange = e => {
 		e.preventDefault();
-		setRefresh((prev) => prev + 1);
+		setRefresh(prev => prev + 1);
 	};
 
 	const intialColumns = [
@@ -90,7 +90,8 @@ const ItemsTable = () => {
 										direction='row'
 										display='flex'
 										alignItems='center'
-										spacing={0}>
+										spacing={0}
+									>
 										<Typography variant='h6' component='span'>
 											Non Ready Items
 										</Typography>
@@ -103,7 +104,8 @@ const ItemsTable = () => {
 										display: 'flex',
 										justifyContent: 'end',
 										alignItems: 'center',
-									}}></Grid>
+									}}
+								></Grid>
 							</>
 						</Grid>
 					</HeaderPaper>
@@ -112,14 +114,14 @@ const ItemsTable = () => {
 						<Box sx={{ padding: '23px' }}>
 							<Grid container spacing={2}>
 								<Grid item xs={3}>
-									<form onSubmit={(e) => handleSearchChange(e)}>
+									<form onSubmit={e => handleSearchChange(e)}>
 										<TextField
 											id='search'
 											label='Search'
 											variant='outlined'
 											fullWidth
 											value={searchText}
-											onChange={(e) => setSearchText(e.target.value)}
+											onChange={e => setSearchText(e.target.value)}
 											InputProps={{
 												startAdornment: (
 													<SearchIcon
@@ -137,22 +139,25 @@ const ItemsTable = () => {
 										<Select
 											labelId='dropdown-label'
 											id='dropdown'
-											label='Select an Option'>
+											label='Select an Option'
+										>
 											<MenuItem
 												onClick={() => {
 													setBatchNumber(null);
-													setRefresh((prev) => prev + 1);
-												}}>
+													setRefresh(prev => prev + 1);
+												}}
+											>
 												All Non Ready Items
 											</MenuItem>
-											{batchList?.map((row) => (
+											{batchList?.map(row => (
 												<MenuItem
 													key={row.id}
 													value={row?.id}
 													onClick={() => {
 														setBatchNumber(row?.batch_number);
-														setRefresh((prev) => prev + 1);
-													}}>
+														setRefresh(prev => prev + 1);
+													}}
+												>
 													{row?.batch_number}
 												</MenuItem>
 											))}
@@ -162,7 +167,7 @@ const ItemsTable = () => {
 							</Grid>
 						</Box>
 						<DataTable
-							api={(e) => getNonReadyItems(e, bathcNumber, searchText)}
+							api={e => getNonReadyItems(e, bathcNumber, searchText)}
 							columns={intialColumns}
 							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
