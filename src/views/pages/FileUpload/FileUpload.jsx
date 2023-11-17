@@ -1,14 +1,13 @@
-import React from 'react'
-import { Box } from '@mui/system'
-import FileUploadTable from './FileUploadTable'
-
+import React from 'react';
+import { Box } from '@mui/system';
+import FileUploadTable from './FileUploadTable';
 
 const FileUpload = () => {
-  return (
-  <Box>
-    <FileUploadTable />
-  </Box>
-  )
-}
+	return (
+		<Box maxHeight={'calc(100vh - 80px)'}>
+			<FileUploadTable />
+		</Box>
+	);
+};
 
-export default FileUpload
+export default FileUpload;
