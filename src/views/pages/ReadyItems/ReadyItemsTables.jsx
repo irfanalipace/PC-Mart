@@ -28,9 +28,9 @@ const ReadyItemsTable = () => {
 	const [batchList, setBatchList] = useState([]);
 	const [bathcNumber, setBatchNumber] = useState(null);
 
-	const handleSearchChange = (e) => {
+	const handleSearchChange = e => {
 		e.preventDefault();
-		setRefresh((prev) => prev + 1);
+		setRefresh(prev => prev + 1);
 	};
 
 	const intialColumns = [
@@ -74,7 +74,9 @@ const ReadyItemsTable = () => {
 		try {
 			const resp = await getBatchNumber();
 			setBatchList(resp?.data);
-		} catch (err) {}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 	return (
 		<>
@@ -89,7 +91,8 @@ const ReadyItemsTable = () => {
 											direction='row'
 											display='flex'
 											alignItems='center'
-											spacing={0}>
+											spacing={0}
+										>
 											<Typography variant='h6' component='span'>
 												Ready Items
 											</Typography>
@@ -102,7 +105,8 @@ const ReadyItemsTable = () => {
 											display: 'flex',
 											justifyContent: 'end',
 											alignItems: 'center',
-										}}></Grid>
+										}}
+									></Grid>
 								</>
 							</Grid>
 						)}
@@ -111,14 +115,14 @@ const ReadyItemsTable = () => {
 						<Box sx={{ padding: '23px' }}>
 							<Grid container spacing={2}>
 								<Grid item xs={3}>
-									<form onSubmit={(e) => handleSearchChange(e)}>
+									<form onSubmit={e => handleSearchChange(e)}>
 										<TextField
 											id='search'
 											label='Search'
 											variant='outlined'
 											fullWidth
 											value={searchText}
-											onChange={(e) => setSearchText(e.target.value)}
+											onChange={e => setSearchText(e.target.value)}
 											InputProps={{
 												startAdornment: (
 													<SearchIcon
@@ -135,21 +139,25 @@ const ReadyItemsTable = () => {
 										<Select
 											labelId='dropdown-label'
 											id='dropdown'
-											label='Select an Option'>
+											label='Select an Option'
+										>
 											<MenuItem
 												onClick={() => {
 													setBatchNumber(null);
-													setRefresh((prev) => prev + 1);
-												}}>
+													setRefresh(prev => prev + 1);
+												}}
+											>
 												All Ready Items
 											</MenuItem>
-											{batchList?.map((row) => (
+											{batchList?.map(row => (
 												<MenuItem
+													key={row?.id}
 													value={row?.id}
 													onClick={() => {
 														setBatchNumber(row?.batch_number);
-														setRefresh((prev) => prev + 1);
-													}}>
+														setRefresh(prev => prev + 1);
+													}}
+												>
 													{row?.batch_number}
 												</MenuItem>
 											))}
@@ -160,7 +168,7 @@ const ReadyItemsTable = () => {
 						</Box>
 
 						<DataTable
-							api={(e) => getReadyItems(e, bathcNumber, searchText)}
+							api={e => getReadyItems(e, bathcNumber, searchText)}
 							columns={intialColumns}
 							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
