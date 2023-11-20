@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import TableCell from '@mui/material/TableCell';
-
 import notyf from '../../Components/NotificationMessage/notyfInstance';
 import {
 	Box,
@@ -13,11 +12,9 @@ import {
 	CircularProgress,
 	Tooltip,
 } from '@mui/material';
-
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
-import HeaderPaper from '../../Components/Containers/HeaderPaper';
 import { Download } from '@mui/icons-material';
 import {
 	DownloadSingleFile,
@@ -26,8 +23,6 @@ import {
 } from '../../../core/api/fileupload';
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
-import MUIButton from '../../Components/Button/MUIButton';
-import { importItemsFile } from '../../../core/api/readyItems';
 import { getBatchNumber } from '../../../core/api/batchNumber';
 import {
 	downloadFile,
@@ -35,18 +30,16 @@ import {
 } from '../../../core/utils/helpers';
 import LinearProgressWithLabel from '../../Components/Progress/Progress.jsx';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog.jsx';
+import FilteTypeHeader from '../../Components/FilterButton/Header.jsx';
 
 const FileUploadTable = () => {
 	const [progress, setProgress] = useState(10);
 
-	const [loading, setLoading] = useState(false);
 	const [downloading, setDownloading] = useState(null);
 	const [refresh, setRefresh] = useState(0);
 	const [selectedRows, setSelectedRows] = useState([]);
 	const [selectedValue, setSelectedValue] = useState('');
-	const [file, setFile] = useState(null);
 	const [batchList, setBatchList] = useState([]);
-	const [fileName, setFileName] = useState('');
 	const [bathcNumber, setBatchNumber] = useState(null);
 	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 	const [dialogProps, setDialogProps] = useState({});
@@ -54,14 +47,6 @@ const FileUploadTable = () => {
 
 	const handleChange = event => {
 		setSelectedValue(event.target.value);
-	};
-
-	const handleFileUpload = event => {
-		const file = event.target.files[0];
-		setFile(file);
-		const reader = new FileReader();
-		setFileName(file?.name);
-		reader.onloadend = () => {};
 	};
 
 	const FileDownload = async id => {
@@ -198,22 +183,6 @@ const FileUploadTable = () => {
 		}
 	};
 
-	const importFile = async () => {
-		try {
-			setLoading(true);
-			await importItemsFile(file);
-			setRefresh(prev => prev + 1);
-			notyf.success('File Imported Successfully');
-		} catch (err) {
-			console.log(err);
-			notyf.error(err?.data?.message);
-		} finally {
-			setLoading(false);
-			setFile(null);
-			setFileName('');
-		}
-	};
-
 	useEffect(() => {
 		fetchBatchNumbers();
 	}, []);
@@ -227,15 +196,6 @@ const FileUploadTable = () => {
 		}
 	};
 
-	const downloadSample = async () => {
-		try {
-			const url = import.meta.env.VITE_API_BASE_URL + '/sample-download';
-			const modifiedUrl = url.replace('/api/', '/');
-			window.open(modifiedUrl);
-		} catch (e) {
-			console.log(e);
-		}
-	};
 	useEffect(() => {
 		// return () => {
 		//   clearInterval(timer);
@@ -248,6 +208,8 @@ const FileUploadTable = () => {
 			const res = await convertNotReadyItemsToReady(id);
 			if (res.success) {
 				notyf.success(res?.message);
+				// getUploadFile();
+				setRefresh(prev => prev + 1);
 			} else {
 				notyf.error(res?.message || 'Somthing went wrong');
 			}
@@ -262,101 +224,7 @@ const FileUploadTable = () => {
 		<>
 			<Grid container>
 				<Grid item sm={12}>
-					<HeaderPaper sx={{ padding: '10px 20px' }}>
-						<Grid item container>
-							<>
-								<Grid item sm={6} display='flex' alignItems='center'>
-									<Stack
-										direction='row'
-										display='flex'
-										alignItems='center'
-										spacing={0}
-									>
-										<Typography variant='h6' component='span'>
-											Upload Inventory File
-										</Typography>
-									</Stack>
-								</Grid>
-
-								<Grid
-									item
-									sm={6}
-									sx={{
-										display: 'flex',
-										justifyContent: 'end',
-										alignItems: 'center',
-									}}
-								>
-									<Box sx={{ margin: '5px' }}>
-										<MUIButton
-											sx={{ padding: '10px' }}
-											onClick={() => downloadSample()}
-										>
-											<Download />
-											&ensp;Download Sample
-										</MUIButton>
-									</Box>
-								</Grid>
-							</>
-							<Grid
-								item
-								sm={6}
-								sx={{
-									display: 'flex',
-									justifyContent: 'end',
-									alignItems: 'center',
-								}}
-							></Grid>
-
-							<Grid
-								item
-								sm={12}
-								direction='row'
-								display='flex'
-								alignItems='center'
-								spacing={0}
-							>
-								<Stack sx={{ marginTop: '22px' }}>
-									<label htmlFor='upload-image'>
-										<Button
-											variant=''
-											component='span'
-											sx={{ border: '1px solid #1976d2', color: '#1976d2' }}
-										>
-											CHOOSE FILE
-										</Button>
-										<input
-											id='upload-image'
-											hidden
-											accept='/*'
-											type='file'
-											onChange={handleFileUpload}
-										/>
-										&ensp;
-										{fileName && <>{fileName}</>}
-									</label>
-								</Stack>
-							</Grid>
-							<Grid
-								item
-								sm={12}
-								direction='row'
-								display='flex'
-								alignItems='center'
-								spacing={0}
-							>
-								<Stack sx={{ marginTop: '22px', marginBottom: '12px' }}>
-									<Button
-										variant='contained'
-										onClick={importFile}
-										disabled={!file || loading}
-									>
-										{loading ? <CircularProgress size={25} /> : 'IMPORT FILE'}
-									</Button>
-								</Stack>
-							</Grid>
-						</Grid>
-					</HeaderPaper>
+					<FilteTypeHeader setRefresh={setRefresh} />
 					<TableContainer>
 						<Grid item container>
 							<>
