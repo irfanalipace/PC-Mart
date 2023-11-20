@@ -420,7 +420,7 @@ const FileUploadTable = () => {
 				</Grid>
 			</Grid>
 			<ConfirmDialog
-				title='Are you sure you want to convert all items to Reay state.'
+				title='Are you sure you want to convert all items to Ready state.'
 				isOpen={openConfirmDialog}
 				onClose={() => setOpenConfirmDialog(false)}
 				{...dialogProps}
