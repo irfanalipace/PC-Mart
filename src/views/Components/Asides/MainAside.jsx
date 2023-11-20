@@ -11,6 +11,7 @@ import { Box } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+import SellIcon from "@mui/icons-material/Sell";
 
 export default function Sidebar() {
   const theme = useTheme();
@@ -23,6 +24,7 @@ export default function Sidebar() {
       path: "/non-ready-items",
     },
     { name: "Ready Items", icon: <ReceiptIcon />, path: "/ready-items" },
+    { name: "Sold Items", icon: <SellIcon />, path: "/sold-items" },
   ];
 
   const { pathname } = useLocation();

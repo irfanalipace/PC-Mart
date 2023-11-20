@@ -13,6 +13,7 @@ import ReadyItemsTable from "../../views/pages/ReadyItems/ReadyItemsTables.jsx";
 import Dashboard from "../../views/pages/CustomerPortal/Dashboard/Dashboard.jsx";
 import FileUpload from "../../views/pages/FileUpload/FileUpload.jsx";
 import PageNotFound from "../../views/pages/404/PageNotFound.tsx";
+import SoldItems from "../../views/pages/SoldItems/SoldItems.jsx";
 
 export const routes = [
   /* auth routes */
@@ -119,6 +120,19 @@ export const routes = [
       <ProtectedRoute>
         <PageWrapper isSidebar={true}>
           <ReadyItemsTable />
+        </PageWrapper>
+      </ProtectedRoute>
+    ),
+    header: <MainHeader />,
+    // footer: <MainFooter />,
+    aside: <MainAside />,
+  },
+  {
+    path: "/sold-items",
+    page: (
+      <ProtectedRoute>
+        <PageWrapper isSidebar={true}>
+          <SoldItems />
         </PageWrapper>
       </ProtectedRoute>
     ),
