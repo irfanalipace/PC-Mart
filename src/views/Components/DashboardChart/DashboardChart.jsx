@@ -68,13 +68,13 @@ const ApexChart = ({ seriesOne, seriesTwo, monthArray }) => {
           text: "",
         },
         min: 0,
-        max: 30,
+        max: 30000000,
         tickAmount: 3,
-        // labels: {
-        //   formatter: function (val) {
-        //     return val / 1000000 + "M";
-        //   },
-        // },
+        labels: {
+          formatter: function (val) {
+            return val / 1000000 + "M";
+          },
+        },
       },
       legend: {
         position: "top",
