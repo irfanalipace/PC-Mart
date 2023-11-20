@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import Modal from '../Modal/Dialog';
 import { Grid } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';

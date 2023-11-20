@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from 'react';
 import {
 	Box,
 	IconButton,
@@ -7,37 +8,22 @@ import {
 	Divider,
 	ListItemIcon,
 	Stack,
-	ButtonGroup,
 	Typography,
 } from '@mui/material';
 import { Menu as DropMenu } from '@mui/base/Menu';
-import { Dropdown } from '@mui/base/Dropdown';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { MenuButton } from '@mui/base/MenuButton';
-import { menuItemClasses } from '@mui/base/MenuItem';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
-import {
-	Add,
-	Delete,
-	Edit,
-	KeyboardArrowDown,
-	MailOutline,
-	MoreHoriz,
-	QuestionMark,
-} from '@mui/icons-material';
+import { Add, Delete } from '@mui/icons-material';
 import DataTable from '../../../Components/DataTable/DataTable';
 import { useNavigate } from 'react-router-dom';
 import useHash from '../../../../core/hooks/useHash';
 import {
-	StatusColor,
 	decryptId,
 	extractNumberFromHash,
-	formatDate,
 	formatDateAndTime,
 	generateEncryptedID,
-	snakeCaseToPrettyText,
 } from '../../../../core/utils/helpers';
 import HeaderPaper from '../../../Components/Containers/HeaderPaper';
 import ConfirmDialog from '../../../Components/ConfirmDialog/ConfirmDialog';
@@ -51,15 +37,9 @@ import {
 import DetailViewContainer from '../../../Components/Containers/DetailViewContainer';
 import TableContainer from '../../../Components/Containers/TableContainer';
 import ItemView from './ViewItem/ItemView';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ImageIcon from '@mui/icons-material/Image';
-import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import SettingsIcon from '@mui/icons-material/Settings';
-import CachedIcon from '@mui/icons-material/Cached';
 import Name from '../../../Components/InputLabel/Name';
 import MUIButton from '../../../Components/Button/MUIButton';
-import TitleDropMenu from '../../../Components/TitleDropMenu/TitltDropMenu.';
 import ImportFileModal from '../../../Components/ImportFileModal/ImportFileModal';
 import ExportFileModal from '../../../Components/ExportFileModal/ExportFileModal';
 import ebay from '../../../../assets/images/marketplaces/ebay.png';
@@ -88,14 +68,13 @@ function Items() {
 	const [refresh, setRefresh] = useState(0);
 	const [id, setId] = useState(null);
 	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-	const [showMenuItem, setShowMenu] = useState(null);
 	const [dialogProps, setDialogProps] = useState({});
 	const [anchorE2, setAnchorE2] = useState(null);
 	const [description, setDescription] = useState('');
 	const openMore = Boolean(anchorE2);
 	const theme = useTheme();
 
-	const handleMoreClick = (event) => {
+	const handleMoreClick = event => {
 		setAnchorE2(event.currentTarget);
 	};
 	const handleMoreClose = () => {
@@ -106,22 +85,19 @@ function Items() {
 		{
 			accessorKey: 'item_id',
 			header: 'Item ID',
-			Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>,
+			Cell: ({ renderedCellValue }) => <Name>{renderedCellValue}</Name>,
 		},
-		// {
-		// 	accessorKey: 'id',
-		// 	header: 'Id',
-		// 	Cell: ({ renderedCellValue, row }) => <Name>{renderedCellValue}</Name>,
-		// },
+
 		{
 			accessorKey: 'image',
 			header: 'Image',
-			Cell: ({ renderedCellValue, row }) => (
+			Cell: ({ renderedCellValue }) => (
 				<a
 					href={renderedCellValue}
 					target='_blank'
 					rel='noopener noreferrer'
-					onClick={(e) => e.stopPropagation()}>
+					onClick={e => e.stopPropagation()}
+				>
 					<img
 						loading='lazy'
 						src={renderedCellValue}
@@ -149,8 +125,9 @@ function Items() {
 					style={{
 						textDecoration: 'none',
 					}}
-					onClick={(e) => e.stopPropagation()}
-					rel='noreferrer'>
+					onClick={e => e.stopPropagation()}
+					rel='noreferrer'
+				>
 					<Typography
 						variant='body2'
 						color={'black'}
@@ -158,7 +135,8 @@ function Items() {
 							'&:hover': {
 								color: theme.palette.primary.main,
 							},
-						}}>
+						}}
+					>
 						{renderedCellValue}
 					</Typography>
 				</a>
@@ -167,7 +145,7 @@ function Items() {
 		{
 			accessorKey: 'description',
 			header: 'Description',
-			Cell: ({ renderedCellValue, row }) => (
+			Cell: ({ row }) => (
 				<>
 					<Box
 						sx={{
@@ -185,14 +163,16 @@ function Items() {
 						}}
 						dangerouslySetInnerHTML={{
 							__html: row.original.description,
-						}}></Box>
+						}}
+					></Box>
 					<MUIButton
-						onClick={(e) => {
+						onClick={e => {
 							e.stopPropagation();
 							setDescription(row.original.description);
 						}}
 						variant={'text'}
-						sx={{ padding: 0 }}>
+						sx={{ padding: 0 }}
+					>
 						Read More
 					</MUIButton>
 				</>
@@ -220,10 +200,7 @@ function Items() {
 			accessorKey: 'listing_marketplace',
 			header: 'Listing Marketplace',
 		},
-		// {
-		// 	accessorKey: 'business_price',
-		// 	header: 'Business Price',
-		// },
+
 		{
 			accessorKey: 'brand.name',
 			header: 'Brand',
@@ -232,21 +209,11 @@ function Items() {
 			accessorKey: 'category.name',
 			header: 'Category Name',
 		},
-		// {
-		// 	accessorKey: 'web_url',
-		// 	header: 'Web Url',
-		// 	Cell: ({ renderedCellValue, row }) => (
-		// 		<a href={renderedCellValue} target='_blank'>
-		// 			<Typography variant='body2' color={'primary'}>
-		// 				{renderedCellValue}
-		// 			</Typography>
-		// 		</a>
-		// 	),
-		// },
+
 		{
 			accessorKey: 'marketplace.store_name',
 			header: 'Market Place',
-			Cell: ({ renderedCellValue, row }) => (
+			Cell: ({ renderedCellValue }) => (
 				<Box sx={{ display: 'flex', alignItems: 'center' }}>
 					<img
 						src={ebay}
@@ -270,7 +237,7 @@ function Items() {
 			accessorKey: 'last_sync',
 			header: 'Last Sync',
 			size: 200,
-			Cell: ({ renderedCellValue, row }) => (
+			Cell: ({ renderedCellValue }) => (
 				<Typography variant='body2'>
 					{formatDateAndTime(renderedCellValue)}
 				</Typography>
@@ -280,33 +247,12 @@ function Items() {
 			accessorKey: 'item_created_date',
 			header: 'Created Date',
 			size: 200,
-			Cell: ({ renderedCellValue, row }) => (
+			Cell: ({ renderedCellValue }) => (
 				<Typography variant='body2'>
 					{formatDateAndTime(renderedCellValue)}
 				</Typography>
 			),
 		},
-		// {
-		// 	accessorKey: 'status',
-		// 	header: 'Status',
-		// 	Cell: ({ cell }) => {
-		// 		const status = cell.getValue();
-		// 		const estStatusColor = StatusColor(status, theme);
-
-		// 		return (
-		// 			<Box
-		// 				component='span'
-		// 				sx={{
-		// 					color: estStatusColor,
-		// 					borderRadius: '0.25rem',
-		// 					textTransform: 'capitalize',
-		// 				}}
-		// 			>
-		// 				{snakeCaseToPrettyText(status)}
-		// 			</Box>
-		// 		);
-		// 	},
-		// },
 	];
 
 	const collapsedColumns = [
@@ -315,18 +261,15 @@ function Items() {
 			header: 'title',
 			Cell: ({ row }) => {
 				const wholedata = row?.original;
-				const estStatusColor = StatusColor(wholedata.status, theme);
 
 				return (
 					<Box>
 						<Grid container sx={{ justifyContent: 'space-between' }}>
 							<Grid item x={6}>
-								{/* <Typography variant='subtitle2'>
-									{wholedata?.id || ''}
-								</Typography> */}
 								<Typography
 									component='span'
-									sx={{ fontSize: '12px', color: '#2196F3' }}>
+									sx={{ fontSize: '12px', color: '#2196F3' }}
+								>
 									{wholedata?.title || '--'}
 								</Typography>
 								<br />
@@ -334,15 +277,6 @@ function Items() {
 									{wholedata?.mpn || ''}
 								</Typography>
 							</Grid>
-							{/* <Grid item x={6} sx={{ textAlign: 'right' }}>
-								<Typography variant='body2'>${wholedata?.cost || 0}</Typography>
-								<Typography variant='caption' sx={{ color: estStatusColor }}>
-									{snakeCaseToPrettyText(wholedata?.status) || '--'}
-								</Typography>
-								<IconButton sx={{ paddingRight: '0' }}>
-									<Mail sx={{ fontSize: '15px' }} />
-								</IconButton>
-							</Grid> */}
 						</Grid>
 					</Box>
 				);
@@ -369,19 +303,21 @@ function Items() {
 		navigate(`/item/edit/${row}`);
 	};
 
-	const handleDeleteModal = (params) => {
+	const handleDeleteModal = params => {
 		console.log('id: ' + params.id);
 	};
 
-	const handleRowClick = (row) => {
+	const handleRowClick = row => {
 		setHash('#/' + generateEncryptedID(row?.id));
 	};
 
 	const handleBulkDelete = async () => {
 		try {
 			await bulkDeleteItem({ ids: selectedRows });
-			setRefresh((prev) => prev + 1);
-		} catch (err) {}
+			setRefresh(prev => prev + 1);
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	const Rate = ({ children }) => (
@@ -398,15 +334,15 @@ function Items() {
 				// sx={{ textAlign:'right',marginRight:'80px' }}
 			>
 				<Dropdown>
-					<TriggerButton onClick={(e) => e.stopPropagation()}>
+					<TriggerButton onClick={e => e.stopPropagation()}>
 						<KeyboardArrowDown />
 					</TriggerButton>
 					<Menu slots={{ listbox: StyledListbox }}>
-						<StyledMenuItem onClick={(e) => handleEditModal(e, id)}>
+						<StyledMenuItem onClick={e => handleEditModal(e, id)}>
 							<Edit sx={{ fontSize: '16px', color: '#2196F3' }} /> Edit
 						</StyledMenuItem>
 						<StyledMenuItem
-							onClick={(e) => {
+							onClick={e => {
 								e.stopPropagation();
 								// setOpenConfirmDialog(true);
 								// setDialogProps({
@@ -415,7 +351,8 @@ function Items() {
 								//     id
 								//   }
 								// });
-							}}>
+							}}
+						>
 							<MailOutline
 								sx={{
 									fontSize: '16px',
@@ -431,7 +368,7 @@ function Items() {
 		);
 	};
 
-	const showingMenu = (event) => {
+	const showingMenu = event => {
 		setShowMenu(event.currentTarget);
 	};
 	const hidingMenu = () => {
@@ -447,12 +384,14 @@ function Items() {
 								<Grid
 									item
 									sm={10}
-									sx={{ display: 'flex', alignItems: 'center' }}>
+									sx={{ display: 'flex', alignItems: 'center' }}
+								>
 									<Stack
 										direction='row'
 										display='felx'
 										alignItems='center'
-										spacing={2}>
+										spacing={2}
+									>
 										{/* <ButtonGroup>
                           <IconButton
                             sx={{
@@ -479,51 +418,10 @@ function Items() {
 												setDialogProps({
 													onConfirm: () => handleBulkDelete(),
 												});
-											}}>
+											}}
+										>
 											<Delete /> Delete
 										</Button>
-										{/* <Button
-                          size="medium"
-                          sx={{
-                            ...headerIconButton,
-                            color: "black",
-                            padding: "6px 16px",
-                          }}
-                        >
-                          Bulk Update
-                        </Button> */}
-										{/* <IconButton
-                          onClick={showingMenu}
-                          sx={{
-                            // ...headerIconButton,
-                            color: "black",
-                            padding: "6px 16px",
-                          }}
-                        >
-                          <MoreHorizIcon />
-                        </IconButton> */}
-										{/* <Menu
-                          anchorEl={showMenuItem}
-                          open={Boolean(showMenuItem)}
-                          onClose={hidingMenu}
-                        >
-                          <MenuItem
-                            sx={{ padding: "2px 4px", borderRadius: "4px" }}
-                          >
-                            <MUIButton
-                              onClick={() => {
-                                setOpenConfirmDialog(true);
-                                setDialogProps({
-                                  onConfirm: () => handleBulkDelete(),
-                                });
-                              }}
-                              size="medium"
-                              fullWidth
-                            >
-                              Delete
-                            </MUIButton>
-                          </MenuItem>
-                        </Menu> */}
 									</Stack>
 								</Grid>
 								<Grid
@@ -531,8 +429,9 @@ function Items() {
 									sm={2}
 									container
 									justifyContent={'end'}
-									alignItems={'center'}>
-									<IconButton onClick={() => setRefresh((prev) => prev + 1)}>
+									alignItems={'center'}
+								>
+									<IconButton onClick={() => setRefresh(prev => prev + 1)}>
 										<CloseIcon />
 									</IconButton>
 								</Grid>
@@ -546,7 +445,8 @@ function Items() {
 											direction='row'
 											display='flex'
 											alignItems='center'
-											spacing={0}>
+											spacing={0}
+										>
 											<Typography variant='h6' component='span'>
 												All Items
 											</Typography>
@@ -559,7 +459,8 @@ function Items() {
 										justifyContent='end'
 										alignItems='center'
 										spacing={2}
-										paddingTop={'15px'}>
+										paddingTop={'15px'}
+									>
 										{/* {!viewItem && (
 											<>
 												<Button
@@ -583,32 +484,22 @@ function Items() {
 										<MUIButton
 											size='medium'
 											onClick={() => navigate('/items/new')}
-											variant='contained'>
+											variant='contained'
+										>
 											<Add fontSize='small' />
 											New
 										</MUIButton>{' '}
 										{!viewItem && (
 											<MUIButton
 												size='medium'
-												onClick={(e) => setOpenExport(true)}
+												onClick={() => setOpenExport(true)}
 												variant='outlined'
-												sx={{ marginLeft: '10px' }}>
+												sx={{ marginLeft: '10px' }}
+											>
 												<UploadFileIcon fontSize='small' />
 												Export Items
 											</MUIButton>
 										)}
-										{/* {!viewItem && (
-											<Dropdown>
-												<HeaderMenuButton>
-													<SettingsIcon />
-												</HeaderMenuButton>
-											</Dropdown>
-										)}
-										<Dropdown>
-											<HeaderMenuButton>
-												<MoreHoriz />
-											</HeaderMenuButton>
-										</Dropdown> */}
 										<DropMenu slots={{ listbox: StyledListbox }}>
 											<Menu
 												anchorEl={anchorE2}
@@ -623,7 +514,8 @@ function Items() {
 												anchorOrigin={{
 													horizontal: 'left',
 													vertical: 'bottom',
-												}}>
+												}}
+											>
 												{/* <MenuItem>Name</MenuItem>
 												<MenuItem>Rate</MenuItem>
 												<MenuItem>Last Modified Time</MenuItem> */}
@@ -633,47 +525,15 @@ function Items() {
 													</ListItemIcon>
 													Import Items
 												</MenuItem> */}
-												<MenuItem onClick={(e) => setOpenExport(true)}>
+												<MenuItem onClick={() => setOpenExport(true)}>
 													<ListItemIcon>
 														<UploadFileIcon />
 													</ListItemIcon>
 													Export Items
 												</MenuItem>
 												<Divider />
-												{/* <MenuItem>
-													<ListItemIcon>
-														<UploadFileIcon />
-													</ListItemIcon>
-													Export Current View
-												</MenuItem>
-												<Divider />
-												<MenuItem>
-													<ListItemIcon>
-														<SettingsIcon />
-													</ListItemIcon>
-													Preferences
-												</MenuItem>
-												<Divider />
-												<MenuItem>
-													<ListItemIcon>
-														<CachedIcon />
-													</ListItemIcon>
-													Refresh List
-												</MenuItem> */}
 											</Menu>
 										</DropMenu>
-										{/* {!viewItem && (
-											<IconButton
-												sx={{
-													marginLeft: '10px',
-													borderRadius: '5px',
-													backgroundColor: '#ED6C02',
-													color: 'white',
-												}}
-											>
-												<QuestionMark />
-											</IconButton>
-										)} */}
 									</Grid>
 								</>
 							</Grid>
@@ -731,7 +591,7 @@ function Items() {
 	);
 }
 const StyledListbox = styled('ul')(
-	({ theme }) => `
+	() => `
   font-family: roboto;
   font-size:18px,
   min-width: 100px;
@@ -744,56 +604,6 @@ const StyledListbox = styled('ul')(
   `
 );
 
-const StyledMenuItem = styled(MenuItem)(
-	({ theme }) => `
-  padding: 13px;
-  border-radius: 8px;
-  cursor: pointer;
-  .MuiSvgIcon-root {
-    color: #6C6C6C;
-    margin-bottom:-5px;
-    font-size: 20px;
-  }
-  &:hover:not(.${menuItemClasses.disabled}) {
-    background-color: #F6FBFF;
-  }
-  `
-);
-const TriggerButton = styled(MenuButton)(
-	({ theme }) => `
-  // padding: 2px;
-  background: #2196F3;
-  color: #fff;
-  border-radius:18px;
-  border:none;
-  transition-duration: 120ms;
-  .MuiSvgIcon-root {
-    margin-bottom: -3px;
-  }
-  &:hover {
-    border-color: rgb(242, 242, 242);
-  }
-  `
-);
-const HeaderMenuButton = styled(MenuButton)(
-	({ theme }) => `
-  padding: 7px 10px;
-  border-radius:8px;
-  border:none;
-  transition-duration: 120ms;
-  margin: 7px;
-  &:hover {
-    border-color: rgb(242, 242, 242);
-  }
-  `
-);
-const headerIconButton = {
-	backgroundColor: '#EEEEEE',
-	border: '1px solid #d1d1d1',
-	borderRadius: '4px',
-	textTransform: 'none',
-};
-
 export default Items;
 
 function DescriptionModal({ isOpen, onClose, description }) {
@@ -803,7 +613,8 @@ function DescriptionModal({ isOpen, onClose, description }) {
 				sx={{ padding: '10px' }}
 				dangerouslySetInnerHTML={{
 					__html: description,
-				}}></Box>
+				}}
+			></Box>
 		</Modal>
 	);
 }

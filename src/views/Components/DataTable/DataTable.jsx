@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { Box } from '@mui/system';
 
 const DataTable = ({
 	api, // Function that fetches data from an API.
@@ -57,7 +58,7 @@ const DataTable = ({
 		setIsLoading(false);
 	};
 
-	const searchData = async (globalFilter) => {
+	const searchData = async globalFilter => {
 		setIsLoading(true);
 		const params = {
 			page: searchString !== globalFilter ? 1 : pagination.pageIndex + 1,
@@ -123,7 +124,7 @@ const DataTable = ({
 		setSelectedRows(() => selectedIds);
 	}, [rowSelection]);
 
-	const onPaginationChange = (args) => {
+	const onPaginationChange = args => {
 		window.scrollTo(0, 0);
 		setPagination(args);
 	};
@@ -139,7 +140,7 @@ const DataTable = ({
 					: true
 			}
 			onRowSelectionChange={setRowSelection}
-			getRowId={(row) => row?.id}
+			getRowId={row => row?.id}
 			setPagination
 			manualPagination
 			manualFiltering={

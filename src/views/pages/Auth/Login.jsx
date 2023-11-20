@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
@@ -47,7 +47,7 @@ const initialValues = {
 export default function Login() {
 	const [showAlert, setShowAlert] = useState(true);
 	const [credentials, setCredentials] = useState('');
-	const apiError = useSelector((state) => state?.auth?.apiError);
+	const apiError = useSelector(state => state?.auth?.apiError);
 	// console.log('apierror' ,  apiError)
 	const dispatch = useDispatch();
 
@@ -195,7 +195,8 @@ export default function Login() {
 										type='submit'
 										disabled={formik.isSubmitting}
 										variant='contained'
-										fullWidth>
+										fullWidth
+									>
 										{formik.isSubmitting ? 'Signing In ...' : 'Sign In'}
 									</Button>
 									{formik.isSubmitting ? (
@@ -210,7 +211,8 @@ export default function Login() {
 										to='/register'
 										size='small'
 										component={RouterLink}
-										sx={{ textTransform: 'capitalize' }}>
+										sx={{ textTransform: 'capitalize' }}
+									>
 										Create Account
 									</Button>
 									<Button
@@ -218,7 +220,8 @@ export default function Login() {
 										component={RouterLink}
 										to='/reset-password'
 										size='small'
-										sx={{ textTransform: 'capitalize' }}>
+										sx={{ textTransform: 'capitalize' }}
+									>
 										Forgot Password
 									</Button>
 								</AuthFooter>

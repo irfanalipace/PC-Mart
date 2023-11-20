@@ -24,7 +24,7 @@ export function snakeCaseToPrettyText(snakeCase) {
 	return '';
 }
 
-export const downloadFile = (fileUrl) => {
+export const downloadFile = fileUrl => {
 	const filename = fileUrl?.substring(fileUrl?.lastIndexOf('/') + 1);
 	// fetch(fileUrl, { mode: 'no-cors' })
 	// 	.then((response) => response.blob())
@@ -47,7 +47,7 @@ export const downloadFile = (fileUrl) => {
 	// });
 };
 
-export const formatDate = (dateString) => {
+export const formatDate = dateString => {
 	if (dateString) {
 		const options = {
 			day: '2-digit',
@@ -62,7 +62,7 @@ export const formatDate = (dateString) => {
 	}
 };
 
-export const formatDateAndTime = (timestamp) => {
+export const formatDateAndTime = timestamp => {
 	// const timestamp = '2023-10-30T14:46:25.000000Z'
 	if (timestamp && typeof timestamp === 'string') {
 		const isUTC = timestamp.endsWith('Z');
@@ -104,13 +104,13 @@ export const formatDateAndTime = (timestamp) => {
 	return '';
 };
 
-export const prettifyError = (error) => {
+export const prettifyError = error => {
 	try {
 		let prettifiedError = '';
 
 		for (const key in error) {
 			if (Array.isArray(error[key])) {
-				const formattedErrors = error[key].map((message) => `${message}<br>`);
+				const formattedErrors = error[key].map(message => `${message}<br>`);
 
 				prettifiedError += `<strong>${
 					key.charAt(0).toUpperCase() + key.slice(1)
@@ -131,11 +131,9 @@ export function handleErrors(errorData) {
 		if (typeof errorData !== 'object' && !Array.isArray(errorData)) {
 			// toastr.error(errorData);
 		} else {
-			const errorMessages = Object.values(errorData).flatMap(
-				(errors) => errors
-			);
-			errorMessages.forEach((errorMessage) => {
-				// toastr.error(errorMessage);
+			const errorMessages = Object.values(errorData).flatMap(errors => errors);
+			errorMessages.forEach(errorMessage => {
+				console.error(errorMessage);
 			});
 		}
 	}
@@ -341,7 +339,7 @@ export function getCurrentDate() {
 	return `${year}-${month}-${day}`;
 }
 
-export const createFileMessage = (fileTypes) => {
+export const createFileMessage = fileTypes => {
 	let fileTypesString = arrayToCommaSeparatedStringWithAnd(fileTypes);
 	return `Only ${fileTypesString} files are allowed`;
 };
@@ -362,7 +360,7 @@ export function filterFiles(files, allowedTypes, maxSize = 5) {
 	const maxSizeInBytes = maxSize * 1024 * 1024;
 	const validFiles = [];
 	const errors = [];
-	Array.from(files).forEach((file) => {
+	Array.from(files).forEach(file => {
 		if (file?.size > maxSizeInBytes) {
 			errors.push(
 				`${file.name} exceeds the maximum allowed file size of ${maxSize}MB.`
@@ -398,7 +396,7 @@ export function decryptId(id) {
 }
 
 export function deleteItemById(arr, idToDelete) {
-	const updatedArray = arr.filter((item) => item.id !== idToDelete);
+	const updatedArray = arr.filter(item => item.id !== idToDelete);
 	return updatedArray;
 }
 
