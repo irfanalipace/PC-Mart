@@ -75,7 +75,7 @@ const ReadyItemsTable = () => {
 			const resp = await getBatchNumber();
 			setBatchList(resp?.data);
 		} catch (err) {
-			console.error(err);
+			console.log(err);
 		}
 	};
 	return (
@@ -151,7 +151,7 @@ const ReadyItemsTable = () => {
 											</MenuItem>
 											{batchList?.map(row => (
 												<MenuItem
-													key={row.id}
+													key={row?.id}
 													value={row?.id}
 													onClick={() => {
 														setBatchNumber(row?.batch_number);

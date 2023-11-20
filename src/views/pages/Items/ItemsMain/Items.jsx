@@ -74,6 +74,9 @@ function Items() {
 	const openMore = Boolean(anchorE2);
 	const theme = useTheme();
 
+	const handleMoreClick = event => {
+		setAnchorE2(event.currentTarget);
+	};
 	const handleMoreClose = () => {
 		setAnchorE2(null);
 	};
@@ -295,6 +298,15 @@ function Items() {
 		}
 	}, [hash]);
 
+	const handleEditModal = (e, row) => {
+		e.stopPropagation();
+		navigate(`/item/edit/${row}`);
+	};
+
+	const handleDeleteModal = params => {
+		console.log('id: ' + params.id);
+	};
+
 	const handleRowClick = row => {
 		setHash('#/' + generateEncryptedID(row?.id));
 	};
@@ -308,6 +320,60 @@ function Items() {
 		}
 	};
 
+	const Rate = ({ children }) => (
+		<Box>
+			<span>USD- {children || 0}</span>
+		</Box>
+	);
+
+	const Actions = ({ id }) => {
+		return (
+			<Box
+				className='show-on-hover'
+				sx={{ display: 'none' }}
+				// sx={{ textAlign:'right',marginRight:'80px' }}
+			>
+				<Dropdown>
+					<TriggerButton onClick={e => e.stopPropagation()}>
+						<KeyboardArrowDown />
+					</TriggerButton>
+					<Menu slots={{ listbox: StyledListbox }}>
+						<StyledMenuItem onClick={e => handleEditModal(e, id)}>
+							<Edit sx={{ fontSize: '16px', color: '#2196F3' }} /> Edit
+						</StyledMenuItem>
+						<StyledMenuItem
+							onClick={e => {
+								e.stopPropagation();
+								// setOpenConfirmDialog(true);
+								// setDialogProps({
+								//   onConfirm: handleDeleteModal,
+								//   onConfirmParams: {
+								//     id
+								//   }
+								// });
+							}}
+						>
+							<MailOutline
+								sx={{
+									fontSize: '16px',
+									color: '#2196F3',
+									marginBottom: '-3px',
+								}}
+							/>{' '}
+							Email Item
+						</StyledMenuItem>
+					</Menu>
+				</Dropdown>
+			</Box>
+		);
+	};
+
+	const showingMenu = event => {
+		setShowMenu(event.currentTarget);
+	};
+	const hidingMenu = () => {
+		setShowMenu(null);
+	};
 	return (
 		<>
 			<Grid container>
@@ -326,6 +392,24 @@ function Items() {
 										alignItems='center'
 										spacing={2}
 									>
+										{/* <ButtonGroup>
+                          <IconButton
+                            sx={{
+                              backgroundColor: "#EEEEEE",
+                              ...headerIconButton,
+                            }}
+                          >
+                            <img src={printer} alt="printer" />
+                          </IconButton>
+                          <IconButton
+                            sx={{
+                              ...headerIconButton,
+                              backgroundColor: "#EEEEEE",
+                            }}
+                          >
+                            <img src={pdf} alt="pdf" />
+                          </IconButton>
+                        </ButtonGroup> */}
 										<Button
 											size='medium'
 											sx={tableViewIconButton}
@@ -377,6 +461,26 @@ function Items() {
 										spacing={2}
 										paddingTop={'15px'}
 									>
+										{/* {!viewItem && (
+											<>
+												<Button
+													size='medium'
+													// onClick={() => navigate("/items/new")}
+													variant='contained'
+												>
+													Inventory
+												</Button>
+												&ensp; */}
+										{/* <Button
+													size='medium'
+													// onClick={() => setOpenImport(true)}
+													variant='contained'
+													sx={{ marginRight: '10px' }}
+												>
+													Ebay
+												</Button> */}
+										{/* </>
+										)} */}
 										<MUIButton
 											size='medium'
 											onClick={() => navigate('/items/new')}
@@ -412,6 +516,15 @@ function Items() {
 													vertical: 'bottom',
 												}}
 											>
+												{/* <MenuItem>Name</MenuItem>
+												<MenuItem>Rate</MenuItem>
+												<MenuItem>Last Modified Time</MenuItem> */}
+												{/* <MenuItem onClick={() => setOpenImport(true)}>
+													<ListItemIcon>
+														<SaveAltIcon />
+													</ListItemIcon>
+													Import Items
+												</MenuItem> */}
 												<MenuItem onClick={() => setOpenExport(true)}>
 													<ListItemIcon>
 														<UploadFileIcon />
