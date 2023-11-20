@@ -16,10 +16,10 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
-import { getReadyItems } from '../../../core/api/readyItems';
+import { getReadyItems, getSolditems } from '../../../core/api/readyItems';
 import { getBatchNumber } from '../../../core/api/batchNumber';
 
-const ReadyItemsTable = () => {
+const SoldItems = () => {
 	const [refresh, setRefresh] = useState(0);
 	const [selectedRows, setSelectedRows] = useState([]);
 	const [searchText, setSearchText] = useState('');
@@ -91,7 +91,7 @@ const ReadyItemsTable = () => {
 										spacing={0}
 									>
 										<Typography variant='h6' component='span'>
-											Ready Items
+											Sold Items
 										</Typography>
 									</Stack>
 								</Grid>
@@ -164,7 +164,7 @@ const ReadyItemsTable = () => {
 						</Box>
 
 						<DataTable
-							api={e => getReadyItems(e, bathcNumber, searchText)}
+							api={e => getSolditems(e, bathcNumber, searchText)}
 							columns={intialColumns}
 							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
@@ -178,4 +178,4 @@ const ReadyItemsTable = () => {
 	);
 };
 
-export default ReadyItemsTable;
+export default SoldItems;

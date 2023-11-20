@@ -10,6 +10,7 @@ import {
 	MenuItem,
 	Button,
 	CircularProgress,
+	Tooltip,
 } from '@mui/material';
 
 import FormControl from '@mui/material/FormControl';
@@ -31,10 +32,8 @@ import {
 	downloadFile,
 	formatDateToYYYYMMDD,
 } from '../../../core/utils/helpers';
-import OverlayLoader from '../../Components/OverlayLoader/OverlayLoader';
 import LinearProgressWithLabel from '../../Components/Progress/Progress.jsx';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog.jsx';
-import { width } from '@mui/system';
 
 const FileUploadTable = () => {
 	const [progress, setProgress] = useState(10);
@@ -115,6 +114,22 @@ const FileUploadTable = () => {
 		{
 			accessorKey: 'batch_number',
 			header: 'Batch No',
+			Cell: ({ row }) => (
+				<Tooltip
+					title={
+						<>
+							{`Total Ready: ${row?.original?.ready_items_count}`}
+							<br />
+							{`Total Non Ready: ${row?.original?.non_ready_items_count}`}
+							<br />
+							{`Total Sold: ${row?.original?.sold_items_count}`}
+						</>
+					}
+					sx={{ padding: '20px' }}
+				>
+					{row?.original?.batch_number}
+				</Tooltip>
+			),
 		},
 		{
 			accessorKey: 'batch_number',
@@ -136,7 +151,8 @@ const FileUploadTable = () => {
 							<Download />
 						)}
 					</Button>
-					{row?.original?.status === 'processed' && (
+					{(row?.original?.non_ready_items_count > 0 ||
+						row?.original?.ready_items_count > 0) && (
 						<Button
 							sx={{ width: '170px' }}
 							variant='contained'
@@ -151,7 +167,7 @@ const FileUploadTable = () => {
 							{convertLoaidng === row?.original?.id ? (
 								<CircularProgress size={20} />
 							) : (
-								'Convert to Ready'
+								'Convert to Sold'
 							)}
 						</Button>
 					)}
