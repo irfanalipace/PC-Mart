@@ -64,7 +64,11 @@ const Dashboard = () => {
 					<Box>
 						<DashboardCard
 							name={'Total Inventory Value'}
-							total={'$' + alldata?.total_inventory_value}
+							total={
+								'$' + alldata?.total_inventory_value
+									? alldata?.total_inventory_value
+									: 0
+							}
 							// percent={"-0.03%"}
 						/>
 					</Box>

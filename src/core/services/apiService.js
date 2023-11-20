@@ -49,10 +49,10 @@ const ApiService = {
 			const url = `${resource}${slug ? `/${slug}` : ''}`;
 			this.instance
 				.get(url, { params, data: payload })
-				.then((res) => {
+				.then(res => {
 					resolve(res.data);
 				})
-				.catch((error) => {
+				.catch(error => {
 					if (error?.response?.status === 401) {
 						destroyToken();
 						window.location.reload();
@@ -74,10 +74,10 @@ const ApiService = {
 		return new Promise((resolve, reject) => {
 			this.instance
 				.post(`${resource}`, data, { params })
-				.then((res) => {
+				.then(res => {
 					resolve(res.data);
 				})
-				.catch((error) => {
+				.catch(error => {
 					if (error?.response?.status === 401) {
 						destroyToken();
 						window.location.reload();
@@ -102,10 +102,10 @@ const ApiService = {
 		return new Promise((resolve, reject) => {
 			this.instance
 				.put(`${resource}`, params)
-				.then((res) => {
+				.then(res => {
 					resolve(res.data);
 				})
-				.catch((error) => {
+				.catch(error => {
 					if (error?.response?.status === 401) {
 						destroyToken();
 						window.location.reload();
@@ -122,10 +122,10 @@ const ApiService = {
 		return new Promise((resolve, reject) => {
 			this.instance
 				.delete(resource)
-				.then((res) => {
+				.then(res => {
 					resolve(res.data);
 				})
-				.catch((error) => {
+				.catch(error => {
 					if (error?.response?.status === 401) {
 						destroyToken();
 						window.location.reload();
