@@ -131,7 +131,7 @@ const ProfileUpdate = () => {
 									</IconButton>
 									<IconButton
 										onClick={() => {
-											formik.setFieldValue('profile_pic', null);
+											formik.setFieldValue('profile_pic', '');
 											setSelectedImage(null);
 										}}
 										sx={{ backgroundColor: '#BDBDBD' }}
