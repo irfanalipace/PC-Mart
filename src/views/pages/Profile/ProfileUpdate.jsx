@@ -110,26 +110,34 @@ const ProfileUpdate = () => {
 									position: 'relative',
 								}}
 							/>
-
-							<div
-								style={{
-									position: 'absolute',
-								}}
-							>
-								<IconButton
-									sx={{ backgroundColor: '#BDBDBD', marginRight: '1em' }}
-								>
-									<EditIcon />
-								</IconButton>
-								<IconButton sx={{ backgroundColor: '#BDBDBD' }}>
-									<DeleteIcon />
-								</IconButton>
-							</div>
 						</>
 					) : (
 						<CameraAltOutlinedIcon sx={{ color: '#fff', fontSize: '60px' }} />
 					)}
 				</Box>
+				{selectedImage && (
+					<div
+						style={{
+							position: 'absolute',
+						}}
+					>
+						<IconButton
+							onClick={handleImageUpload}
+							sx={{ backgroundColor: '#BDBDBD', marginRight: '1em' }}
+						>
+							<EditIcon />
+						</IconButton>
+						<IconButton
+							onClick={() => {
+								formik.setFieldValue('profile_pic', null);
+								setSelectedImage(null);
+							}}
+							sx={{ backgroundColor: '#BDBDBD' }}
+						>
+							<DeleteIcon />
+						</IconButton>
+					</div>
+				)}
 			</Grid>
 			<Grid
 				container
