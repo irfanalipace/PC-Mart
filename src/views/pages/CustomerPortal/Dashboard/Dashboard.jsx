@@ -124,6 +124,7 @@ const Dashboard = () => {
 							seriesOne={series}
 							seriesTwo={seriesX}
 							monthArray={months}
+							total={alldata?.total_inventory_value}
 						/>
 					) : (
 						<Grid

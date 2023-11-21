@@ -1,4 +1,11 @@
-import { Box, Button, Grid, Paper, Typography } from '@mui/material';
+import {
+	Box,
+	Button,
+	Grid,
+	IconButton,
+	Paper,
+	Typography,
+} from '@mui/material';
 import FormField from '../../Components/InputField/FormField';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import { useEffect, useState } from 'react';
@@ -10,6 +17,8 @@ import { updateProfile } from '../../../core/api/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN } from '../../../core/store/auth/authSlice';
 import Stack from '@mui/material/Stack';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ProfileUpdate = () => {
 	const navigate = useNavigate();
@@ -89,19 +98,33 @@ const ProfileUpdate = () => {
 							onClick={handleImageUpload}
 						>
 							{selectedImage ? (
-								<img
-									src={selectedImage}
-									alt='Selected'
-									style={{
-										display: 'flex',
-										justifyContent: 'center',
-										alignItems: 'center',
-										width: '150px',
-										height: '150px',
-										backgroundColor: '#BDBDBD',
-										borderRadius: '50%',
-									}}
-								/>
+								<>
+									<img
+										src={selectedImage}
+										alt='Selected'
+										style={{
+											width: '150px',
+											height: '150px',
+											borderRadius: '50%',
+											position: 'relative',
+										}}
+									/>
+
+									<div
+										style={{
+											position: 'absolute',
+										}}
+									>
+										<IconButton
+											sx={{ backgroundColor: '#BDBDBD', marginRight: '1em' }}
+										>
+											<EditIcon />
+										</IconButton>
+										<IconButton sx={{ backgroundColor: '#BDBDBD' }}>
+											<DeleteIcon />
+										</IconButton>
+									</div>
+								</>
 							) : (
 								<CameraAltOutlinedIcon
 									sx={{ color: '#fff', fontSize: '60px' }}
