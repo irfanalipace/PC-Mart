@@ -11,6 +11,7 @@ import { logout } from '../../../core/store/auth/authThunks';
 import { Avatar } from '@mui/material';
 import { Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 const Header = memo(() => {
 	const dispatch = useDispatch();
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -26,7 +27,7 @@ const Header = memo(() => {
 	const handleLogOut = () => {
 		dispatch(logout());
 	};
-
+	const navigate = useNavigate();
 	return (
 		<Box sx={{ height: '60px' }}>
 			<AppBar>
@@ -79,6 +80,7 @@ const Header = memo(() => {
 						open={Boolean(anchorEl)}
 						onClose={handleClose} // Define handleClose
 					>
+						<MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
 						<MenuItem onClick={handleLogOut}>Logout</MenuItem>
 					</Menu>
 

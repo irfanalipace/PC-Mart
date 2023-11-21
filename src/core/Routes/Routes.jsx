@@ -14,6 +14,7 @@ import Dashboard from '../../views/pages/CustomerPortal/Dashboard/Dashboard.jsx'
 import FileUpload from '../../views/pages/FileUpload/FileUpload.jsx';
 import PageNotFound from '../../views/pages/404/PageNotFound.tsx';
 import SoldItems from '../../views/pages/SoldItems/SoldItems.jsx';
+import ProfileUpdate from '../../views/pages/Profile/ProfileUpdate.jsx';
 
 export const routes = [
 	/* auth routes */
@@ -120,6 +121,19 @@ export const routes = [
 			<ProtectedRoute>
 				<PageWrapper isSidebar={true}>
 					<ReadyItemsTable />
+				</PageWrapper>
+			</ProtectedRoute>
+		),
+		header: <MainHeader />,
+		// footer: <MainFooter />,
+		aside: <MainAside />,
+	},
+	{
+		path: '/profile',
+		page: (
+			<ProtectedRoute>
+				<PageWrapper isSidebar={true}>
+					<ProfileUpdate />
 				</PageWrapper>
 			</ProtectedRoute>
 		),
