@@ -8,10 +8,11 @@ import Menu from '@mui/material/Menu';
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../core/store/auth/authThunks';
-import { Avatar } from '@mui/material';
+import { Avatar, Divider } from '@mui/material';
 import { Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 const Header = memo(() => {
 	const dispatch = useDispatch();
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -81,7 +82,14 @@ const Header = memo(() => {
 						onClose={handleClose} // Define handleClose
 					>
 						<MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-						<MenuItem onClick={handleLogOut}>Logout</MenuItem>
+						<MenuItem onClick={() => navigate('/change-password')}>
+							Change Password
+						</MenuItem>
+						<Divider />
+						<MenuItem onClick={handleLogOut}>
+							<ExitToAppIcon />
+							&ensp; Logout
+						</MenuItem>
 					</Menu>
 
 					<MenuItem value=''></MenuItem>

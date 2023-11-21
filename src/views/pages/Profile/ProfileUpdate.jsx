@@ -100,32 +100,7 @@ const ProfileUpdate = () => {
 						<FormField />
 					</Grid>
 				</Grid>
-				<Grid
-					container
-					direction='row'
-					justifyContent='space-evenly'
-					alignItems='center'
-					sx={{ width: '70%' }}
-					mt={4}
-					mr={10}
-				>
-					<Grid item sm={2} ml={1}>
-						<InputLabel sx={{ textAlign: 'right' }}>Password: </InputLabel>
-					</Grid>
-					<Grid item sm={3}>
-						<FormField />
-					</Grid>
-					<Grid item sm={3} ml={1}>
-						<InputLabel sx={{ textAlign: 'right' }}>
-							Conform Password:{' '}
-						</InputLabel>
-					</Grid>
-					<Grid item sm={3}>
-						<FormField />
-					</Grid>
-				</Grid>
 			</Grid>
-
 			<Grid
 				container
 				direction='row'

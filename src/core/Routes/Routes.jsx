@@ -15,6 +15,7 @@ import FileUpload from '../../views/pages/FileUpload/FileUpload.jsx';
 import PageNotFound from '../../views/pages/404/PageNotFound.tsx';
 import SoldItems from '../../views/pages/SoldItems/SoldItems.jsx';
 import ProfileUpdate from '../../views/pages/Profile/ProfileUpdate.jsx';
+import ChangePassword from '../../views/pages/ChangePassword/ChangePassword.jsx';
 
 export const routes = [
 	/* auth routes */
@@ -134,6 +135,19 @@ export const routes = [
 			<ProtectedRoute>
 				<PageWrapper isSidebar={true}>
 					<ProfileUpdate />
+				</PageWrapper>
+			</ProtectedRoute>
+		),
+		header: <MainHeader />,
+		// footer: <MainFooter />,
+		aside: <MainAside />,
+	},
+	{
+		path: '/change-password',
+		page: (
+			<ProtectedRoute>
+				<PageWrapper isSidebar={true}>
+					<ChangePassword />
 				</PageWrapper>
 			</ProtectedRoute>
 		),
