@@ -16,7 +16,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 const Header = memo(() => {
 	const dispatch = useDispatch();
 	const [anchorEl, setAnchorEl] = useState(null);
-	const userDetails = useSelector(state => state.auth.user);
+	const userInfo = useSelector(state => state?.auth?.user);
 	const handleMenu = event => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -66,14 +66,7 @@ const Header = memo(() => {
 						style={{ outline: 'none' }}
 						onClick={handleMenu} // Define handleMenu
 					>
-						{/* <AccountCircleIcon /> */}{' '}
-						<Avatar>
-							<Typography variant='h6' textTransform={'uppercase'}>
-								{`${userDetails?.name?.split(' ')[0][0]}${
-									userDetails?.name?.split(' ')[1][0]
-								}`}
-							</Typography>
-						</Avatar>
+						<Avatar src={userInfo?.profile_pic} />
 					</IconButton>
 					<Menu
 						id='profile-menu'
