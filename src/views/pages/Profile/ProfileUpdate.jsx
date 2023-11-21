@@ -2,6 +2,7 @@ import {
 	Box,
 	Button,
 	Grid,
+	IconButton,
 	InputLabel,
 	Paper,
 	Typography,
@@ -16,6 +17,8 @@ import * as Yup from 'yup';
 import { updateProfile } from '../../../core/api/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN } from '../../../core/store/auth/authSlice';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ProfileUpdate = () => {
 	const navigate = useNavigate();
@@ -96,19 +99,33 @@ const ProfileUpdate = () => {
 					onClick={handleImageUpload}
 				>
 					{selectedImage ? (
-						<img
-							src={selectedImage}
-							alt='Selected'
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-								width: '200px',
-								height: '200px',
-								backgroundColor: '#BDBDBD',
-								borderRadius: '50%',
-							}}
-						/>
+						<>
+							<img
+								src={selectedImage}
+								alt='Selected'
+								style={{
+									width: '200px',
+									height: '200px',
+									borderRadius: '50%',
+									position: 'relative',
+								}}
+							/>
+
+							<div
+								style={{
+									position: 'absolute',
+								}}
+							>
+								<IconButton
+									sx={{ backgroundColor: '#BDBDBD', marginRight: '1em' }}
+								>
+									<EditIcon />
+								</IconButton>
+								<IconButton sx={{ backgroundColor: '#BDBDBD' }}>
+									<DeleteIcon />
+								</IconButton>
+							</div>
+						</>
 					) : (
 						<CameraAltOutlinedIcon sx={{ color: '#fff', fontSize: '60px' }} />
 					)}
