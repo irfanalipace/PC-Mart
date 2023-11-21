@@ -8,13 +8,15 @@ import Menu from '@mui/material/Menu';
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../core/store/auth/authThunks';
-import { Avatar } from '@mui/material';
+import { Avatar, Divider } from '@mui/material';
 import { Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 const Header = memo(() => {
 	const dispatch = useDispatch();
 	const [anchorEl, setAnchorEl] = useState(null);
-	const userDetails = useSelector(state => state.auth.user);
+	const userInfo = useSelector(state => state?.auth?.user);
 	const handleMenu = event => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -26,7 +28,7 @@ const Header = memo(() => {
 	const handleLogOut = () => {
 		dispatch(logout());
 	};
-
+	const navigate = useNavigate();
 	return (
 		<Box sx={{ height: '60px' }}>
 			<AppBar>
@@ -64,14 +66,7 @@ const Header = memo(() => {
 						style={{ outline: 'none' }}
 						onClick={handleMenu} // Define handleMenu
 					>
-						{/* <AccountCircleIcon /> */}{' '}
-						<Avatar>
-							<Typography variant='h6' textTransform={'uppercase'}>
-								{`${userDetails?.name?.split(' ')[0][0]}${
-									userDetails?.name?.split(' ')[1][0]
-								}`}
-							</Typography>
-						</Avatar>
+						<Avatar src={userInfo?.profile_pic} />
 					</IconButton>
 					<Menu
 						id='profile-menu'
@@ -79,7 +74,15 @@ const Header = memo(() => {
 						open={Boolean(anchorEl)}
 						onClose={handleClose} // Define handleClose
 					>
-						<MenuItem onClick={handleLogOut}>Logout</MenuItem>
+						<MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+						<MenuItem onClick={() => navigate('/change-password')}>
+							Change Password
+						</MenuItem>
+						<Divider />
+						<MenuItem onClick={handleLogOut}>
+							<ExitToAppIcon />
+							&ensp; Logout
+						</MenuItem>
 					</Menu>
 
 					<MenuItem value=''></MenuItem>
