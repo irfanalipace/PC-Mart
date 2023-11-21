@@ -66,12 +66,14 @@ const ChangePassword = () => {
 				</Grid>
 				<Grid item sm={5}>
 					<FormField
+						type='password'
 						id='old_password'
 						placeholder='Old Password'
 						value={formik.values.old_password}
 						handleChange={formik.handleChange}
 						isTouched={formik.touched.old_password}
 						error={formik.errors.old_password}
+						password
 					/>
 				</Grid>
 			</Grid>
@@ -88,12 +90,14 @@ const ChangePassword = () => {
 				</Grid>
 				<Grid item sm={5}>
 					<FormField
+						type='password'
 						id='new_password'
 						placeholder='New Password'
 						value={formik.values.new_password}
 						handleChange={formik.handleChange}
 						isTouched={formik.touched.new_password}
 						error={formik.errors.new_password}
+						password
 					/>
 				</Grid>
 			</Grid>
@@ -110,12 +114,14 @@ const ChangePassword = () => {
 				</Grid>
 				<Grid item sm={5}>
 					<FormField
+						type='password'
 						id='password_confirmation'
 						placeholder='Confirm Password'
 						value={formik.values.password_confirmation}
 						handleChange={formik.handleChange}
 						isTouched={formik.touched.password_confirmation}
 						error={formik.errors.password_confirmation}
+						password
 					/>
 				</Grid>
 			</Grid>

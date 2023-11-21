@@ -11,3 +11,19 @@ export function updatePassword(data) {
 			});
 	});
 }
+export function updateProfile(data) {
+	ApiService.setHeader('content-type', 'multipart/form-data');
+	const formData = new FormData();
+	formData.append('first_name', data?.first_name);
+	formData.append('last_name', data?.last_name);
+	formData.append('profile_pic', data?.profile_pic);
+	return new Promise((resolve, reject) => {
+		ApiService.post('/update-profile', null, formData)
+			.then(response => {
+				resolve(response);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
