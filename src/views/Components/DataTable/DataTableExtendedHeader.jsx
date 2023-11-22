@@ -62,16 +62,36 @@ export default function DataTableExtendedHeader({
 							id='dropdown'
 							label='Batch No'
 							onChange={onBatchChange}
+							MenuProps={{
+								anchorOrigin: {
+									vertical: 'bottom',
+									horizontal: 'left',
+								},
+								transformOrigin: {
+									vertical: 'top',
+									horizontal: 'left',
+								},
+								getContentAnchorEl: null,
+								PaperProps: {
+									style: {
+										maxHeight: '500px',
+									},
+								},
+							}}
 						>
 							<MenuItem value={null}>All {type} Items</MenuItem>
 							<Divider />
-							<Box sx={{ maxHeight: '400px', overflowY: 'auto' }}>
-								{batchList?.map(row => (
-									<MenuItem key={row.id} value={row?.batch_number}>
-										{row?.batch_number}
-									</MenuItem>
-								))}
-							</Box>
+							{/* <Box sx={{ maxHeight: '400px', overflowY: 'auto' }}> */}
+							{batchList?.map(row => (
+								<MenuItem
+									key={row.id}
+									value={row?.batch_number}
+									// onClick={() => onBatchChange()}
+								>
+									{row?.batch_number}
+								</MenuItem>
+							))}
+							{/* </Box> */}
 						</Select>
 					</FormControl>
 				</Grid>

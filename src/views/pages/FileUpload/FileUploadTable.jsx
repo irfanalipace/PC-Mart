@@ -406,6 +406,22 @@ const FileUploadTable = () => {
 												value={selectedValue}
 												label='Select an Option'
 												onChange={handleChange}
+												MenuProps={{
+													anchorOrigin: {
+														vertical: 'bottom',
+														horizontal: 'left',
+													},
+													transformOrigin: {
+														vertical: 'top',
+														horizontal: 'left',
+													},
+													getContentAnchorEl: null,
+													PaperProps: {
+														style: {
+															maxHeight: '500px',
+														},
+													},
+												}}
 											>
 												<MenuItem
 													onClick={() => {
@@ -416,20 +432,18 @@ const FileUploadTable = () => {
 													All Files
 												</MenuItem>
 												<Divider />
-												<Box sx={{ maxHeight: '400px', overflowY: 'auto' }}>
-													{batchList?.map(row => (
-														<MenuItem
-															key={row.id}
-															value={row?.id}
-															onClick={() => {
-																setBatchNumber(row?.batch_number);
-																setRefresh(prev => prev + 1);
-															}}
-														>
-															{row?.batch_number}
-														</MenuItem>
-													))}
-												</Box>
+												{batchList?.map(row => (
+													<MenuItem
+														key={row.id}
+														value={row?.id}
+														onClick={() => {
+															setBatchNumber(row?.batch_number);
+															setRefresh(prev => prev + 1);
+														}}
+													>
+														{row?.batch_number}
+													</MenuItem>
+												))}
 											</Select>
 										</FormControl>
 									</Box>
