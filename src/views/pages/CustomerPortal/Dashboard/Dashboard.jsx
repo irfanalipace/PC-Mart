@@ -74,8 +74,8 @@ const Dashboard = () => {
 						<DashboardCard
 							name={'Total value (Non-Ready Items)'}
 							total={
-								'$' + alldata?.total_inventory_value
-									? '$' + alldata?.total_inventory_value
+								alldata?.total_inventory_value
+									? `$${alldata?.total_inventory_value}`
 									: 0
 							}
 							// percent={"-0.03%"}
