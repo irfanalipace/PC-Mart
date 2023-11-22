@@ -54,7 +54,7 @@ const ProfileUpdate = () => {
 			}
 		},
 	});
-	const handleImageUpload = () => {
+	const handleImageUpload = event => {
 		if (!event.target.closest('.delete-button')) {
 			const input = document.createElement('input');
 			input.type = 'file';
@@ -97,7 +97,7 @@ const ProfileUpdate = () => {
 									backgroundColor: '#565958',
 								},
 							}}
-							onClick={handleImageUpload}
+							onClick={e => handleImageUpload(e)}
 						>
 							{selectedImage ? (
 								<>
@@ -124,7 +124,7 @@ const ProfileUpdate = () => {
 									}}
 								>
 									<IconButton
-										onClick={handleImageUpload}
+										onClick={e => handleImageUpload(e)}
 										sx={{ backgroundColor: '#BDBDBD', marginRight: '1em' }}
 									>
 										<EditIcon />
