@@ -460,32 +460,24 @@ const FileUploadTable = () => {
 				title='Error Found'
 				onClose={() => setErrorModal(false)}
 			>
-				<Box mb={5}>
+				<Box mb={5} mt={2}>
 					{errorData &&
 						errorData?.map((item, index) => {
 							return (
-								<Stack
-									key={index}
-									px={3}
-									pt={1}
-									sx={{
-										background: 'rgba(211, 47, 47, 0.15)',
-										color: '#D32F2F',
-										borderBottom: '0.1px solid rgba(211, 47, 47, 0.15)',
-									}}
-								>
-									<Stack direction={'row'} spacing={1}>
-										<HighlightOffIcon sx={{ color: '#D32F2F' }} />
-										<Typography>{item.attribute}</Typography>
-									</Stack>
+								<Box sx={{ pl: 2.7, mt: 1 }} key={index}>
 									{item?.errors?.map((error, index) => {
 										return (
-											<Typography sx={{ mb: 2, ml: 4 }} key={index}>
-												{error}
-											</Typography>
+											<Stack key={index} direction={'row'} spacing={1}>
+												<Typography sx={{ color: '#E0E0E0' }} as='li'>
+													<span style={{ color: '#D32F2F' }}> {error}</span>
+												</Typography>
+												<Typography key={index}>
+													{`:at row ${item.row}`}
+												</Typography>
+											</Stack>
 										);
 									})}
-								</Stack>
+								</Box>
 							);
 						})}
 				</Box>
