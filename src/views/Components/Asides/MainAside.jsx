@@ -19,7 +19,7 @@ export default function Sidebar() {
 		{ name: 'Dashboard', icon: <SpaceDashboardRoundedIcon />, path: '/' },
 		{ name: 'File Upload', icon: <UploadFileIcon />, path: '/file-upload' },
 		{
-			name: 'Not Ready Items',
+			name: 'Non Ready Items',
 			icon: <ShoppingCartIcon />,
 			path: '/non-ready-items',
 		},

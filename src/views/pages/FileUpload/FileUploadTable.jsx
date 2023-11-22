@@ -149,7 +149,7 @@ const FileUploadTable = () => {
 		},
 		{
 			accessorKey: 'batch_number',
-			header: 'ACTIONS',
+			header: 'Actions',
 			size: 300,
 			Cell: ({ row }) => (
 				<Stack direction={'row'} spacing={2}>
