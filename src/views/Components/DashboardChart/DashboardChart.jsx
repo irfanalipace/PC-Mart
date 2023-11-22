@@ -4,6 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 
 // eslint-disable-next-line react/prop-types
 const ApexChart = ({ seriesOne, seriesTwo, monthArray, total }) => {
+	const maxYAxis = total + 10;
 	const [chartData, setChartData] = useState({
 		series: [
 			{
@@ -68,13 +69,8 @@ const ApexChart = ({ seriesOne, seriesTwo, monthArray, total }) => {
 					text: '',
 				},
 				min: 0,
-				max: total / 100,
+				max: total,
 				tickAmount: 3,
-				labels: {
-					formatter: function (val) {
-						return val * 100;
-					},
-				},
 			},
 			legend: {
 				position: 'top',
