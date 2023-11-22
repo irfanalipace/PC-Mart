@@ -42,7 +42,7 @@ const Dashboard = () => {
 						// percent={"+60.8%"}
 					/>
 				</Grid>
-				<Grid item lg={3}>
+				<Grid item lg={2}>
 					<Box>
 						<DashboardCard
 							name={'Non Ready Items'}
@@ -51,11 +51,20 @@ const Dashboard = () => {
 						/>
 					</Box>
 				</Grid>
-				<Grid item lg={3}>
+				<Grid item lg={2}>
 					<Box>
 						<DashboardCard
 							name={'Ready Items'}
 							total={alldata?.total_ready_items}
+							// percent={"-0.03%"}
+						/>
+					</Box>
+				</Grid>
+				<Grid item lg={2}>
+					<Box>
+						<DashboardCard
+							name={'Sold Items'}
+							total={alldata?.total_sold_items ? alldata?.total_sold_items : 0}
 							// percent={"-0.03%"}
 						/>
 					</Box>
