@@ -19,10 +19,13 @@ import { LOGIN } from '../../../core/store/auth/authSlice';
 import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 
 const ProfileUpdate = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+	const [dialogProps, setDialogProps] = useState({});
 	const userInfo = useSelector(state => state?.auth?.user);
 	const [selectedImage, setSelectedImage] = useState(userInfo?.profile_pic);
 
@@ -136,7 +139,10 @@ const ProfileUpdate = () => {
 									</IconButton>
 									<IconButton
 										onClick={() => {
-											deleteProfilePic();
+											setOpenConfirmDialog(true);
+											setDialogProps({
+												onConfirm: () => deleteProfilePic(),
+											});
 										}}
 										sx={{ backgroundColor: '#BDBDBD' }}
 										className='delete-button'
@@ -182,6 +188,12 @@ const ProfileUpdate = () => {
 					</Grid>
 				</Grid>
 			</Paper>
+			<ConfirmDialog
+				title='Are you sure you want to delete the Profile Pic'
+				isOpen={openConfirmDialog}
+				onClose={() => setOpenConfirmDialog(false)}
+				{...dialogProps}
+			/>
 		</Paper>
 	);
 };
