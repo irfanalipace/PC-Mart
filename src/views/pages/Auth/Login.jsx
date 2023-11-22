@@ -205,7 +205,7 @@ export default function Login() {
 										<Box height={'5px'}></Box>
 									)}
 								</form>
-								<AuthFooter>
+								{/* <AuthFooter>
 									<Button
 										variant='text'
 										to='/register'
@@ -224,7 +224,7 @@ export default function Login() {
 									>
 										Forgot Password
 									</Button>
-								</AuthFooter>
+								</AuthFooter> */}
 							</FormContainer>
 						</AuthSection>
 					</Grid>

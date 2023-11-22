@@ -469,10 +469,9 @@ const FileUploadTable = () => {
 										return (
 											<Stack key={index} direction={'row'} spacing={1}>
 												<Typography sx={{ color: '#E0E0E0' }} as='li'>
-													<span style={{ color: '#D32F2F' }}> {error}</span>
-												</Typography>
-												<Typography key={index}>
-													{`:at row ${item.row}`}
+													<span style={{ color: '#D32F2F' }}>
+														{`${error.replace(/\.$/, '')} at row ${item.row}`}
+													</span>
 												</Typography>
 											</Stack>
 										);
