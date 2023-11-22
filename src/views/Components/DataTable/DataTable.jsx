@@ -155,7 +155,10 @@ const DataTable = ({
 			enableColumnOrdering={true}
 			enableColumnFilters={true}
 			enableTableHead={!collapsed}
-			onColumnFiltersChange={setColumnFilters}
+			onColumnFiltersChange={e => {
+				console.log(e);
+				e();
+			}}
 			onGlobalFilterChange={setGlobalFilter}
 			onPaginationChange={onPaginationChange}
 			onSortingChange={setSorting}

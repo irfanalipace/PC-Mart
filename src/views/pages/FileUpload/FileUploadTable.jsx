@@ -14,12 +14,14 @@ import {
 	Tooltip,
 	Divider,
 } from '@mui/material';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
-import HeaderPaper from '../../Components/Containers/HeaderPaper';
 import { Download } from '@mui/icons-material';
 import {
 	DownloadSingleFile,
@@ -29,8 +31,6 @@ import {
 } from '../../../core/api/fileupload';
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
-import MUIButton from '../../Components/Button/MUIButton';
-import { importItemsFile } from '../../../core/api/readyItems';
 import { getBatchNumber } from '../../../core/api/batchNumber';
 import {
 	downloadFile,
@@ -39,12 +39,12 @@ import {
 import LinearProgressWithLabel from '../../Components/Progress/Progress.jsx';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog.jsx';
 import Modal from '../../Components/Modal/Dialog.jsx';
+import ImportFile from '../../Components/ImportFile/index.jsx';
 
 const FileUploadTable = () => {
 	const [progress, setProgress] = useState(10);
 	const [errorModal, setErrorModal] = useState(false);
 
-	const [loading, setLoading] = useState(false);
 	const [errorloading, setErrorLoading] = useState(false);
 	const [downloading, setDownloading] = useState(null);
 	const [refresh, setRefresh] = useState(0);
@@ -58,6 +58,12 @@ const FileUploadTable = () => {
 	const [dialogProps, setDialogProps] = useState({});
 	const [convertLoaidng, setconvertLoading] = useState('');
 	const [errorData, setErrorData] = useState('');
+	const [downloadModal, setDownloadModal] = useState(false);
+	const [fileDownloadId, setFileDownLoadId] = useState(null);
+
+	const handleRadioButton = e => {
+		console.log(e.target.value);
+	};
 
 	const handleChange = event => {
 		setSelectedValue(event.target.value);
@@ -73,20 +79,14 @@ const FileUploadTable = () => {
 		}
 	};
 
-	const handleFileUpload = event => {
-		const file = event.target.files[0];
-		setFile(file);
-		setFileName(file?.name);
-	};
-
-	const FileDownload = async id => {
+	const FileDownload = async () => {
 		try {
-			setDownloading(id);
+			setDownloading(fileDownloadId);
 			for (let i = 0; i <= 100; i += 10) {
 				await new Promise(resolve => setTimeout(resolve, 1));
 				setProgress(i);
 				if (i === 100) {
-					const resp = await DownloadSingleFile(id);
+					const resp = await DownloadSingleFile(fileDownloadId);
 					downloadFile(resp?.data?.route);
 				}
 			}
@@ -101,6 +101,7 @@ const FileUploadTable = () => {
 		{
 			accessorKey: 'name',
 			header: 'File Name',
+			size: 100,
 		},
 		{
 			accessorKey: 'uploaded_date_time',
@@ -157,7 +158,10 @@ const FileUploadTable = () => {
 					<Button
 						id={row?.original?.id}
 						variant='contained'
-						onClick={() => FileDownload(row?.original?.id)}
+						onClick={() => {
+							setFileDownLoadId(row?.original?.id);
+							setDownloadModal(true);
+						}}
 						disabled={downloading === row?.original?.id}
 					>
 						{downloading === row?.original?.id ? (
@@ -208,22 +212,6 @@ const FileUploadTable = () => {
 		}
 	};
 
-	const importFile = async () => {
-		try {
-			setLoading(true);
-			await importItemsFile(file);
-			setRefresh(prev => prev + 1);
-			notyf.success('File Imported Successfully');
-			setFile(null);
-			setFileName('');
-		} catch (err) {
-			console.log(err);
-			notyf.error(err?.data?.message);
-		} finally {
-			setLoading(false);
-		}
-	};
-
 	useEffect(() => {
 		fetchBatchNumbers();
 	}, [refresh]);
@@ -236,21 +224,6 @@ const FileUploadTable = () => {
 			console.error(e);
 		}
 	};
-
-	const downloadSample = async () => {
-		try {
-			const url = import.meta.env.VITE_API_BASE_URL + '/sample-download';
-			const modifiedUrl = url.replace('/api/', '/');
-			window.open(modifiedUrl);
-		} catch (e) {
-			console.log(e);
-		}
-	};
-	useEffect(() => {
-		// return () => {
-		//   clearInterval(timer);
-		// };
-	}, []);
 
 	const handleFileConvert = async id => {
 		try {
@@ -273,101 +246,8 @@ const FileUploadTable = () => {
 		<>
 			<Grid container>
 				<Grid item sm={12}>
-					<HeaderPaper sx={{ padding: '10px 20px' }}>
-						<Grid item container>
-							<>
-								<Grid item sm={6} display='flex' alignItems='center'>
-									<Stack
-										direction='row'
-										display='flex'
-										alignItems='center'
-										spacing={0}
-									>
-										<Typography variant='h6' component='span'>
-											Upload Inventory File
-										</Typography>
-									</Stack>
-								</Grid>
-
-								<Grid
-									item
-									sm={6}
-									sx={{
-										display: 'flex',
-										justifyContent: 'end',
-										alignItems: 'center',
-									}}
-								>
-									<Box sx={{ margin: '5px' }}>
-										<MUIButton
-											sx={{ padding: '10px' }}
-											onClick={() => downloadSample()}
-										>
-											<Download />
-											&ensp;Download Sample
-										</MUIButton>
-									</Box>
-								</Grid>
-							</>
-							<Grid
-								item
-								sm={6}
-								sx={{
-									display: 'flex',
-									justifyContent: 'end',
-									alignItems: 'center',
-								}}
-							></Grid>
-
-							<Grid
-								item
-								sm={12}
-								direction='row'
-								display='flex'
-								alignItems='center'
-								spacing={0}
-							>
-								<Stack sx={{ marginTop: '22px' }}>
-									<label htmlFor='upload-image'>
-										<Button
-											variant=''
-											component='span'
-											sx={{ border: '1px solid #1976d2', color: '#1976d2' }}
-										>
-											CHOOSE FILE
-										</Button>
-										<input
-											id='upload-image'
-											hidden
-											accept='/*'
-											type='file'
-											onChange={handleFileUpload}
-										/>
-										&ensp;
-										{fileName && <>{fileName}</>}
-									</label>
-								</Stack>
-							</Grid>
-							<Grid
-								item
-								sm={12}
-								direction='row'
-								display='flex'
-								alignItems='center'
-								spacing={0}
-							>
-								<Stack sx={{ marginTop: '22px', marginBottom: '12px' }}>
-									<Button
-										variant='contained'
-										onClick={importFile}
-										disabled={!file || loading}
-									>
-										{loading ? <CircularProgress size={25} /> : 'IMPORT FILE'}
-									</Button>
-								</Stack>
-							</Grid>
-						</Grid>
-					</HeaderPaper>
+					{/* here */}
+					<ImportFile title='Upload Inventory File' setRefresh={setRefresh} />
 					<TableContainer>
 						<Grid item container>
 							<>
@@ -493,6 +373,55 @@ const FileUploadTable = () => {
 								</Box>
 							);
 						})}
+				</Box>
+			</Modal>
+			<Modal
+				open={downloadModal}
+				title='Downalod'
+				onClose={() => setDownloadModal(false)}
+			>
+				<Box mb={5} mt={2} ml={3}>
+					<FormControl sx={{ width: '100%' }}>
+						<FormLabel id='demo-row-radio-buttons-group-label'>
+							What do you want to download?
+						</FormLabel>
+						<RadioGroup
+							defaultValue={'all'}
+							sx={{ ml: 1, mt: 1 }}
+							aria-labelledby='demo-row-radio-buttons-group-label'
+							name='row-radio-buttons-group'
+							onChange={handleRadioButton}
+						>
+							<FormControlLabel
+								value='all'
+								control={<Radio />}
+								label='All Inventory Items'
+							/>
+							<FormControlLabel
+								value='ready'
+								control={<Radio />}
+								label='Ready Items'
+							/>
+							<FormControlLabel
+								value='non_ready'
+								control={<Radio />}
+								label='Non Ready Items'
+							/>
+						</RadioGroup>
+						<Box ml={'auto'} mr={3}>
+							<Stack direction={'row'} spacing={2}>
+								<Button variant='contained' onClick={FileDownload}>
+									Download
+								</Button>
+								<Button
+									variant='outlined'
+									onClick={() => setDownloadModal(false)}
+								>
+									Cancel
+								</Button>
+							</Stack>
+						</Box>
+					</FormControl>
 				</Box>
 			</Modal>
 			<OverlayLoader open={errorloading} />
