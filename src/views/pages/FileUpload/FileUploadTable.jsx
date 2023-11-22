@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 
 import notyf from '../../Components/NotificationMessage/notyfInstance';
+import OverlayLoader from '../../Components/OverlayLoader/OverlayLoader.jsx';
 import {
 	Box,
 	Grid,
@@ -63,9 +64,11 @@ const FileUploadTable = () => {
 
 	const handleStatusClick = async row => {
 		if (row.original.status === 'error') {
-			setErrorModal(true);
+			setErrorLoading(true);
 			const res = await getFileUploadError(row.original.id);
 			setErrorData(res?.data);
+			setErrorLoading(false);
+			setErrorModal(true);
 		}
 	};
 
@@ -484,6 +487,7 @@ const FileUploadTable = () => {
 						})}
 				</Box>
 			</Modal>
+			<OverlayLoader open={errorloading} />
 		</>
 	);
 };
