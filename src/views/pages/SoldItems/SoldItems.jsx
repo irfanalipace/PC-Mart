@@ -5,6 +5,7 @@ import TableContainer from '../../Components/Containers/TableContainer';
 import { getSolditems } from '../../../core/api/readyItems';
 import DataTableHeading from '../../Components/DataTable/DataTableHeading';
 import DataTableExtendedHeader from '../../Components/DataTable/DataTableExtendedHeader';
+import ImportFile from '../../Components/ImportFile';
 
 const SoldItems = () => {
 	const [refresh, setRefresh] = useState(0);
@@ -62,6 +63,7 @@ const SoldItems = () => {
 			<Grid container>
 				<Grid item sm={12}>
 					<DataTableHeading title='Sold Items' />
+					<ImportFile title='Upload Ready Items File' type='sold' />
 					<TableContainer>
 						<DataTableExtendedHeader
 							onSearchSubmit={handleSearchChange}
