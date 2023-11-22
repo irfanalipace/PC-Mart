@@ -75,9 +75,7 @@ const FileUploadTable = () => {
 	const handleFileUpload = event => {
 		const file = event.target.files[0];
 		setFile(file);
-		const reader = new FileReader();
 		setFileName(file?.name);
-		reader.onloadend = () => {};
 	};
 
 	const FileDownload = async id => {
@@ -215,19 +213,19 @@ const FileUploadTable = () => {
 			await importItemsFile(file);
 			setRefresh(prev => prev + 1);
 			notyf.success('File Imported Successfully');
+			setFile(null);
+			setFileName('');
 		} catch (err) {
 			console.log(err);
 			notyf.error(err?.data?.message);
 		} finally {
 			setLoading(false);
-			setFile(null);
-			setFileName('');
 		}
 	};
 
 	useEffect(() => {
 		fetchBatchNumbers();
-	}, []);
+	}, [refresh]);
 
 	const fetchBatchNumbers = async () => {
 		try {
@@ -267,6 +265,7 @@ const FileUploadTable = () => {
 			notyf.error('Failed to convert item to ready state.');
 		} finally {
 			setconvertLoading('');
+			setRefresh(prev => prev + 1);
 		}
 	};
 	return (
