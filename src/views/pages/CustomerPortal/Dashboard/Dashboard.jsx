@@ -72,7 +72,7 @@ const Dashboard = () => {
 				<Grid item>
 					<Box>
 						<DashboardCard
-							name={'Total inventory value (Not-Ready-Items)'}
+							name={'Total value (Non-Ready Items)'}
 							total={
 								'$' + alldata?.total_inventory_value
 									? '$' + alldata?.total_inventory_value
@@ -85,7 +85,7 @@ const Dashboard = () => {
 			</Grid>
 			<Grid
 				container
-				sx={{ width: '40%' }}
+				sx={{ width: '50%' }}
 				justifyContent={'space-around'}
 				pl={3}
 			>
@@ -98,9 +98,10 @@ const Dashboard = () => {
 						}}
 						sx={{ cursor: 'pointer' }}
 					>
-						Total Products
+						Total Items
 					</Typography>
 				</Grid>
+				|
 				<Grid item>
 					<Typography
 						fontWeight={chart === 'not-ready' && 600}
@@ -110,9 +111,10 @@ const Dashboard = () => {
 						}}
 						sx={{ cursor: 'pointer' }}
 					>
-						Non Ready Products
+						Non Ready Items
 					</Typography>
 				</Grid>
+				|
 				<Grid item>
 					<Typography
 						fontWeight={chart === 'ready' && 600}
@@ -122,9 +124,10 @@ const Dashboard = () => {
 						}}
 						sx={{ cursor: 'pointer' }}
 					>
-						Ready Products
+						Ready Items
 					</Typography>
 				</Grid>
+				|
 				<Grid item>
 					<Typography
 						fontWeight={chart === 'sold' && 600}
@@ -134,7 +137,7 @@ const Dashboard = () => {
 						}}
 						sx={{ cursor: 'pointer' }}
 					>
-						Sold Products
+						Sold Items
 					</Typography>
 				</Grid>
 			</Grid>
