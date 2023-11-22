@@ -227,7 +227,7 @@ const FileUploadTable = () => {
 
 	useEffect(() => {
 		fetchBatchNumbers();
-	}, []);
+	}, [refresh]);
 
 	const fetchBatchNumbers = async () => {
 		try {
@@ -259,6 +259,7 @@ const FileUploadTable = () => {
 			const res = await convertNotReadyItemsToReady(id);
 			if (res.success) {
 				notyf.success(res?.message);
+				setRefresh(prev => prev + 1);
 			} else {
 				notyf.error(res?.message || 'Somthing went wrong');
 			}
