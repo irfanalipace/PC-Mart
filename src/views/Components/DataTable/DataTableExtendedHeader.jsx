@@ -10,6 +10,7 @@ import { getBatchNumber } from '../../../core/api/batchNumber';
 export default function DataTableExtendedHeader({
 	onSearchSubmit,
 	onBatchChange,
+	type,
 }) {
 	const [batchList, setBatchList] = useState([]);
 	const [batchNumber, setBatchNumber] = useState([]);
@@ -62,7 +63,7 @@ export default function DataTableExtendedHeader({
 							label='Batch No'
 							onChange={onBatchChange}
 						>
-							<MenuItem value={null}>All Non Ready Items</MenuItem>
+							<MenuItem value={null}>All {type} Items</MenuItem>
 							<Divider />
 							<Box sx={{ maxHeight: '400px', overflowY: 'auto' }}>
 								{batchList?.map(row => (
