@@ -146,16 +146,16 @@ const DataTable = ({
 			manualFiltering={
 				typeof searchApi === 'function' || manualFilter ? true : false
 			}
-			enableStickyHeader={!collapsed}
+			enableStickyHeader={true}
 			enableFullScreenToggle={false}
-			enableColumnActions={!collapsed}
+			enableColumnActions={true}
 			enableDensityToggle={!collapsed}
-			enableHiding={!collapsed}
-			enableFilters={!collapsed}
-			enableColumnOrdering={!collapsed}
-			enableColumnFilters={false}
+			enableHiding={true}
+			enableFilters={true}
+			enableColumnOrdering={true}
+			enableColumnFilters={true}
 			enableTableHead={!collapsed}
-			onColumnFiltersChange={setColumnFilters}
+			onColumnFiltersChange={e => console.log(e)}
 			onGlobalFilterChange={setGlobalFilter}
 			onPaginationChange={onPaginationChange}
 			onSortingChange={setSorting}
