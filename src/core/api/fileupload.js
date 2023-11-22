@@ -55,3 +55,15 @@ export function DownloadSampleFile() {
 			});
 	});
 }
+
+export function getFileUploadError(id) {
+	return new Promise((resolve, reject) => {
+		ApiService.get(`/file-errors/${id}`)
+			.then(response => {
+				resolve(response);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
