@@ -12,6 +12,7 @@ import {
 	Button,
 	CircularProgress,
 	Tooltip,
+	Divider,
 } from '@mui/material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
@@ -149,7 +150,7 @@ const FileUploadTable = () => {
 		},
 		{
 			accessorKey: 'batch_number',
-			header: 'ACTIONS',
+			header: 'Actions',
 			size: 300,
 			Cell: ({ row }) => (
 				<Stack direction={'row'} spacing={2}>
@@ -414,18 +415,21 @@ const FileUploadTable = () => {
 												>
 													All Files
 												</MenuItem>
-												{batchList?.map(row => (
-													<MenuItem
-														key={row.id}
-														value={row?.id}
-														onClick={() => {
-															setBatchNumber(row?.batch_number);
-															setRefresh(prev => prev + 1);
-														}}
-													>
-														{row?.batch_number}
-													</MenuItem>
-												))}
+												<Divider />
+												<Box sx={{ maxHeight: '400px', overflowY: 'auto' }}>
+													{batchList?.map(row => (
+														<MenuItem
+															key={row.id}
+															value={row?.id}
+															onClick={() => {
+																setBatchNumber(row?.batch_number);
+																setRefresh(prev => prev + 1);
+															}}
+														>
+															{row?.batch_number}
+														</MenuItem>
+													))}
+												</Box>
 											</Select>
 										</FormControl>
 									</Box>

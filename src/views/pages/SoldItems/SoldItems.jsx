@@ -66,6 +66,7 @@ const SoldItems = () => {
 						<DataTableExtendedHeader
 							onSearchSubmit={handleSearchChange}
 							onBatchChange={handleBatchChange}
+							type='Sold'
 						/>
 
 						<DataTable

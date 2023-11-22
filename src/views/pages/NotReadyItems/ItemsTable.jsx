@@ -67,6 +67,7 @@ const ItemsTable = () => {
 						<DataTableExtendedHeader
 							onSearchSubmit={handleSearchChange}
 							onBatchChange={handleBatchChange}
+							type='Non Ready'
 						/>
 						<DataTable
 							api={e => getNonReadyItems(e, bathcNumber, searchText)}
