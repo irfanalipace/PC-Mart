@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
-import { Box, Grid, TextField, MenuItem } from '@mui/material';
+import { Box, Grid, TextField, MenuItem, Divider } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -63,11 +63,14 @@ export default function DataTableExtendedHeader({
 							onChange={onBatchChange}
 						>
 							<MenuItem value={null}>All Non Ready Items</MenuItem>
-							{batchList?.map(row => (
-								<MenuItem key={row.id} value={row?.batch_number}>
-									{row?.batch_number}
-								</MenuItem>
-							))}
+							<Divider />
+							<Box sx={{ maxHeight: '400px', overflowY: 'auto' }}>
+								{batchList?.map(row => (
+									<MenuItem key={row.id} value={row?.batch_number}>
+										{row?.batch_number}
+									</MenuItem>
+								))}
+							</Box>
 						</Select>
 					</FormControl>
 				</Grid>
