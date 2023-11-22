@@ -35,7 +35,7 @@ const Dashboard = () => {
 	return (
 		<Grid container columnGap={1}>
 			<Grid container spacing={2} p={3}>
-				<Grid item lg={2}>
+				<Grid item lg={3}>
 					<DashboardCard
 						name={'All Items'}
 						total={alldata?.total_items}
@@ -69,7 +69,7 @@ const Dashboard = () => {
 						/>
 					</Box>
 				</Grid>
-				<Grid item>
+				<Grid item lg={3}>
 					<Box>
 						<DashboardCard
 							name={'Total value (Non-Ready Items)'}
