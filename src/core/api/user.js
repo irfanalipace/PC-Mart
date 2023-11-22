@@ -27,3 +27,14 @@ export function updateProfile(data) {
 			});
 	});
 }
+export function DeleteProfile() {
+	return new Promise((resolve, reject) => {
+		ApiService.get('/delete-profile-pic')
+			.then(response => {
+				resolve(response);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
