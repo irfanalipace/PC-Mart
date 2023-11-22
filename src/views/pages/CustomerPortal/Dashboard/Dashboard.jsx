@@ -85,7 +85,7 @@ const Dashboard = () => {
 			</Grid>
 			<Grid
 				container
-				sx={{ width: '40%' }}
+				sx={{ width: '50%' }}
 				justifyContent={'space-around'}
 				pl={3}
 			>
@@ -101,6 +101,7 @@ const Dashboard = () => {
 						Total Products
 					</Typography>
 				</Grid>
+				|
 				<Grid item>
 					<Typography
 						fontWeight={chart === 'not-ready' && 600}
@@ -113,6 +114,7 @@ const Dashboard = () => {
 						Non Ready Products
 					</Typography>
 				</Grid>
+				|
 				<Grid item>
 					<Typography
 						fontWeight={chart === 'ready' && 600}
@@ -125,6 +127,7 @@ const Dashboard = () => {
 						Ready Products
 					</Typography>
 				</Grid>
+				|
 				<Grid item>
 					<Typography
 						fontWeight={chart === 'sold' && 600}
