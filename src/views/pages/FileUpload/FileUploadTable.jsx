@@ -81,6 +81,7 @@ const FileUploadTable = () => {
 
 	const FileDownload = async () => {
 		try {
+			setDownloadModal(false);
 			setDownloading(fileDownloadId);
 			for (let i = 0; i <= 100; i += 10) {
 				await new Promise(resolve => setTimeout(resolve, 1));
