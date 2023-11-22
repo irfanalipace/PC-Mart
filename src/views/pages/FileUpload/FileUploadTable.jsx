@@ -259,7 +259,6 @@ const FileUploadTable = () => {
 			const res = await convertNotReadyItemsToReady(id);
 			if (res.success) {
 				notyf.success(res?.message);
-				setRefresh(prev => prev + 1);
 			} else {
 				notyf.error(res?.message || 'Somthing went wrong');
 			}
@@ -268,6 +267,7 @@ const FileUploadTable = () => {
 			notyf.error('Failed to convert item to ready state.');
 		} finally {
 			setconvertLoading('');
+			setRefresh(prev => prev + 1);
 		}
 	};
 	return (
