@@ -68,6 +68,7 @@ const ReadyItemsTable = () => {
 						<DataTableExtendedHeader
 							onSearchSubmit={handleSearchChange}
 							onBatchChange={handleBatchChange}
+							type='Ready'
 						/>
 
 						<DataTable

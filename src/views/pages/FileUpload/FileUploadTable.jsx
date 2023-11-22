@@ -12,6 +12,7 @@ import {
 	Button,
 	CircularProgress,
 	Tooltip,
+	Divider,
 } from '@mui/material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
@@ -75,9 +76,7 @@ const FileUploadTable = () => {
 	const handleFileUpload = event => {
 		const file = event.target.files[0];
 		setFile(file);
-		const reader = new FileReader();
 		setFileName(file?.name);
-		reader.onloadend = () => {};
 	};
 
 	const FileDownload = async id => {
@@ -151,7 +150,7 @@ const FileUploadTable = () => {
 		},
 		{
 			accessorKey: 'batch_number',
-			header: 'ACTIONS',
+			header: 'Actions',
 			size: 300,
 			Cell: ({ row }) => (
 				<Stack direction={'row'} spacing={2}>
@@ -215,19 +214,19 @@ const FileUploadTable = () => {
 			await importItemsFile(file);
 			setRefresh(prev => prev + 1);
 			notyf.success('File Imported Successfully');
+			setFile(null);
+			setFileName('');
 		} catch (err) {
 			console.log(err);
 			notyf.error(err?.data?.message);
 		} finally {
 			setLoading(false);
-			setFile(null);
-			setFileName('');
 		}
 	};
 
 	useEffect(() => {
 		fetchBatchNumbers();
-	}, []);
+	}, [refresh]);
 
 	const fetchBatchNumbers = async () => {
 		try {
@@ -267,6 +266,7 @@ const FileUploadTable = () => {
 			notyf.error('Failed to convert item to ready state.');
 		} finally {
 			setconvertLoading('');
+			setRefresh(prev => prev + 1);
 		}
 	};
 	return (
@@ -415,18 +415,21 @@ const FileUploadTable = () => {
 												>
 													All Files
 												</MenuItem>
-												{batchList?.map(row => (
-													<MenuItem
-														key={row.id}
-														value={row?.id}
-														onClick={() => {
-															setBatchNumber(row?.batch_number);
-															setRefresh(prev => prev + 1);
-														}}
-													>
-														{row?.batch_number}
-													</MenuItem>
-												))}
+												<Divider />
+												<Box sx={{ maxHeight: '400px', overflowY: 'auto' }}>
+													{batchList?.map(row => (
+														<MenuItem
+															key={row.id}
+															value={row?.id}
+															onClick={() => {
+																setBatchNumber(row?.batch_number);
+																setRefresh(prev => prev + 1);
+															}}
+														>
+															{row?.batch_number}
+														</MenuItem>
+													))}
+												</Box>
 											</Select>
 										</FormControl>
 									</Box>
