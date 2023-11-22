@@ -54,18 +54,20 @@ const ProfileUpdate = () => {
 			}
 		},
 	});
-	const handleImageUpload = () => {
-		const input = document.createElement('input');
-		input.type = 'file';
-		input.addEventListener('change', event => {
-			const file = event.target.files[0];
-			formik.setFieldValue('profile_pic', file);
-			const imageUrl = URL.createObjectURL(file);
-			setSelectedImage(imageUrl);
-			input.value = '';
-		});
+	const handleImageUpload = event => {
+		if (!event.target.closest('.delete-button')) {
+			const input = document.createElement('input');
+			input.type = 'file';
+			input.addEventListener('change', event => {
+				const file = event.target.files[0];
+				formik.setFieldValue('profile_pic', file);
+				const imageUrl = URL.createObjectURL(file);
+				setSelectedImage(imageUrl);
+				input.value = '';
+			});
 
-		input.click();
+			input.click();
+		}
 	};
 	useEffect(() => {
 		formik.setFieldValue('first_name', userInfo?.first_name);
@@ -95,7 +97,7 @@ const ProfileUpdate = () => {
 									backgroundColor: '#565958',
 								},
 							}}
-							onClick={handleImageUpload}
+							onClick={e => handleImageUpload(e)}
 						>
 							{selectedImage ? (
 								<>
@@ -109,29 +111,39 @@ const ProfileUpdate = () => {
 											position: 'relative',
 										}}
 									/>
-
-									<div
-										style={{
-											position: 'absolute',
-										}}
-									>
-										<IconButton
-											sx={{ backgroundColor: '#BDBDBD', marginRight: '1em' }}
-										>
-											<EditIcon />
-										</IconButton>
-										<IconButton sx={{ backgroundColor: '#BDBDBD' }}>
-											<DeleteIcon />
-										</IconButton>
-									</div>
 								</>
 							) : (
 								<CameraAltOutlinedIcon
 									sx={{ color: '#fff', fontSize: '60px' }}
 								/>
 							)}
+							{selectedImage && (
+								<div
+									style={{
+										position: 'absolute',
+									}}
+								>
+									<IconButton
+										onClick={e => handleImageUpload(e)}
+										sx={{ backgroundColor: '#BDBDBD', marginRight: '1em' }}
+									>
+										<EditIcon />
+									</IconButton>
+									<IconButton
+										onClick={() => {
+											formik.setFieldValue('profile_pic', '');
+											setSelectedImage(null);
+										}}
+										sx={{ backgroundColor: '#BDBDBD' }}
+										className='delete-button'
+									>
+										<DeleteIcon />
+									</IconButton>
+								</div>
+							)}
 						</Box>
 					</Grid>
+
 					<Grid item xs='3'>
 						<Stack spacing={3}>
 							<FormField
