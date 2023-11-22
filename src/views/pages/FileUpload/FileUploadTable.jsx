@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 
 import notyf from '../../Components/NotificationMessage/notyfInstance';
+import OverlayLoader from '../../Components/OverlayLoader/OverlayLoader.jsx';
 import {
 	Box,
 	Grid,
@@ -12,6 +13,7 @@ import {
 	CircularProgress,
 	Tooltip,
 } from '@mui/material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -21,6 +23,7 @@ import { Download } from '@mui/icons-material';
 import {
 	DownloadSingleFile,
 	convertNotReadyItemsToReady,
+	getFileUploadError,
 	getUploadFile,
 } from '../../../core/api/fileupload';
 import DataTable from '../../Components/DataTable/DataTable';
@@ -34,11 +37,14 @@ import {
 } from '../../../core/utils/helpers';
 import LinearProgressWithLabel from '../../Components/Progress/Progress.jsx';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog.jsx';
+import Modal from '../../Components/Modal/Dialog.jsx';
 
 const FileUploadTable = () => {
 	const [progress, setProgress] = useState(10);
+	const [errorModal, setErrorModal] = useState(false);
 
 	const [loading, setLoading] = useState(false);
+	const [errorloading, setErrorLoading] = useState(false);
 	const [downloading, setDownloading] = useState(null);
 	const [refresh, setRefresh] = useState(0);
 	const [selectedRows, setSelectedRows] = useState([]);
@@ -50,9 +56,20 @@ const FileUploadTable = () => {
 	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 	const [dialogProps, setDialogProps] = useState({});
 	const [convertLoaidng, setconvertLoading] = useState('');
+	const [errorData, setErrorData] = useState('');
 
 	const handleChange = event => {
 		setSelectedValue(event.target.value);
+	};
+
+	const handleStatusClick = async row => {
+		if (row.original.status === 'error') {
+			setErrorLoading(true);
+			const res = await getFileUploadError(row.original.id);
+			setErrorData(res?.data);
+			setErrorLoading(false);
+			setErrorModal(true);
+		}
 	};
 
 	const handleFileUpload = event => {
@@ -99,6 +116,7 @@ const FileUploadTable = () => {
 			header: 'Status',
 			Cell: ({ row }) => (
 				<TableCell
+					onClick={() => handleStatusClick(row)}
 					style={{
 						color: getColorForStatus(row.original.status),
 						border: 'none',
@@ -434,6 +452,42 @@ const FileUploadTable = () => {
 				onClose={() => setOpenConfirmDialog(false)}
 				{...dialogProps}
 			/>
+			<Modal
+				open={errorModal}
+				title='Error Found'
+				onClose={() => setErrorModal(false)}
+			>
+				<Box mb={5}>
+					{errorData &&
+						errorData?.map((item, index) => {
+							return (
+								<Stack
+									key={index}
+									px={3}
+									pt={1}
+									sx={{
+										background: 'rgba(211, 47, 47, 0.15)',
+										color: '#D32F2F',
+										borderBottom: '0.1px solid rgba(211, 47, 47, 0.15)',
+									}}
+								>
+									<Stack direction={'row'} spacing={1}>
+										<HighlightOffIcon sx={{ color: '#D32F2F' }} />
+										<Typography>{item.attribute}</Typography>
+									</Stack>
+									{item?.errors?.map((error, index) => {
+										return (
+											<Typography sx={{ mb: 2, ml: 4 }} key={index}>
+												{error}
+											</Typography>
+										);
+									})}
+								</Stack>
+							);
+						})}
+				</Box>
+			</Modal>
+			<OverlayLoader open={errorloading} />
 		</>
 	);
 };
