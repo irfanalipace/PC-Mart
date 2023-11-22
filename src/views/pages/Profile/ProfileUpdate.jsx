@@ -13,16 +13,19 @@ import { useFormik } from 'formik';
 import notyf from '../../Components/NotificationMessage/notyfInstance';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { updateProfile } from '../../../core/api/user';
+import { DeleteProfile, updateProfile } from '../../../core/api/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN } from '../../../core/store/auth/authSlice';
 import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 
 const ProfileUpdate = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+	const [dialogProps, setDialogProps] = useState({});
 	const userInfo = useSelector(state => state?.auth?.user);
 	const [selectedImage, setSelectedImage] = useState(userInfo?.profile_pic);
 
@@ -73,7 +76,12 @@ const ProfileUpdate = () => {
 		formik.setFieldValue('first_name', userInfo?.first_name);
 		formik.setFieldValue('last_name', userInfo?.last_name);
 	}, []);
-
+	const deleteProfilePic = async () => {
+		const resp = await DeleteProfile();
+		dispatch(LOGIN(resp?.data));
+		formik.setFieldValue('profile_pic', '');
+		setSelectedImage(null);
+	};
 	return (
 		<Paper sx={{ p: 2, height: 'calc(100vh - 85px)' }}>
 			<Paper sx={{ mx: 1 }}>
@@ -131,8 +139,10 @@ const ProfileUpdate = () => {
 									</IconButton>
 									<IconButton
 										onClick={() => {
-											formik.setFieldValue('profile_pic', '');
-											setSelectedImage(null);
+											setOpenConfirmDialog(true);
+											setDialogProps({
+												onConfirm: () => deleteProfilePic(),
+											});
 										}}
 										sx={{ backgroundColor: '#BDBDBD' }}
 										className='delete-button'
@@ -178,6 +188,12 @@ const ProfileUpdate = () => {
 					</Grid>
 				</Grid>
 			</Paper>
+			<ConfirmDialog
+				title='Are you sure you want to delete the Profile Pic'
+				isOpen={openConfirmDialog}
+				onClose={() => setOpenConfirmDialog(false)}
+				{...dialogProps}
+			/>
 		</Paper>
 	);
 };

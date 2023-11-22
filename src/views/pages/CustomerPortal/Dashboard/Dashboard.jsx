@@ -42,7 +42,7 @@ const Dashboard = () => {
 						// percent={"+60.8%"}
 					/>
 				</Grid>
-				<Grid item lg={3}>
+				<Grid item lg={2}>
 					<Box>
 						<DashboardCard
 							name={'Non Ready Items'}
@@ -51,7 +51,7 @@ const Dashboard = () => {
 						/>
 					</Box>
 				</Grid>
-				<Grid item lg={3}>
+				<Grid item lg={2}>
 					<Box>
 						<DashboardCard
 							name={'Ready Items'}
@@ -60,13 +60,22 @@ const Dashboard = () => {
 						/>
 					</Box>
 				</Grid>
+				<Grid item lg={2}>
+					<Box>
+						<DashboardCard
+							name={'Sold Items'}
+							total={alldata?.total_sold_items ? alldata?.total_sold_items : 0}
+							// percent={"-0.03%"}
+						/>
+					</Box>
+				</Grid>
 				<Grid item lg={3}>
 					<Box>
 						<DashboardCard
-							name={'Total Inventory Value'}
+							name={'Total value (Not-Ready-Item)'}
 							total={
 								'$' + alldata?.total_inventory_value
-									? alldata?.total_inventory_value
+									? '$' + alldata?.total_inventory_value
 									: 0
 							}
 							// percent={"-0.03%"}
@@ -116,6 +125,18 @@ const Dashboard = () => {
 						Ready Products
 					</Typography>
 				</Grid>
+				<Grid item>
+					<Typography
+						fontWeight={chart === 'sold' && 600}
+						onClick={() => {
+							setChart('sold');
+							fetchData('sold');
+						}}
+						sx={{ cursor: 'pointer' }}
+					>
+						Sold Products
+					</Typography>
+				</Grid>
 			</Grid>
 			<Grid container p={3}>
 				<Grid item lg={12}>
@@ -124,7 +145,7 @@ const Dashboard = () => {
 							seriesOne={series}
 							seriesTwo={seriesX}
 							monthArray={months}
-							total={alldata?.total_inventory_value}
+							total={alldata?.total_items}
 						/>
 					) : (
 						<Grid
