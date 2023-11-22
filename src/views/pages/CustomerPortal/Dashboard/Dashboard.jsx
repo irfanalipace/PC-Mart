@@ -98,7 +98,7 @@ const Dashboard = () => {
 						}}
 						sx={{ cursor: 'pointer' }}
 					>
-						Total Products
+						Total Items
 					</Typography>
 				</Grid>
 				|
@@ -111,7 +111,7 @@ const Dashboard = () => {
 						}}
 						sx={{ cursor: 'pointer' }}
 					>
-						Non Ready Products
+						Non Ready Items
 					</Typography>
 				</Grid>
 				|
@@ -124,7 +124,7 @@ const Dashboard = () => {
 						}}
 						sx={{ cursor: 'pointer' }}
 					>
-						Ready Products
+						Ready Items
 					</Typography>
 				</Grid>
 				|
@@ -137,7 +137,7 @@ const Dashboard = () => {
 						}}
 						sx={{ cursor: 'pointer' }}
 					>
-						Sold Products
+						Sold Items
 					</Typography>
 				</Grid>
 			</Grid>
