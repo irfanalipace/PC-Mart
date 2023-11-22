@@ -72,7 +72,7 @@ const Dashboard = () => {
 				<Grid item lg={3}>
 					<Box>
 						<DashboardCard
-							name={'Total value (Not-Ready-Items)'}
+							name={'Total value (Non-Ready Items)'}
 							total={
 								'$' + alldata?.total_inventory_value
 									? '$' + alldata?.total_inventory_value
