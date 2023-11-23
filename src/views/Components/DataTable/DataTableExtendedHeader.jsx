@@ -79,7 +79,9 @@ export default function DataTableExtendedHeader({
 								},
 							}}
 						>
-							<MenuItem value={null}>All {type} Items</MenuItem>
+							<MenuItem value={null}>{`All ${type} ${
+								type !== 'Files' ? 'Items' : ''
+							} `}</MenuItem>
 							<Divider />
 							{/* <Box sx={{ maxHeight: '400px', overflowY: 'auto' }}> */}
 							{batchList?.map(row => (

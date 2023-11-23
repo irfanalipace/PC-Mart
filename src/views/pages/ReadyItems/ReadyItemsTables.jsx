@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { Grid } from '@mui/material';
-
-import DataTable from '../../Components/DataTable/DataTable';
-import TableContainer from '../../Components/Containers/TableContainer';
-import { getReadyItems } from '../../../core/api/readyItems';
-import DataTableHeading from '../../Components/DataTable/DataTableHeading';
-import DataTableExtendedHeader from '../../Components/DataTable/DataTableExtendedHeader';
+import DataTable from 'comp/DataTable/DataTable';
+import TableContainer from 'comp/Containers/TableContainer';
+import { getReadyItems } from 'core/api/readyItems';
+import DataTableHeading from 'comp/DataTable/DataTableHeading';
+import DataTableExtendedHeader from 'comp/DataTable/DataTableExtendedHeader';
 
 const ReadyItemsTable = () => {
 	const [refresh, setRefresh] = useState(0);
-	const [selectedRows, setSelectedRows] = useState([]);
 	const [searchText, setSearchText] = useState('');
 	const [bathcNumber, setBatchNumber] = useState(null);
 
@@ -74,9 +72,7 @@ const ReadyItemsTable = () => {
 						<DataTable
 							api={e => getReadyItems(e, bathcNumber, searchText)}
 							columns={intialColumns}
-							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
-							// collapsed={viewItem}
 							refresh={refresh}
 						/>
 					</TableContainer>

@@ -6,20 +6,20 @@ import {
 	Paper,
 	Typography,
 } from '@mui/material';
-import FormField from '../../Components/InputField/FormField';
+import FormField from 'comp/InputField/FormField';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import notyf from '../../Components/NotificationMessage/notyfInstance';
+import notyf from 'comp/NotificationMessage/notyfInstance';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { DeleteProfile, updateProfile } from '../../../core/api/user';
+import { DeleteProfile, updateProfile } from 'core/api/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { LOGIN } from '../../../core/store/auth/authSlice';
+import { LOGIN } from 'core/store/auth/authSlice';
 import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
+import ConfirmDialog from 'comp/ConfirmDialog/ConfirmDialog';
 
 const ProfileUpdate = () => {
 	const navigate = useNavigate();

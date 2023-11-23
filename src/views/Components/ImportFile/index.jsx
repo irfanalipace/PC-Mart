@@ -3,7 +3,7 @@ import { useState } from 'react';
 import HeaderPaper from '../Containers/HeaderPaper';
 import MUIButton from '../Button/MUIButton';
 import { Download } from '@mui/icons-material';
-import { importItemsFile } from '../../../core/api/readyItems';
+import { importItemsFile, importSoldItemsFile } from 'core/api/readyItems';
 import notyf from '../NotificationMessage/notyfInstance';
 
 import {
@@ -14,7 +14,7 @@ import {
 	Button,
 	CircularProgress,
 } from '@mui/material';
-export default function ImportFile({ setRefresh, title = '' }) {
+export default function ImportFile({ type, setRefresh, title = '' }) {
 	const [fileName, setFileName] = useState('');
 	const [file, setFile] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -37,7 +37,9 @@ export default function ImportFile({ setRefresh, title = '' }) {
 	const importFile = async () => {
 		try {
 			setLoading(true);
-			await importItemsFile(file);
+			type === 'sold'
+				? await importSoldItemsFile(file)
+				: await importItemsFile(file);
 			setRefresh(prev => prev + 1);
 			notyf.success('File Imported Successfully');
 			setFile(null);

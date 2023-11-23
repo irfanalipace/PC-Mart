@@ -1,9 +1,9 @@
 import { Box, CircularProgress, Grid, Typography } from '@mui/material';
-import DashboardCard from '../../../Components/DashboardCard/DashboardCard';
-import ApexChart from '../../../Components/DashboardChart/DashboardChart';
+import DashboardCard from 'comp/DashboardCard/DashboardCard';
+import ApexChart from 'comp/DashboardChart/DashboardChart';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { getDashboard } from '../../../../core/api/dashboard';
+import { getDashboard } from 'core/api/dashboard';
 
 const Dashboard = () => {
 	const [alldata, setAllData] = useState(null);

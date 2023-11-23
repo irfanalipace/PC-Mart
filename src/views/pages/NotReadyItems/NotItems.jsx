@@ -1,4 +1,3 @@
-import React from 'react';
 import ItemsTable from './ItemsTable';
 import { Box } from '@mui/material';
 
