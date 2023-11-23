@@ -121,7 +121,9 @@ const DataTable = ({
 
 	useEffect(() => {
 		const selectedIds = Object.keys(rowSelection);
-		setSelectedRows(() => selectedIds);
+		if (setSelectedRows === 'function') {
+			setSelectedRows(() => selectedIds);
+		}
 	}, [rowSelection]);
 
 	const onPaginationChange = args => {
@@ -132,14 +134,14 @@ const DataTable = ({
 		<MaterialReactTable
 			columns={columns}
 			data={data}
-			enableRowSelection={
-				typeof enableRowSelection === 'function'
-					? enableRowSelection
-					: enableRowSelection === false
-					? false
-					: true
-			}
-			onRowSelectionChange={setRowSelection}
+			// enableRowSelection={
+			// 	typeof enableRowSelection === 'function'
+			// 		? enableRowSelection
+			// 		: enableRowSelection === false
+			// 		? false
+			// 		: true
+			// }
+			// onRowSelectionChange={setRowSelection}
 			getRowId={row => row?.id}
 			setPagination
 			manualPagination

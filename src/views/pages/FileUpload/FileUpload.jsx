@@ -4,7 +4,7 @@ import FileUploadTable from './FileUploadTable';
 const FileUpload = () => {
 	return (
 		<Box maxHeight={'calc(100vh - 80px)'}>
-			<FileUploadTable />
+			<FileUploadTable importFileHeading='Upload Inventory File' />
 		</Box>
 	);
 };

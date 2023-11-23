@@ -83,7 +83,7 @@ devDependencies:
     specifier: ^18.2.7
     version: 18.2.15
   '@vitejs/plugin-react':
-    specifier: ^4.0.3
+    specifier: ^4.1.1
     version: 4.1.1(vite@4.5.0)
   eslint:
     specifier: ^8.45.0

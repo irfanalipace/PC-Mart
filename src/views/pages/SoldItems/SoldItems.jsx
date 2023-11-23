@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Grid } from '@mui/material';
-import DataTable from '../../Components/DataTable/DataTable';
-import TableContainer from '../../Components/Containers/TableContainer';
-import { getSolditems } from '../../../core/api/readyItems';
-import DataTableHeading from '../../Components/DataTable/DataTableHeading';
-import DataTableExtendedHeader from '../../Components/DataTable/DataTableExtendedHeader';
-import ImportFile from '../../Components/ImportFile';
+import DataTable from 'comp/DataTable/DataTable';
+import TableContainer from 'comp/Containers/TableContainer';
+import { getSolditems } from 'core/api/readyItems';
+import DataTableHeading from 'comp/DataTable/DataTableHeading';
+import DataTableExtendedHeader from 'comp/DataTable/DataTableExtendedHeader';
+import FileUploadTable from '../FileUpload/FileUploadTable';
 
 const SoldItems = () => {
 	const [refresh, setRefresh] = useState(0);
-	const [selectedRows, setSelectedRows] = useState([]);
 	const [searchText, setSearchText] = useState('');
 	const [bathcNumber, setBatchNumber] = useState(null);
 
@@ -63,7 +62,12 @@ const SoldItems = () => {
 			<Grid container>
 				<Grid item sm={12}>
 					<DataTableHeading title='Sold Items' />
-					<ImportFile title='Upload Ready Items File' type='sold' />
+
+					<FileUploadTable
+						sx={{ my: 3 }}
+						importFileHeading='Upload Ready Items File'
+						type='sold'
+					/>
 					<TableContainer>
 						<DataTableExtendedHeader
 							onSearchSubmit={handleSearchChange}
@@ -74,9 +78,7 @@ const SoldItems = () => {
 						<DataTable
 							api={e => getSolditems(e, bathcNumber, searchText)}
 							columns={intialColumns}
-							setSelectedRows={setSelectedRows}
 							onRowClick={() => {}}
-							// collapsed={viewItem}
 							refresh={refresh}
 						/>
 					</TableContainer>
