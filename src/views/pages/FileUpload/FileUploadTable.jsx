@@ -16,9 +16,11 @@ import {
 import { Download } from '@mui/icons-material';
 import {
 	DownloadSingleFile,
+	DownloadSingleSoldFile,
 	convertNotReadyItemsToReady,
 	getFileUploadError,
 	getUploadFile,
+	getSoldUploadFile,
 } from 'core/api/fileupload';
 import DataTable from 'comp/DataTable/DataTable';
 import TableContainer from 'comp/Containers/TableContainer';
@@ -63,7 +65,10 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 				await new Promise(resolve => setTimeout(resolve, 1));
 				setProgress(i);
 				if (i === 100) {
-					const resp = await DownloadSingleFile(fileDownloadId);
+					const resp =
+						type === 'sold'
+							? await DownloadSingleSoldFile(fileDownloadId)
+							: await DownloadSingleFile(fileDownloadId);
 					downloadFile(resp?.data?.route);
 				}
 			}
@@ -151,7 +156,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 						)}
 					</Button>
 					{(row?.original?.non_ready_items_count > 0 ||
-						row?.original?.ready_items_count > 0) && (
+						(row?.original?.ready_items_count > 0 && type !== 'sold')) && (
 						<Stack>
 							<Link
 								variant='body2'
@@ -215,6 +220,14 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 		setBatchNumber(e.target.value);
 		setRefresh(prev => prev + 1);
 	};
+
+	const getFiles = (e, bathcNumber) => {
+		if (type === 'sold') {
+			return getSoldUploadFile(e, bathcNumber);
+		} else {
+			return getUploadFile(e, bathcNumber);
+		}
+	};
 	return (
 		<>
 			<Grid container sx={sx}>
@@ -232,12 +245,13 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 						/>
 
 						<DataTable
-							api={e => getUploadFile(e, bathcNumber)}
+							api={e => getFiles(e, bathcNumber)}
 							columns={intialColumns}
 							onRowClick={() => {}}
 							collapsed={false}
 							refresh={refresh}
 							manualFilter
+							type={type}
 						/>
 					</TableContainer>
 				</Grid>
