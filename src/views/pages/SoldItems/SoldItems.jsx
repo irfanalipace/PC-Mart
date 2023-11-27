@@ -65,7 +65,7 @@ const SoldItems = () => {
 
 					<FileUploadTable
 						sx={{ my: 3 }}
-						importFileHeading='Upload Ready Items File'
+						importFileHeading='Upload Sold Items File'
 						type='sold'
 					/>
 					<TableContainer>

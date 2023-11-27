@@ -46,6 +46,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 	const [errorData, setErrorData] = useState('');
 	const [downloadModal, setDownloadModal] = useState(false);
 	const [fileDownloadId, setFileDownLoadId] = useState(null);
+	const [search, setSearch] = useState('');
 
 	const handleStatusClick = async row => {
 		if (row.original.status === 'error') {
@@ -223,11 +224,12 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 
 	const getFiles = (e, bathcNumber) => {
 		if (type === 'sold') {
-			return getSoldUploadFile(e, bathcNumber);
+			return getSoldUploadFile(e, bathcNumber, search);
 		} else {
-			return getUploadFile(e, bathcNumber);
+			return getUploadFile(e, bathcNumber, search);
 		}
 	};
+
 	return (
 		<>
 			<Grid container sx={sx}>
@@ -239,7 +241,10 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 					/>
 					<TableContainer>
 						<DataTableExtendedHeader
-							onSearchSubmit={() => {}}
+							onSearchSubmit={input => {
+								setSearch(input);
+								setRefresh(prev => prev + 1);
+							}}
 							onBatchChange={handleBatchChange}
 							type='Files'
 						/>

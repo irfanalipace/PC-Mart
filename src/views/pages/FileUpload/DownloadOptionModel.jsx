@@ -41,6 +41,11 @@ export default function DownloadOptionModel({ open, onClose, onDownload }) {
 							control={<Radio />}
 							label='Non Ready Items'
 						/>
+						<FormControlLabel
+							value='sold'
+							control={<Radio />}
+							label='Sold Items'
+						/>
 					</RadioGroup>
 					<Box ml={'auto'} mr={3}>
 						<Stack direction={'row'} spacing={2}>
