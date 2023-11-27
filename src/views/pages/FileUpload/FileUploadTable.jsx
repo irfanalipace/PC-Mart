@@ -25,7 +25,6 @@ import {
 import DataTable from 'comp/DataTable/DataTable';
 import TableContainer from 'comp/Containers/TableContainer';
 import { downloadFile, formatDateToYYYYMMDD } from 'core/utils/helpers';
-import LinearProgressWithLabel from 'comp/Progress/Progress.jsx';
 import ConfirmDialog from 'comp/ConfirmDialog/ConfirmDialog.jsx';
 import ImportFile from 'comp/ImportFile/index.jsx';
 import DataTableExtendedHeader from 'comp/DataTable/DataTableExtendedHeader.jsx';
@@ -33,7 +32,6 @@ import DownloadOptionModel from './DownloadOptionModel.jsx';
 import FileUploadErrorModal from 'comp/FileUpload/FileUploadErrorModal.jsx';
 
 const FileUploadTable = ({ type, sx, importFileHeading }) => {
-	const [progress, setProgress] = useState(10);
 	const [errorModal, setErrorModal] = useState(false);
 
 	const [errorloading, setErrorLoading] = useState(false);
@@ -47,6 +45,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 	const [downloadModal, setDownloadModal] = useState(false);
 	const [fileDownloadId, setFileDownLoadId] = useState(null);
 	const [search, setSearch] = useState('');
+	const [batchNo, setBatchNo] = useState('');
 
 	const handleStatusClick = async row => {
 		if (row.original.status === 'error') {
@@ -58,21 +57,15 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 		}
 	};
 
-	const FileDownload = async () => {
+	const FileDownload = async value => {
 		try {
 			setDownloadModal(false);
 			setDownloading(fileDownloadId);
-			for (let i = 0; i <= 100; i += 10) {
-				await new Promise(resolve => setTimeout(resolve, 1));
-				setProgress(i);
-				if (i === 100) {
-					const resp =
-						type === 'sold'
-							? await DownloadSingleSoldFile(fileDownloadId)
-							: await DownloadSingleFile(fileDownloadId);
-					downloadFile(resp?.data?.route);
-				}
-			}
+			const resp =
+				type === 'sold'
+					? await DownloadSingleSoldFile(fileDownloadId)
+					: await DownloadSingleFile(batchNo, value);
+			downloadFile(resp?.data?.route);
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -143,15 +136,14 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 						id={row?.original?.id}
 						variant='contained'
 						onClick={() => {
-							setFileDownLoadId(row?.original?.id);
+							// setFileDownLoadId(row?.original?.id);
+							setBatchNo(row?.original?.batch_number);
 							setDownloadModal(true);
 						}}
 						disabled={downloading === row?.original?.id}
 					>
 						{downloading === row?.original?.id ? (
-							<Box sx={{ width: '100%' }}>
-								<LinearProgressWithLabel value={progress} />
-							</Box>
+							<Box sx={{ width: '100%' }}>....</Box>
 						) : (
 							<Download />
 						)}
