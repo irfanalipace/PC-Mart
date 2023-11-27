@@ -61,10 +61,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 		try {
 			setDownloadModal(false);
 			setDownloading(fileDownloadId);
-			const resp =
-				type === 'sold'
-					? await DownloadSingleSoldFile(fileDownloadId)
-					: await DownloadSingleFile(batchNo, value);
+			const resp = await DownloadSingleFile(batchNo, value);
 			downloadFile(resp?.data?.route);
 		} catch (err) {
 			console.log(err);
@@ -72,7 +69,15 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			setDownloading(null);
 		}
 	};
-
+	const FileSoldDownload = async id => {
+		try {
+			const resp = await DownloadSingleSoldFile(id);
+			console.log(resp?.data);
+			downloadFile(resp?.data?.route);
+		} catch (err) {
+			console.log(err);
+		}
+	};
 	const intialColumns = [
 		{
 			accessorKey: 'name',
@@ -136,9 +141,10 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 						id={row?.original?.id}
 						variant='contained'
 						onClick={() => {
-							// setFileDownLoadId(row?.original?.id);
+							type === 'sold'
+								? FileSoldDownload(row?.original?.id)
+								: setDownloadModal(true);
 							setBatchNo(row?.original?.batch_number);
-							setDownloadModal(true);
 						}}
 						disabled={downloading === row?.original?.id}
 					>
