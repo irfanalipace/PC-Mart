@@ -47,6 +47,8 @@ export default function ImportFile({ type, setRefresh, title = '' }) {
 		} catch (err) {
 			console.log(err);
 			notyf.error(err?.data?.message);
+			setFile(null);
+			setFileName('');
 		} finally {
 			setLoading(false);
 		}

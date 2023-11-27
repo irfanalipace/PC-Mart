@@ -1,4 +1,12 @@
-import { Button, Grid, InputLabel, Paper, Typography } from '@mui/material';
+import {
+	Box,
+	Button,
+	Grid,
+	InputLabel,
+	Paper,
+	Stack,
+	Typography,
+} from '@mui/material';
 import FormField from '../../Components/InputField/FormField';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -43,107 +51,99 @@ const ChangePassword = () => {
 		},
 	});
 	return (
-		<Paper sx={{ padding: 10 }}>
-			<Grid
-				container
-				direction='row'
-				justifyContent='center'
-				alignItems='center'
-				p={6}
-			>
-				<Typography variant='h6'>Change Password</Typography>
-			</Grid>
-			<Grid
-				container
-				direction='row'
-				justifyContent='center'
-				alignItems='center'
-				spacing={10}
-				p={2}
-			>
-				<Grid item sm={3}>
-					<InputLabel sx={{ textAlign: 'left' }}>Old Password:</InputLabel>
-				</Grid>
-				<Grid item sm={5}>
-					<FormField
-						type='password'
-						id='old_password'
-						placeholder='Old Password'
-						value={formik.values.old_password}
-						handleChange={formik.handleChange}
-						isTouched={formik.touched.old_password}
-						error={formik.errors.old_password}
-						password
-					/>
-				</Grid>
-			</Grid>
-			<Grid
-				container
-				direction='row'
-				justifyContent='center'
-				alignItems='center'
-				spacing={10}
-				p={2}
-			>
-				<Grid item sm={3}>
-					<InputLabel sx={{ textAlign: 'left' }}>New Password:</InputLabel>
-				</Grid>
-				<Grid item sm={5}>
-					<FormField
-						type='password'
-						id='new_password'
-						placeholder='New Password'
-						value={formik.values.new_password}
-						handleChange={formik.handleChange}
-						isTouched={formik.touched.new_password}
-						error={formik.errors.new_password}
-						password
-					/>
-				</Grid>
-			</Grid>
-			<Grid
-				container
-				direction='row'
-				justifyContent='center'
-				alignItems='center'
-				spacing={10}
-				p={2}
-			>
-				<Grid item sm={3}>
-					<InputLabel sx={{ textAlign: 'left' }}>Confirm Password:</InputLabel>
-				</Grid>
-				<Grid item sm={5}>
-					<FormField
-						type='password'
-						id='password_confirmation'
-						placeholder='Confirm Password'
-						value={formik.values.password_confirmation}
-						handleChange={formik.handleChange}
-						isTouched={formik.touched.password_confirmation}
-						error={formik.errors.password_confirmation}
-						password
-					/>
-				</Grid>
-			</Grid>
-			<Grid
-				container
-				direction='row'
-				justifyContent='flex-end'
-				alignItems='flex-end'
-				spacing={2}
-			>
-				<Grid item>
-					<Button variant='contained' onClick={() => formik.handleSubmit()}>
-						Update
-					</Button>
-				</Grid>
-				<Grid item>
-					<Button variant='outlined' onClick={() => navigate('/')}>
-						Cancel
-					</Button>
-				</Grid>
-			</Grid>
-		</Paper>
+		<>
+			<Paper sx={{ p: 2, height: 'calc(100vh - 85px)' }}>
+				<Paper sx={{ mx: 1 }}>
+					<Typography variant='h5' fontWeight={500} textAlign='start' p={4}>
+						Change Pasword
+					</Typography>
+				</Paper>
+				<Paper sx={{ mx: 1 }}>
+					<Box sx={{ width: '40%' }} ml={3} mt={4} py={4}>
+						<Stack spacing={3}>
+							<Grid container direction='row'>
+								<Grid item sm={5}>
+									<InputLabel sx={{ textAlign: 'left' }}>
+										Old Password:
+									</InputLabel>
+								</Grid>
+								<Grid item sm={7}>
+									<FormField
+										type='password'
+										id='old_password'
+										placeholder='Old Password'
+										value={formik.values.old_password}
+										handleChange={formik.handleChange}
+										isTouched={formik.touched.old_password}
+										error={formik.errors.old_password}
+										password
+									/>
+								</Grid>
+							</Grid>
+							<Grid container direction='row'>
+								<Grid item sm={5}>
+									<InputLabel sx={{ textAlign: 'left' }}>
+										New Password:
+									</InputLabel>
+								</Grid>
+								<Grid item sm={7}>
+									<FormField
+										type='password'
+										id='new_password'
+										placeholder='New Password'
+										value={formik.values.new_password}
+										handleChange={formik.handleChange}
+										isTouched={formik.touched.new_password}
+										error={formik.errors.new_password}
+										password
+									/>
+								</Grid>
+							</Grid>
+							<Grid container direction='row'>
+								<Grid item sm={5}>
+									<InputLabel sx={{ textAlign: 'left' }}>
+										Confirm Password:
+									</InputLabel>
+								</Grid>
+								<Grid item sm={7}>
+									<FormField
+										type='password'
+										id='password_confirmation'
+										placeholder='Confirm Password'
+										value={formik.values.password_confirmation}
+										handleChange={formik.handleChange}
+										isTouched={formik.touched.password_confirmation}
+										error={formik.errors.password_confirmation}
+										password
+									/>
+								</Grid>
+							</Grid>
+							<Grid
+								container
+								direction='row'
+								justifyContent='flex-end'
+								alignItems='flex-end'
+								spacing={2}
+							>
+								<Grid item>
+									<Button
+										variant='contained'
+										onClick={() => formik.handleSubmit()}
+									>
+										Update
+									</Button>
+								</Grid>
+								<Grid item>
+									<Button variant='outlined' onClick={() => navigate('/')}>
+										Cancel
+									</Button>
+								</Grid>
+							</Grid>
+						</Stack>
+					</Box>
+				</Paper>
+			</Paper>
+		</>
 	);
 };
 

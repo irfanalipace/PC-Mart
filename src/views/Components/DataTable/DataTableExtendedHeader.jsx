@@ -14,10 +14,11 @@ export default function DataTableExtendedHeader({
 }) {
 	const [batchList, setBatchList] = useState([]);
 	const [batchNumber, setBatchNumber] = useState([]);
+	const [search, setSearch] = useState([]);
 
 	useEffect(() => {
 		fetchBatchNumbers();
-	}, []);
+	}, [onBatchChange]);
 
 	const fetchBatchNumbers = async () => {
 		try {
@@ -30,7 +31,7 @@ export default function DataTableExtendedHeader({
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		onSearchSubmit(batchNumber);
+		onSearchSubmit(search);
 	};
 
 	return (
@@ -42,8 +43,10 @@ export default function DataTableExtendedHeader({
 							id='search'
 							label='Search'
 							variant='outlined'
-							value={batchNumber}
-							onChange={e => setBatchNumber(e.target.value)}
+							value={search}
+							onChange={e => {
+								setSearch(e.target.value);
+							}}
 							fullWidth
 							InputProps={{
 								startAdornment: (
@@ -84,9 +87,9 @@ export default function DataTableExtendedHeader({
 							} `}</MenuItem>
 							<Divider />
 							{/* <Box sx={{ maxHeight: '400px', overflowY: 'auto' }}> */}
-							{batchList?.map(row => (
+							{batchList?.map((row, index) => (
 								<MenuItem
-									key={row.id}
+									key={index}
 									value={row?.batch_number}
 									// onClick={() => onBatchChange()}
 								>

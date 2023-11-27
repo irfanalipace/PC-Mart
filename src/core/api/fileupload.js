@@ -12,9 +12,9 @@ export function convertNotReadyItemsToReady(id) {
 	});
 }
 
-export function getUploadFile(params, batchNum) {
+export function getUploadFile(params, batchNum, name) {
 	return new Promise((resolve, reject) => {
-		const queryParams = { ...params, batch_number: batchNum };
+		const queryParams = { ...params, batch_number: batchNum, file_name: name };
 		ApiService.get('/get-files', null, queryParams)
 			.then(response => {
 				resolve(response);
@@ -24,9 +24,9 @@ export function getUploadFile(params, batchNum) {
 			});
 	});
 }
-export function getSoldUploadFile(params, batchNum) {
+export function getSoldUploadFile(params, batchNum, name) {
 	return new Promise((resolve, reject) => {
-		const queryParams = { ...params, batch_number: batchNum };
+		const queryParams = { ...params, batch_number: batchNum, file_name: name };
 		ApiService.get('/get-sold-files', null, queryParams)
 			.then(response => {
 				resolve(response);
