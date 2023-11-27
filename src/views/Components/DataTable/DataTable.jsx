@@ -15,6 +15,7 @@ const DataTable = ({
 	manualFilter = false, // A boolean to enable manual filtering
 	enableRowSelection, // conditionaly boolean to disable selection in table,
 	showApiError = true, // wheather api errors be shown in datatable or nor
+	type,
 	...rest
 }) => {
 	//data and fetching state

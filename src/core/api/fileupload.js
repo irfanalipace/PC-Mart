@@ -24,9 +24,33 @@ export function getUploadFile(params, batchNum) {
 			});
 	});
 }
+export function getSoldUploadFile(params, batchNum) {
+	return new Promise((resolve, reject) => {
+		const queryParams = { ...params, batch_number: batchNum };
+		ApiService.get('/get-sold-files', null, queryParams)
+			.then(response => {
+				resolve(response);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
 export function DownloadSingleFile(id) {
 	return new Promise((resolve, reject) => {
 		ApiService.get(`/file-download/${id}`)
+			.then(response => {
+				resolve(response);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
+
+export function DownloadSingleSoldFile(id) {
+	return new Promise((resolve, reject) => {
+		ApiService.get(`/sold-file-download/${id}`)
 			.then(response => {
 				resolve(response);
 			})
