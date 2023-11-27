@@ -36,9 +36,12 @@ export function getSoldUploadFile(params, batchNum, name) {
 			});
 	});
 }
-export function DownloadSingleFile(id) {
+export function DownloadSingleFile(bNo, typed) {
 	return new Promise((resolve, reject) => {
-		ApiService.get(`/file-download/${id}`)
+		ApiService.post(`/specific-file-download`, null, {
+			batch_number: bNo,
+			type: typed,
+		})
 			.then(response => {
 				resolve(response);
 			})

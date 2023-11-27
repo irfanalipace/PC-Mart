@@ -6,10 +6,12 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Modal from 'comp/Modal/Dialog.jsx';
 import { Box, Stack, Button } from '@mui/material';
+import { useState } from 'react';
 
 export default function DownloadOptionModel({ open, onClose, onDownload }) {
+	const [radio, setRadio] = useState('all');
 	const handleRadioButton = e => {
-		console.log(e.target.value);
+		setRadio(e.target.value);
 	};
 
 	return (
@@ -20,7 +22,7 @@ export default function DownloadOptionModel({ open, onClose, onDownload }) {
 						What do you want to download?
 					</FormLabel>
 					<RadioGroup
-						defaultValue={'all'}
+						defaultValue={radio}
 						sx={{ ml: 1, mt: 1 }}
 						aria-labelledby='demo-row-radio-buttons-group-label'
 						name='row-radio-buttons-group'
@@ -49,7 +51,7 @@ export default function DownloadOptionModel({ open, onClose, onDownload }) {
 					</RadioGroup>
 					<Box ml={'auto'} mr={3}>
 						<Stack direction={'row'} spacing={2}>
-							<Button variant='contained' onClick={onDownload}>
+							<Button variant='contained' onClick={() => onDownload(radio)}>
 								Download
 							</Button>
 							<Button variant='outlined' onClick={onClose}>
