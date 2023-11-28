@@ -15,7 +15,14 @@ export default function DownloadOptionModel({ open, onClose, onDownload }) {
 	};
 
 	return (
-		<Modal open={open} title='Downalod' onClose={onClose}>
+		<Modal
+			open={open}
+			title='Downalod'
+			onClose={() => {
+				onClose();
+				setRadio('all');
+			}}
+		>
 			<Box mb={5} mt={2} ml={3}>
 				<FormControl sx={{ width: '100%' }}>
 					<FormLabel id='demo-row-radio-buttons-group-label'>
@@ -51,7 +58,13 @@ export default function DownloadOptionModel({ open, onClose, onDownload }) {
 					</RadioGroup>
 					<Box ml={'auto'} mr={3}>
 						<Stack direction={'row'} spacing={2}>
-							<Button variant='contained' onClick={() => onDownload(radio)}>
+							<Button
+								variant='contained'
+								onClick={() => {
+									onDownload(radio);
+									setRadio('all');
+								}}
+							>
 								Download
 							</Button>
 							<Button variant='outlined' onClick={onClose}>

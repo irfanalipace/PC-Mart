@@ -62,7 +62,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			setDownloadModal(false);
 			setDownloading(fileDownloadId);
 			const resp = await DownloadSingleFile(batchNo, value);
-			downloadFile(resp?.data?.route);
+			downloadFile(resp?.data?.url);
 		} catch (err) {
 			console.log(err);
 		} finally {
