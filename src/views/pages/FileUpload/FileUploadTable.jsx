@@ -21,6 +21,7 @@ import {
 	getFileUploadError,
 	getUploadFile,
 	getSoldUploadFile,
+	DownloadProblematicFile,
 } from 'core/api/fileupload';
 import DataTable from 'comp/DataTable/DataTable';
 import TableContainer from 'comp/Containers/TableContainer';
@@ -54,6 +55,14 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			setErrorData(res?.data);
 			setErrorLoading(false);
 			setErrorModal(true);
+		}
+	};
+	const downloadErrorFile = async id => {
+		try {
+			const resp = await DownloadProblematicFile(id);
+			downloadFile(resp?.data?.route);
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
@@ -137,23 +146,41 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			minSize: 200,
 			Cell: ({ row }) => (
 				<Stack direction={'row'} spacing={2} alignItems={'center'}>
-					<Button
-						id={row?.original?.id}
-						variant='contained'
-						onClick={() => {
-							type === 'sold'
-								? FileSoldDownload(row?.original?.id)
-								: setDownloadModal(true);
-							setBatchNo(row?.original?.batch_number);
-						}}
-						disabled={downloading === row?.original?.id}
-					>
-						{downloading === row?.original?.id ? (
-							<Box sx={{ width: '100%' }}>....</Box>
-						) : (
-							<Download />
-						)}
-					</Button>
+					{row?.original?.status === 'processed' ? (
+						<Button
+							id={row?.original?.id}
+							variant='contained'
+							onClick={() => {
+								type === 'sold'
+									? FileSoldDownload(row?.original?.id)
+									: setDownloadModal(true);
+								setBatchNo(row?.original?.batch_number);
+							}}
+							disabled={downloading === row?.original?.id}
+						>
+							{downloading === row?.original?.id ? (
+								<Box sx={{ width: '100%' }}>....</Box>
+							) : (
+								<Download />
+							)}
+						</Button>
+					) : (
+						<Button
+							id={row?.original?.id}
+							variant='contained'
+							onClick={() => {
+								downloadErrorFile(row?.original?.id);
+							}}
+							disabled={downloading === row?.original?.id}
+						>
+							{downloading === row?.original?.id ? (
+								<Box sx={{ width: '100%' }}>....</Box>
+							) : (
+								<Download />
+							)}
+						</Button>
+					)}
+
 					{(row?.original?.non_ready_items_count > 0 ||
 						(row?.original?.ready_items_count > 0 && type !== 'sold')) && (
 						<Stack>

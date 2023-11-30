@@ -51,6 +51,18 @@ export function DownloadSingleFile(bNo, typed) {
 	});
 }
 
+export function DownloadProblematicFile(fileId) {
+	return new Promise((resolve, reject) => {
+		ApiService.get(`/file-download/${fileId}`)
+			.then(response => {
+				resolve(response);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
+
 export function DownloadSingleSoldFile(id) {
 	return new Promise((resolve, reject) => {
 		ApiService.get(`/sold-file-download/${id}`)
