@@ -17,7 +17,7 @@ export default function DownloadOptionModel({ open, onClose, onDownload }) {
 	return (
 		<Modal
 			open={open}
-			title='Downalod'
+			title='Download'
 			onClose={() => {
 				onClose();
 				setRadio('all');
