@@ -55,6 +55,7 @@ const DataTable = ({
 		} catch (error) {
 			setIsError(showApiError || false);
 			console.error(error);
+			setData([]);
 		}
 		setIsLoading(false);
 	};
