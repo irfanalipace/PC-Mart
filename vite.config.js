@@ -8,11 +8,11 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			// '@': path.resolve(__dirname, './src'),
-			src: path.resolve(__dirname, './src'), // Adjusted the path here
-			comp: path.resolve(__dirname, './src/views/components'),
-			pages: path.resolve(__dirname, './src/views/pages'),
-			core: path.resolve(__dirname, './src/core'),
-			assets: path.resolve(__dirname, './src/assets'),
+			// src: path.resolve(__dirname, './src'), // Adjusted the path here
+			// comp: path.resolve(__dirname, './src/views/components'),
+			// pages: path.resolve(__dirname, './src/views/pages'),
+			// core: path.resolve(__dirname, './src/core'),
+			// assets: path.resolve(__dirname, './src/assets'),
 		},
 	},
 });

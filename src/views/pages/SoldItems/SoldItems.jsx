@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Grid } from '@mui/material';
-import DataTable from 'comp/DataTable/DataTable';
-import TableContainer from 'comp/Containers/TableContainer';
-import { getSolditems } from 'core/api/readyItems';
-import DataTableHeading from 'comp/DataTable/DataTableHeading';
-import DataTableExtendedHeader from 'comp/DataTable/DataTableExtendedHeader';
+import DataTable from '../../Components/DataTable/DataTable';
+import TableContainer from '../../Components/Containers/TableContainer';
+import { getSolditems } from '../../../core/api/readyItems';
+import DataTableHeading from '../../Components/DataTable/DataTableHeading';
+import DataTableExtendedHeader from '../../Components/DataTable/DataTableExtendedHeader';
 import FileUploadTable from '../FileUpload/FileUploadTable';
 
 const SoldItems = () => {

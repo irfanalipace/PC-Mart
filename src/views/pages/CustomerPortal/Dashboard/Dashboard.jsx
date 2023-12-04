@@ -1,6 +1,7 @@
 import { Box, CircularProgress, Grid, Typography } from '@mui/material';
-import DashboardCard from 'comp/DashboardCard/DashboardCard';
-import ApexChart from 'comp/DashboardChart/DashboardChart';
+import DashboardCard from '../../../Components/DashboardCard/DashboardCard';
+('../../../Components');
+import ApexChart from '../../../Components/DashboardChart/DashboardChart';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getDashboard } from '../../../../core/api/dashboard';

@@ -43,7 +43,7 @@ import ItemView from './ViewItem/ItemView';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Name from '../../../../views/Components/InputLabel/Name';
 ('');
-import MUIButton from 'comp/Button/MUIButton';
+import MUIButton from '../../../Components/Button/MUIButton';
 import ImportFileModal from '../../../../views/Components/ImportFileModal/ImportFileModal';
 import ExportFileModal from '../../../../views/Components/ExportFileModal/ExportFileModal';
 import ebay from 'assets/images/marketplaces/ebay.png';

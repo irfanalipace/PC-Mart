@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import TableCell from '@mui/material/TableCell';
-import notyf from 'comp/NotificationMessage/notyfInstance';
-import OverlayLoader from 'comp/OverlayLoader/OverlayLoader.jsx';
+
+import notyf from '../../Components/NotificationMessage/notyfInstance';
+import OverlayLoader from '../../Components/OverlayLoader/OverlayLoader.jsx';
 import {
 	Box,
 	Grid,
@@ -24,17 +25,17 @@ import {
 	DownloadProblematicFile,
 } from '../../../core/api/fileupload';
 ('');
-import DataTable from 'comp/DataTable/DataTable';
-import TableContainer from 'comp/Containers/TableContainer';
+import DataTable from '../../Components/DataTable/DataTable';
+import TableContainer from '../../Components/Containers/TableContainer';
 import {
 	downloadFile,
 	formatDateToYYYYMMDD,
 } from '../../../core/utils/helpers';
-import ConfirmDialog from 'comp/ConfirmDialog/ConfirmDialog.jsx';
-import ImportFile from 'comp/ImportFile/index.jsx';
-import DataTableExtendedHeader from 'comp/DataTable/DataTableExtendedHeader.jsx';
+import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog.jsx';
+import ImportFile from '../../Components/ImportFile/index.jsx';
+import DataTableExtendedHeader from '../../Components/DataTable/DataTableExtendedHeader.jsx';
 import DownloadOptionModel from './DownloadOptionModel.jsx';
-import FileUploadErrorModal from 'comp/FileUpload/FileUploadErrorModal.jsx';
+import FileUploadErrorModal from '../../Components/FileUpload/FileUploadErrorModal.jsx';
 
 const FileUploadTable = ({ type, sx, importFileHeading }) => {
 	const [errorModal, setErrorModal] = useState(false);
