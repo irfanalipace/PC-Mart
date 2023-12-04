@@ -16,36 +16,40 @@ import MenuItem from '@mui/material/MenuItem';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/system';
 import { Add, Delete } from '@mui/icons-material';
-import DataTable from 'comp/DataTable/DataTable';
+import DataTable from '../../../../views/Components/DataTable/DataTable';
 import { useNavigate } from 'react-router-dom';
-import useHash from 'core/hooks/useHash';
+import useHash from '../../../../core/hooks/useHash';
+('');
 import {
 	decryptId,
 	extractNumberFromHash,
 	formatDateAndTime,
 	generateEncryptedID,
-} from 'core/utils/helpers';
-import HeaderPaper from 'comp/Containers/HeaderPaper';
-import ConfirmDialog from 'comp/ConfirmDialog/ConfirmDialog';
+} from '../../../../core/utils/helpers';
+import HeaderPaper from '../../../../views/Components/Containers/HeaderPaper';
+('');
+import ConfirmDialog from '../../../../views/Components/ConfirmDialog/ConfirmDialog';
 import {
 	bulkDeleteItem,
 	exportItems,
 	getAllItems,
 	importItems,
 	searchItems,
-} from 'core/api/items';
-import DetailViewContainer from 'comp/Containers/DetailViewContainer';
-import TableContainer from 'comp/Containers/TableContainer';
+} from '../../../../core/api/items';
+('');
+import DetailViewContainer from '../../../../views/Components/Containers/DetailViewContainer';
+import TableContainer from '../../../../views/Components/Containers/TableContainer';
 import ItemView from './ViewItem/ItemView';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import Name from 'comp/InputLabel/Name';
+import Name from '../../../../views/Components/InputLabel/Name';
+('');
 import MUIButton from 'comp/Button/MUIButton';
-import ImportFileModal from 'comp/ImportFileModal/ImportFileModal';
-import ExportFileModal from 'comp/ExportFileModal/ExportFileModal';
+import ImportFileModal from '../../../../views/Components/ImportFileModal/ImportFileModal';
+import ExportFileModal from '../../../../views/Components/ExportFileModal/ExportFileModal';
 import ebay from 'assets/images/marketplaces/ebay.png';
 import { useTheme } from '@mui/material/styles';
-import Modal from 'comp/Modal/Dialog';
-import TableGrid from 'comp/Containers/TableGrid';
+import Modal from '../../../../views/Components/Modal/Dialog';
+import TableGrid from '../../../../views/Components/Containers/TableGrid';
 
 function Items() {
 	const ImportTypeEnum = [

@@ -6,12 +6,12 @@ import {
 	HeaderRoutes,
 	AsideRoutes,
 	PagesRoutes,
-} from 'core/Routes/LayoutRoutes';
-import { theme } from 'core/theme/theme';
+} from './core/Routes/LayoutRoutes';
+import { theme } from './core/theme/theme';
 
-import initServices from 'core/services/initServices';
+import initServices from './core/services/initServices';
 import './App.css';
-import store from 'core/store/store';
+import store from './core/store/store';
 import { Provider } from 'react-redux';
 
 function App() {

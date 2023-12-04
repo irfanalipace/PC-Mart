@@ -3,7 +3,7 @@ import DashboardCard from 'comp/DashboardCard/DashboardCard';
 import ApexChart from 'comp/DashboardChart/DashboardChart';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { getDashboard } from 'core/api/dashboard';
+import { getDashboard } from '../../../../core/api/dashboard';
 
 const Dashboard = () => {
 	const [alldata, setAllData] = useState(null);

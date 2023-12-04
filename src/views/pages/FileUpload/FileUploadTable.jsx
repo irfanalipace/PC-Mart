@@ -22,10 +22,14 @@ import {
 	getUploadFile,
 	getSoldUploadFile,
 	DownloadProblematicFile,
-} from 'core/api/fileupload';
+} from '../../../core/api/fileupload';
+('');
 import DataTable from 'comp/DataTable/DataTable';
 import TableContainer from 'comp/Containers/TableContainer';
-import { downloadFile, formatDateToYYYYMMDD } from 'core/utils/helpers';
+import {
+	downloadFile,
+	formatDateToYYYYMMDD,
+} from '../../../core/utils/helpers';
 import ConfirmDialog from 'comp/ConfirmDialog/ConfirmDialog.jsx';
 import ImportFile from 'comp/ImportFile/index.jsx';
 import DataTableExtendedHeader from 'comp/DataTable/DataTableExtendedHeader.jsx';

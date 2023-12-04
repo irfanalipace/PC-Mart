@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Grid } from '@mui/material';
-import DataTable from 'comp/DataTable/DataTable';
-import TableContainer from 'comp/Containers/TableContainer';
-import { getNonReadyItems } from 'core/api/readyItems';
-import DataTableHeading from 'comp/DataTable/DataTableHeading';
-import DataTableExtendedHeader from 'comp/DataTable/DataTableExtendedHeader';
+import DataTable from '../../../views/Components/DataTable/DataTable';
+import TableContainer from '../../../views/Components/Containers/TableContainer';
+import { getNonReadyItems } from '../../../core/api/readyItems';
+('../../../views/Components');
+import DataTableHeading from '../../../views/Components/DataTable/DataTableHeading';
+import DataTableExtendedHeader from '../../../views/Components/DataTable/DataTableExtendedHeader';
 const ItemsTable = () => {
 	const [refresh, setRefresh] = useState(0);
 	const [searchText, setSearchText] = useState('');
