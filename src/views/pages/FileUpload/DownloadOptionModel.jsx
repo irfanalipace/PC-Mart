@@ -4,7 +4,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import Modal from 'comp/Modal/Dialog.jsx';
+import Modal from '../../Components/Modal/Dialog.jsx';
+
 import { Box, Stack, Button } from '@mui/material';
 import { useState } from 'react';
 

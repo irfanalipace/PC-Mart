@@ -1,119 +1,117 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 // mui comp
 import {
-  Box,
-  Divider,
-  Grid,
-  Icon,
-  IconButton,
-  Menu,
-  MenuItem,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableContainer,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Logo from "../../../../../../src/assets/images/logos/computer.png";
+	Box,
+	Divider,
+	Grid,
+	Icon,
+	IconButton,
+	Menu,
+	MenuItem,
+	Paper,
+	Stack,
+	Table,
+	TableBody,
+	TableContainer,
+	TableRow,
+	Typography,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import Logo from '../../../../../../src/assets/images/logos/computer.png';
 
-import MonthStack from "./MonthStack";
-import AccountProgress from "./AccountProgress";
-import AccountQuantity from "./AccountQuantity";
-import MUIButton from "invoicing/src/Components/MUIButton";
-import PrintIcon from "@mui/icons-material/Print";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import MailIcon from "@mui/icons-material/Mail";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import { filterData, monthDropDown } from "../staticdata";
+import MonthStack from './MonthStack';
+import AccountProgress from './AccountProgress';
+import AccountQuantity from './AccountQuantity';
+
+import PrintIcon from '@mui/icons-material/Print';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import MailIcon from '@mui/icons-material/Mail';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import { filterData, monthDropDown } from '../staticdata';
 import {
-  TableBodyCell,
-  TableHead,
-  TableHeadCell,
-} from "../../../../Components/Table/Table";
-import CustomerAccountChart from "./CustomerAccountChart";
-import { getCustomerDashboardApi } from "../../../../../core/api/customerportal";
+	TableBodyCell,
+	TableHead,
+	TableHeadCell,
+} from '../../../../Components/Table/Table';
+import CustomerAccountChart from './CustomerAccountChart';
+import { getCustomerDashboardApi } from '../../../../../core/api/customerportal';
 
-const AccountInformation = ({customerId}) => {
-  const TABS = {
-    OVERVIEW: "Overview",
-    STATEMENT: "Statement",
-  };
-  const [activeTab, setActiveTab] = useState(TABS.OVERVIEW);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorE2, setAnchorE2] = useState(null);
-  const [viewMore, setViewMore] = useState(false)
-  const [dashData , setDashData] = useState([])
-  //   month menu close open /
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+const AccountInformation = ({ customerId }) => {
+	const TABS = {
+		OVERVIEW: 'Overview',
+		STATEMENT: 'Statement',
+	};
+	const [activeTab, setActiveTab] = useState(TABS.OVERVIEW);
+	const [anchorEl, setAnchorEl] = useState(null);
+	const [anchorE2, setAnchorE2] = useState(null);
+	const [viewMore, setViewMore] = useState(false);
+	const [dashData, setDashData] = useState([]);
+	//   month menu close open /
+	const open = Boolean(anchorEl);
+	const handleClick = event => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 
-  const filter = Boolean(anchorE2);
-  const handleClick2 = (event) => {
-    setAnchorE2(event.currentTarget);
-  };
-  const handleClose2 = () => {
-    setAnchorE2(null);
-  };
+	const filter = Boolean(anchorE2);
+	const handleClick2 = event => {
+		setAnchorE2(event.currentTarget);
+	};
+	const handleClose2 = () => {
+		setAnchorE2(null);
+	};
 
-  //  styles
-  const tabUnderlineStyles = {
-    borderBottom: "2px solid #66B2FF",
-    fontWeight: 550,
-    cursor: "pointer",
-    borderRadius: "3px",
-    color: "#66B2FF",
-  };
-  const statemnetStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-  };
-const th ={
-  background: "black", color: "#ffff"
-}
-const getDashBoard =  async() => {
+	//  styles
+	const tabUnderlineStyles = {
+		borderBottom: '2px solid #66B2FF',
+		fontWeight: 550,
+		cursor: 'pointer',
+		borderRadius: '3px',
+		color: '#66B2FF',
+	};
+	const statemnetStyle = {
+		display: 'flex',
+		justifyContent: 'space-between',
+	};
+	const th = {
+		background: 'black',
+		color: '#ffff',
+	};
+	const getDashBoard = async () => {
+		try {
+			const resp = await getCustomerDashboardApi({
+				customer_id: customerId,
+			});
+			setDashData(resp?.data);
+		} catch (error) {}
+	};
+	useEffect(() => {
+		if (TABS.OVERVIEW === activeTab) {
+			getDashBoard();
+		}
+	}, [activeTab]);
 
-  try {
- const resp =    await getCustomerDashboardApi({
-      customer_id:customerId
-    })
-    setDashData(resp?.data)
-  } catch (error) {
-    
-  }
-}
-useEffect(()=> {
-  if(TABS.OVERVIEW === activeTab ){
-    getDashBoard()
-
-  }
-} , [activeTab])
-
-  return (
-    <Paper sx={{ padding: "2rem 1rem" }}>
-      <Grid item container>
-        <Grid item sm={12}>
-          <Stack direction='row' spacing={2}>
-            <Typography
-              variant='body2'
-              onClick={() => setActiveTab(TABS.OVERVIEW)}
-              sx={
-                activeTab === TABS.OVERVIEW
-                  ? { ...tabUnderlineStyles, padding: "0 .5rem" }
-                  : { cursor: "pointer", padding: "0 .5rem" }
-              }>
-              {TABS.OVERVIEW}
-            </Typography>
-            {/* <Typography
+	return (
+		<Paper sx={{ padding: '2rem 1rem' }}>
+			<Grid item container>
+				<Grid item sm={12}>
+					<Stack direction='row' spacing={2}>
+						<Typography
+							variant='body2'
+							onClick={() => setActiveTab(TABS.OVERVIEW)}
+							sx={
+								activeTab === TABS.OVERVIEW
+									? { ...tabUnderlineStyles, padding: '0 .5rem' }
+									: { cursor: 'pointer', padding: '0 .5rem' }
+							}
+						>
+							{TABS.OVERVIEW}
+						</Typography>
+						{/* <Typography
               variant='body2'
               onClick={() => setActiveTab(TABS.STATEMENT)}
               sx={
@@ -123,10 +121,10 @@ useEffect(()=> {
               }>
               {TABS.STATEMENT}
             </Typography> */}
-          </Stack>
-          {TABS.OVERVIEW === activeTab && (
-            <>
-              {/* <Paper sx={{marginTop:'20px'}}>
+					</Stack>
+					{TABS.OVERVIEW === activeTab && (
+						<>
+							{/* <Paper sx={{marginTop:'20px'}}>
                 <Grid
                   item
                   container
@@ -160,53 +158,63 @@ useEffect(()=> {
                   </Grid>
                 </Grid>
               </Paper> */}
-             
-              <StatsContainer>
-                    {/* ite will be dyanmic when data comes  , like in map */}
-                    <Grid item container rowGap={5} display='flex'>
-                    <AccountQuantity  label='Decline' value={dashData?.decline_price_quote}/>
-                    <Divider orientation='vertical' flexItem />
-                  
-                    <AccountQuantity label='Draft' value={dashData?.draft_price_quote} />
-                    <Divider orientation='vertical' flexItem />
-                      <AccountQuantity label='Pending' value={dashData?.pending_price_quote} />
-                    <Divider orientation='vertical' flexItem />
 
-                 
-                    <AccountQuantity label='Paid Invoice' value={dashData?.paid_invoice} />
+							<StatsContainer>
+								{/* ite will be dyanmic when data comes  , like in map */}
+								<Grid item container rowGap={5} display='flex'>
+									<AccountQuantity
+										label='Decline'
+										value={dashData?.decline_price_quote}
+									/>
+									<Divider orientation='vertical' flexItem />
 
-                    </Grid>
+									<AccountQuantity
+										label='Draft'
+										value={dashData?.draft_price_quote}
+									/>
+									<Divider orientation='vertical' flexItem />
+									<AccountQuantity
+										label='Pending'
+										value={dashData?.pending_price_quote}
+									/>
+									<Divider orientation='vertical' flexItem />
 
+									<AccountQuantity
+										label='Paid Invoice'
+										value={dashData?.paid_invoice}
+									/>
+								</Grid>
+							</StatsContainer>
 
-                  </StatsContainer>
-                  
-              <StatsContainer>
-                  
-              <Grid item container rowGap={5} display='flex'>
+							<StatsContainer>
+								<Grid item container rowGap={5} display='flex'>
+									<AccountQuantity
+										label='Price Quote'
+										value={dashData?.price_quote}
+									/>
+									<Divider orientation='vertical' flexItem />
 
-                    <AccountQuantity label='Price Quote' value={dashData?.price_quote} />
-                    <Divider orientation='vertical' flexItem />
+									<AccountQuantity
+										label='Un Paid Invoice'
+										value={dashData?.unpaid_invoice}
+									/>
+								</Grid>
+							</StatsContainer>
+							{/* {viewMore && */}
+							{/* <MoreCustomerStats /> */}
+							{/* } */}
 
-                    <AccountQuantity label='Un Paid Invoice' value={dashData?.unpaid_invoice} />
-                    </Grid>
-
-                  </StatsContainer>
-           {/* {viewMore && */}
-            {/* <MoreCustomerStats /> */}
-           {/* } */}
-       
-            {/* <Grid container justifyContent={'end'} mt={2}>
+							{/* <Grid container justifyContent={'end'} mt={2}>
               {
                 viewMore ? <MUIButton variant="text" onClick={()=>setViewMore(false)}>View Less</MUIButton> : 
               <MUIButton variant="text" onClick={()=>setViewMore(true)}>View More</MUIButton> 
             }
             </Grid> */}
-              <CustomerAccountChart/>
+							<CustomerAccountChart />
+						</>
+					)}
 
-            </>
-          )}
-
-          {/* {TABS.STATEMENT === activeTab && (
+					{/* {TABS.STATEMENT === activeTab && (
             <Paper sx={{ padding: "2rem 1rem 5rem 1rem" }}>
               <Grid item container>
                 <Grid item sm={5}>
@@ -463,48 +471,48 @@ useEffect(()=> {
               </Grid>
             </Paper>
           )} */}
-        </Grid>
-      </Grid>
-    </Paper>
-  );
+				</Grid>
+			</Grid>
+		</Paper>
+	);
 };
 
 export default AccountInformation;
 
-
-function StatsContainer({children}){
-  return  <Box mt={3}>
-  <Paper sx={{ margin: "2re, 0", padding: "2rem .5rem" }}>
-    {children}
-    </Paper>
-    </Box>
-
+function StatsContainer({ children }) {
+	return (
+		<Box mt={3}>
+			<Paper sx={{ margin: '2re, 0', padding: '2rem .5rem' }}>{children}</Paper>
+		</Box>
+	);
 }
 
-function MoreCustomerStats(){
-  return <>
-     <StatsContainer>
-                  <Grid item container>
-                    {/* ite will be dyanmic when data comes  , like in map */}
-                    <AccountQuantity />
-                    <Divider orientation='vertical' flexItem />
+function MoreCustomerStats() {
+	return (
+		<>
+			<StatsContainer>
+				<Grid item container>
+					{/* ite will be dyanmic when data comes  , like in map */}
+					<AccountQuantity />
+					<Divider orientation='vertical' flexItem />
 
-                    <AccountQuantity />
-                    <Divider orientation='vertical' flexItem />
+					<AccountQuantity />
+					<Divider orientation='vertical' flexItem />
 
-                    <AccountQuantity />
-                    <Divider orientation='vertical' flexItem />
-                    <AccountQuantity />
-                  </Grid>
-              </StatsContainer>
-              <StatsContainer>
-                  <Grid item container>
-                    {/* ite will be dyanmic when data comes  , like in map */}
-                    <AccountQuantity sm={6} />
-                    <Divider orientation='vertical' flexItem />
+					<AccountQuantity />
+					<Divider orientation='vertical' flexItem />
+					<AccountQuantity />
+				</Grid>
+			</StatsContainer>
+			<StatsContainer>
+				<Grid item container>
+					{/* ite will be dyanmic when data comes  , like in map */}
+					<AccountQuantity sm={6} />
+					<Divider orientation='vertical' flexItem />
 
-                    <AccountQuantity sm={4} />
-                  </Grid>
-                  </StatsContainer>
-  </>
+					<AccountQuantity sm={4} />
+				</Grid>
+			</StatsContainer>
+		</>
+	);
 }

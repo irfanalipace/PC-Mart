@@ -3,7 +3,11 @@ import { useState } from 'react';
 import HeaderPaper from '../Containers/HeaderPaper';
 import MUIButton from '../Button/MUIButton';
 import { Download } from '@mui/icons-material';
-import { importItemsFile, importSoldItemsFile } from 'core/api/readyItems';
+import {
+	importItemsFile,
+	importSoldItemsFile,
+} from '../../../core/api/readyItems';
+
 import notyf from '../NotificationMessage/notyfInstance';
 
 import {
