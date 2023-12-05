@@ -2,7 +2,7 @@ import ApiService from '../services/apiService';
 
 export function loginApi({ email, password }) {
 	return new Promise((resolve, reject) => {
-		ApiService.post('/login', {
+		ApiService.post('/login', null, {
 			email,
 			password,
 		})
