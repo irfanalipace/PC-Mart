@@ -11,6 +11,7 @@ export default function DataTableExtendedHeader({
 	onSearchSubmit,
 	onBatchChange,
 	type,
+	bType,
 }) {
 	const [batchList, setBatchList] = useState([]);
 	const [batchNumber, setBatchNumber] = useState([]);
@@ -22,7 +23,7 @@ export default function DataTableExtendedHeader({
 
 	const fetchBatchNumbers = async () => {
 		try {
-			const resp = await getBatchNumber();
+			const resp = await getBatchNumber(bType);
 			setBatchList(resp?.data);
 		} catch (err) {
 			console.error(err);

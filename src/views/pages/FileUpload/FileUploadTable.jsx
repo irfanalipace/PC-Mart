@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TableCell from '@mui/material/TableCell';
-
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import notyf from '../../Components/NotificationMessage/notyfInstance';
 import OverlayLoader from '../../Components/OverlayLoader/OverlayLoader.jsx';
 import {
@@ -23,19 +24,21 @@ import {
 	getUploadFile,
 	getSoldUploadFile,
 	DownloadProblematicFile,
+	SearchData,
 } from '../../../core/api/fileupload';
 ('');
 import DataTable from '../../Components/DataTable/DataTable';
 import TableContainer from '../../Components/Containers/TableContainer';
 import {
 	downloadFile,
-	formatDateToYYYYMMDD,
+	formatDateToMMDDYYYY,
 } from '../../../core/utils/helpers';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog.jsx';
 import ImportFile from '../../Components/ImportFile/index.jsx';
 import DataTableExtendedHeader from '../../Components/DataTable/DataTableExtendedHeader.jsx';
 import DownloadOptionModel from './DownloadOptionModel.jsx';
 import FileUploadErrorModal from '../../Components/FileUpload/FileUploadErrorModal.jsx';
+import { getBatchNumber } from '../../../core/api/batchNumber.js';
 
 const FileUploadTable = ({ type, sx, importFileHeading }) => {
 	const [errorModal, setErrorModal] = useState(false);
@@ -44,6 +47,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 	const [downloading, setDownloading] = useState(null);
 	const [refresh, setRefresh] = useState(0);
 	const [bathcNumber, setBatchNumber] = useState(null);
+	const [batchList, setBatchList] = useState([]);
 	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 	const [dialogProps, setDialogProps] = useState({});
 	const [convertLoaidng, setconvertLoading] = useState('');
@@ -62,6 +66,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			setErrorModal(true);
 		}
 	};
+
 	const downloadErrorFile = async id => {
 		try {
 			const resp = await DownloadProblematicFile(id);
@@ -83,6 +88,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			setDownloading(null);
 		}
 	};
+
 	const FileSoldDownload = async id => {
 		try {
 			const resp = await DownloadSingleSoldFile(id);
@@ -92,6 +98,20 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			console.log(err);
 		}
 	};
+
+	useEffect(() => {
+		fetchBatchNumbers();
+	}, []);
+
+	const fetchBatchNumbers = async () => {
+		try {
+			const resp = await getBatchNumber(type === 'sold' ? 'sold' : 'all');
+			setBatchList(resp?.data.map(row => row?.batch_number));
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	const intialColumns = [
 		{
 			accessorKey: 'name',
@@ -101,8 +121,9 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 		{
 			accessorKey: 'uploaded_date_time',
 			header: 'Upload Date, Time',
+			filterVariant: 'date',
 			Cell: ({ renderedCellValue }) => (
-				<>{formatDateToYYYYMMDD(renderedCellValue)}</>
+				<>{formatDateToMMDDYYYY(renderedCellValue)}</>
 			),
 		},
 
@@ -128,6 +149,9 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 		{
 			accessorKey: 'batch_number',
 			header: 'Batch No',
+			filterVariant: 'select',
+			filterFn: 'equals',
+			filterSelectOptions: batchList,
 			Cell: ({ row }) => (
 				<Tooltip
 					title={
@@ -146,8 +170,8 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			),
 		},
 		{
-			accessorKey: 'batch_number',
 			header: 'Actions',
+			filterVariant: '',
 			minSize: 200,
 			Cell: ({ row }) => (
 				<Stack direction={'row'} spacing={2} alignItems={'center'}>
@@ -270,24 +294,53 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 						setRefresh={setRefresh}
 					/>
 					<TableContainer>
-						<DataTableExtendedHeader
+						{/* <DataTableExtendedHeader
 							onSearchSubmit={input => {
 								setSearch(input);
 								setRefresh(prev => prev + 1);
 							}}
 							onBatchChange={handleBatchChange}
 							type='Files'
-						/>
-
-						<DataTable
-							api={e => getFiles(e, bathcNumber)}
-							columns={intialColumns}
-							onRowClick={() => {}}
-							collapsed={false}
-							refresh={refresh}
-							manualFilter
-							type={type}
-						/>
+						/> */}
+						<LocalizationProvider dateAdapter={AdapterDayjs}>
+							{type === 'sold' ? (
+								<DataTable
+									api={e => getFiles(e, bathcNumber)}
+									columns={intialColumns}
+									onRowClick={() => {}}
+									collapsed={false}
+									refresh={refresh}
+									searchApi={e => SearchData(e, 'files', 'sold')}
+									manualFilter
+									type={type}
+								/>
+							) : (
+								<DataTable
+									api={e => getFiles(e, bathcNumber)}
+									columns={intialColumns}
+									onRowClick={() => {}}
+									collapsed={false}
+									refresh={refresh}
+									searchApi={e => SearchData(e, 'files', 'non_ready')}
+									manualFilter
+									type={type}
+								/>
+							)}
+							{/* <DataTable
+								api={e => getFiles(e, bathcNumber)}
+								columns={intialColumns}
+								onRowClick={() => {}}
+								collapsed={false}
+								refresh={refresh}
+								searchApi={e => {
+									type === 'sold'
+										? SearchData(e, 'files', 'sold')
+										: SearchData(e, 'files', 'non_ready');
+								}}
+								manualFilter
+								type={type}
+							/> */}
+						</LocalizationProvider>
 					</TableContainer>
 				</Grid>
 			</Grid>

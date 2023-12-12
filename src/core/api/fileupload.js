@@ -75,6 +75,19 @@ export function DownloadSingleSoldFile(id) {
 	});
 }
 
+export function SearchData(params, typeName, SearchType) {
+	const queryParams = { ...params, type: typeName, search_type: SearchType };
+	return new Promise((resolve, reject) => {
+		ApiService.get(`/search-data`, null, queryParams)
+			.then(response => {
+				resolve(response);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
+
 export function DownloadSampleFile() {
 	return new Promise((resolve, reject) => {
 		ApiService.get(`/sample-download`)

@@ -1,13 +1,13 @@
-import ApiService from "../services/apiService";
+import ApiService from '../services/apiService';
 
-export function getBatchNumber() {
-  return new Promise((resolve, reject) => {
-    ApiService.get("/batch-number-dropdown")
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((e) => {
-        reject(e);
-      });
-  });
+export function getBatchNumber(batchType) {
+	return new Promise((resolve, reject) => {
+		ApiService.get('/batch-number-dropdown', null, { type: batchType })
+			.then(response => {
+				resolve(response);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
 }

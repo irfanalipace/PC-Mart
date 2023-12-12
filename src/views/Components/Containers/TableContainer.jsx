@@ -7,7 +7,7 @@ function TableContainer({ children }) {
 			sx={{
 				zIndex: '0',
 				position: 'relative',
-				height: 'calc(100vh - 168px)',
+				minHeight: 'calc(60vh - 168px)',
 				overflow: 'auto',
 				backgroundColor: 'white',
 				// '& .MuiTableContainer-root': {

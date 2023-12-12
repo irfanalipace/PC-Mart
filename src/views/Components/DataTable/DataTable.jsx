@@ -19,7 +19,6 @@ const DataTable = ({
 	...rest
 }) => {
 	//data and fetching state
-	console.log(api, 'iiii');
 	const [data, setData] = useState([]);
 	const [isError, setIsError] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +48,7 @@ const DataTable = ({
 			const response = await api(params);
 			setData(response?.data?.data);
 
-			setRowCount(response.data.total);
+			setRowCount(response?.data?.total);
 			setIsMounted(true); // to prevent refetching on first mount
 			setIsError(false);
 		} catch (error) {
@@ -63,16 +62,22 @@ const DataTable = ({
 	const searchData = async globalFilter => {
 		setIsLoading(true);
 		const params = {
-			page: searchString !== globalFilter ? 1 : pagination.pageIndex + 1,
-			per_page: searchString !== globalFilter ? 10 : pagination.pageSize,
-			search: globalFilter,
-			name: globalFilter,
+			// page: searchString !== globalFilter ? 1 : pagination.pageIndex + 1,
+			// per_page: searchString !== globalFilter ? 10 : pagination.pageSize,
+			// search: globalFilter,
+			// name: globalFilter,
+			column:
+				globalFilter?.id === 'file.batch_number'
+					? 'batch_number'
+					: globalFilter?.id,
+			value: globalFilter?.value,
 		};
-
+		console.log('abc', columnFilters);
 		try {
 			if (manualFilter && typeof searchApi === 'function') {
 				const response = await searchApi(params);
-				setData(response?.data?.data);
+				setData(response?.data);
+
 				// setPagination(prev => {
 				// 	return {
 				// 		pageIndex:
@@ -80,10 +85,8 @@ const DataTable = ({
 				// 		pageSize: searchString !== globalFilter ? 10 : response.data.per_page,
 				// 	};
 				// });
-				setRowCount(response.data.total);
+				setRowCount(response?.data.total);
 				setIsError(false);
-			} else if (manualFilter) {
-				fetchData(params);
 			}
 		} catch (error) {
 			setIsError(true);
@@ -101,10 +104,30 @@ const DataTable = ({
 	};
 
 	useEffect(() => {
-		if (globalFilter && manualFilter) {
-			searchData(globalFilter);
+		if (columnFilters?.length > 0) {
+			const lastColumnFilter = columnFilters[columnFilters?.length - 1];
+			searchData(lastColumnFilter);
+			// setColumnFilters([lastColumnFilter]);
+			console.log('column Filter', columnFilters);
+			// searchData(columnFilters);
+			// console.log('global', searchString);
 		} else fetchData();
-	}, [pagination.pageIndex, pagination.pageSize, globalFilter]);
+	}, [
+		pagination?.pageIndex,
+		pagination?.pageSize,
+		globalFilter,
+		columnFilters,
+	]);
+
+	useEffect(() => {
+		if (columnFilters?.length > 1) {
+			const lastColumnFilter = columnFilters[columnFilters?.length - 1];
+			setColumnFilters([lastColumnFilter]);
+			console.log('column Filter', columnFilters);
+			// searchData(columnFilters);
+			// console.log('global', searchString);
+		}
+	}, [searchString]);
 
 	useEffect(() => {
 		if (isMounted) {
@@ -132,8 +155,10 @@ const DataTable = ({
 		window.scrollTo(0, 0);
 		setPagination(args);
 	};
+
 	return (
 		<MaterialReactTable
+			// table={table}
 			columns={columns}
 			data={data}
 			// enableRowSelection={
@@ -145,6 +170,7 @@ const DataTable = ({
 			// }
 			// onRowSelectionChange={setRowSelection}
 			getRowId={row => row?.id}
+			showColumnFilters={true}
 			setPagination
 			manualPagination
 			manualFiltering={
@@ -160,8 +186,9 @@ const DataTable = ({
 			enableColumnFilters={true}
 			enableTableHead={!collapsed}
 			onColumnFiltersChange={e => {
-				console.log(e);
+				setColumnFilters(e);
 				e();
+				console.log('hello', e);
 			}}
 			onGlobalFilterChange={setGlobalFilter}
 			onPaginationChange={onPaginationChange}
@@ -176,6 +203,8 @@ const DataTable = ({
 				showProgressBars: isLoading,
 				sorting,
 				rowSelection,
+				showColumnFilters: true,
+				singleFilter: true,
 			}}
 			muiTableBodyRowProps={({ row }) => ({
 				onClick: () => onRowClick(row),
@@ -251,7 +280,7 @@ const DataTable = ({
 				!collapsed
 					? {
 							sx: {
-								height: 'calc(100vh - 280px)',
+								// height: 'calc(100vh - 280px)',
 								overflow: 'auto',
 								'&::-webkit-scrollbar': {
 									height: '7px',
