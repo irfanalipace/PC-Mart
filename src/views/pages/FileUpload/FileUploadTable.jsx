@@ -119,14 +119,11 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 			maxSize: 90,
 		},
 		{
-			accessorKey: 'uploaded_date_time',
+			// accessorKey: 'uploaded_date_time',
 			header: 'Upload Date, Time',
 			filterVariant: 'date',
-			Cell: ({ renderedCellValue }) => (
-				<>{formatDateToMMDDYYYY(renderedCellValue)}</>
-			),
+			Cell: ({ row }) => <>{row?.original?.uploaded_date_time}</>,
 		},
-
 		{
 			accessorKey: 'status',
 			header: 'Status',
@@ -171,7 +168,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 		},
 		{
 			header: 'Actions',
-			filterVariant: '',
+			filterVariant: 'date',
 			minSize: 200,
 			Cell: ({ row }) => (
 				<Stack direction={'row'} spacing={2} alignItems={'center'}>
