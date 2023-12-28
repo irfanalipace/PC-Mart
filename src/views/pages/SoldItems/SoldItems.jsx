@@ -79,12 +79,6 @@ const SoldItems = () => {
 			<Grid container>
 				<Grid item sm={12}>
 					<DataTableHeading title='Sold Items' />
-
-					<FileUploadTable
-						sx={{ my: 3 }}
-						importFileHeading='Upload Sold Items File'
-						type='sold'
-					/>
 					<TableContainer>
 						{/* <DataTableExtendedHeader
 							onSearchSubmit={handleSearchChange}
@@ -101,6 +95,11 @@ const SoldItems = () => {
 							searchApi={e => SearchData(e, 'items', 'sold')}
 						/>
 					</TableContainer>
+					<FileUploadTable
+						sx={{ my: 3 }}
+						importFileHeading='Uploaded sold file items.'
+						type='sold'
+					/>
 				</Grid>
 			</Grid>
 		</>
