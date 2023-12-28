@@ -268,11 +268,6 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 		}
 	};
 
-	const handleBatchChange = e => {
-		setBatchNumber(e.target.value);
-		setRefresh(prev => prev + 1);
-	};
-
 	const getFiles = (e, bathcNumber) => {
 		if (type === 'sold') {
 			return getSoldUploadFile(e, bathcNumber, search);
@@ -285,20 +280,12 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 		<>
 			<Grid container sx={sx}>
 				<Grid item sm={12}>
-					<ImportFile
-						type={type}
-						title={importFileHeading}
-						setRefresh={setRefresh}
-					/>
 					<TableContainer>
-						{/* <DataTableExtendedHeader
-							onSearchSubmit={input => {
-								setSearch(input);
-								setRefresh(prev => prev + 1);
-							}}
-							onBatchChange={handleBatchChange}
-							type='Files'
-						/> */}
+						<ImportFile
+							type={type}
+							title={importFileHeading}
+							setRefresh={setRefresh}
+						/>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							{type === 'sold' ? (
 								<DataTable
@@ -323,20 +310,6 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 									type={type}
 								/>
 							)}
-							{/* <DataTable
-								api={e => getFiles(e, bathcNumber)}
-								columns={intialColumns}
-								onRowClick={() => {}}
-								collapsed={false}
-								refresh={refresh}
-								searchApi={e => {
-									type === 'sold'
-										? SearchData(e, 'files', 'sold')
-										: SearchData(e, 'files', 'non_ready');
-								}}
-								manualFilter
-								type={type}
-							/> */}
 						</LocalizationProvider>
 					</TableContainer>
 				</Grid>

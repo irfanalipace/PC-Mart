@@ -78,14 +78,8 @@ const SoldItems = () => {
 		<>
 			<Grid container>
 				<Grid item sm={12}>
-					<DataTableHeading title='Sold Items' />
 					<TableContainer>
-						{/* <DataTableExtendedHeader
-							onSearchSubmit={handleSearchChange}
-							onBatchChange={handleBatchChange}
-							type='Sold'
-						/> */}
-
+						<DataTableHeading title='Sold Items' />
 						<DataTable
 							api={e => getSolditems(e, bathcNumber, searchText)}
 							columns={intialColumns}
