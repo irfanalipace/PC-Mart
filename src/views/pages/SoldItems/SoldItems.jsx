@@ -15,15 +15,6 @@ const SoldItems = () => {
 	const [bathcNumber, setBatchNumber] = useState(null);
 	const [batchList, setBatchList] = useState([]);
 
-	const handleSearchChange = serchValue => {
-		setSearchText(serchValue);
-		setRefresh(prev => prev + 1);
-	};
-
-	const handleBatchChange = e => {
-		setBatchNumber(e.target.value);
-		setRefresh(prev => prev + 1);
-	};
 	useEffect(() => {
 		fetchBatchNumbers();
 	}, [refresh]);
