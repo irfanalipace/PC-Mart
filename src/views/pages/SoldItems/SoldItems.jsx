@@ -91,7 +91,7 @@ const SoldItems = () => {
 					</TableContainer>
 					<FileUploadTable
 						sx={{ my: 3 }}
-						importFileHeading='Uploaded sold file items.'
+						importFileHeading='Uploaded Sold File Items.'
 						type='sold'
 					/>
 				</Grid>
