@@ -26,7 +26,7 @@ const SoldItems = () => {
 	};
 	useEffect(() => {
 		fetchBatchNumbers();
-	}, []);
+	}, [refresh]);
 
 	const fetchBatchNumbers = async () => {
 		try {
