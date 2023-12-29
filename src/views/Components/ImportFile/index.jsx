@@ -18,7 +18,12 @@ import {
 	Button,
 	CircularProgress,
 } from '@mui/material';
-export default function ImportFile({ type, setRefresh, title = '' }) {
+export default function ImportFile({
+	type,
+	setRefresh,
+	title = '',
+	refreshOtherTable,
+}) {
 	const [fileName, setFileName] = useState('');
 	const [file, setFile] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -45,6 +50,7 @@ export default function ImportFile({ type, setRefresh, title = '' }) {
 				? await importSoldItemsFile(file)
 				: await importItemsFile(file);
 			setRefresh(prev => prev + 1);
+			refreshOtherTable();
 			notyf.success('File Imported Successfully');
 			setFile(null);
 			setFileName('');

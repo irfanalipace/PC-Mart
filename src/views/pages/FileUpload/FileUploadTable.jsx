@@ -40,7 +40,12 @@ import DownloadOptionModel from './DownloadOptionModel.jsx';
 import FileUploadErrorModal from '../../Components/FileUpload/FileUploadErrorModal.jsx';
 import { getBatchNumber } from '../../../core/api/batchNumber.js';
 
-const FileUploadTable = ({ type, sx, importFileHeading }) => {
+const FileUploadTable = ({
+	type,
+	sx,
+	importFileHeading,
+	refreshOtherTable,
+}) => {
 	const [errorModal, setErrorModal] = useState(false);
 
 	const [errorloading, setErrorLoading] = useState(false);
@@ -285,6 +290,7 @@ const FileUploadTable = ({ type, sx, importFileHeading }) => {
 							type={type}
 							title={importFileHeading}
 							setRefresh={setRefresh}
+							refreshOtherTable={() => refreshOtherTable()}
 						/>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							{type === 'sold' ? (

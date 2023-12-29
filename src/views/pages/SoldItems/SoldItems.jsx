@@ -84,6 +84,7 @@ const SoldItems = () => {
 						sx={{ my: 3 }}
 						importFileHeading='Uploaded Sold File Items.'
 						type='sold'
+						refreshOtherTable={() => setRefresh(prev => prev + 1)}
 					/>
 				</Grid>
 			</Grid>
