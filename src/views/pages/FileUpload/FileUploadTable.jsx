@@ -75,7 +75,9 @@ const FileUploadTable = ({
 	const downloadErrorFile = async id => {
 		try {
 			const resp = await DownloadProblematicFile(id);
-			downloadFile(resp?.data?.route);
+			let fileUrl = resp?.data?.route;
+			fileUrl = fileUrl.replace(/http(?=:\/\/)/g, 'https');
+			downloadFile(fileUrl);
 		} catch (err) {
 			console.log(err);
 		}
@@ -86,7 +88,9 @@ const FileUploadTable = ({
 			setDownloadModal(false);
 			setDownloading(fileDownloadId);
 			const resp = await DownloadSingleFile(batchNo, value);
-			downloadFile(resp?.data?.url);
+			let fileUrl = resp?.data?.url;
+			fileUrl = fileUrl.replace(/http(?=:\/\/)/g, 'https');
+			downloadFile(fileUrl);
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -97,8 +101,10 @@ const FileUploadTable = ({
 	const FileSoldDownload = async id => {
 		try {
 			const resp = await DownloadSingleSoldFile(id);
-			console.log(resp?.data);
-			downloadFile(resp?.data?.route);
+			console.log(resp?.data?.route);
+			let fileUrl = resp?.data?.route;
+			fileUrl = fileUrl.replace(/http(?=:\/\/)/g, 'https');
+			downloadFile(fileUrl);
 		} catch (err) {
 			console.log(err);
 		}
