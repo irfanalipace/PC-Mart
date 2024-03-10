@@ -14,105 +14,79 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import SellIcon from '@mui/icons-material/Sell';
 
 export default function Sidebar() {
-	const theme = useTheme();
-	const list = [
-		{ name: 'Dashboard', icon: <SpaceDashboardRoundedIcon />, path: '/' },
-		{ name: 'File Upload', icon: <UploadFileIcon />, path: '/file-upload' },
-		{
-			name: 'Non Ready Items',
-			icon: <ShoppingCartIcon />,
-			path: '/non-ready-items',
-		},
-		{ name: 'Ready Items', icon: <ReceiptIcon />, path: '/ready-items' },
-		{ name: 'Sold Items', icon: <SellIcon />, path: '/sold-items' },
-	];
+  const { pathname } = useLocation();
+  const theme = useTheme();
+  
+  // Initialize open with an array of objects with 'open' property
+  const [open, setOpen] = useState([]);
 
-	const { pathname } = useLocation();
-	const [open, setOpen] = useState(list);
+  const list = [
+    { name: 'Dashboard', icon: <SpaceDashboardRoundedIcon />, path: '/' },
+    { name: 'File Upload', icon: <UploadFileIcon />, path: '/file-upload' },
+    { name: 'Non Ready Items', icon: <ShoppingCartIcon />, path: '/non-ready-items' },
+    { name: 'Ready Items', icon: <ReceiptIcon />, path: '/ready-items' },
+    { name: 'Sold Items', icon: <SellIcon />, path: '/sold-items' },
+  ];
 
-	const handleItemClick = index => {
-		setOpen(prev => {
-			let tempArray = prev.map((p, _index) => {
-				if (_index === index)
-					return {
-						...p,
-						open: true,
-					};
-				else
-					return {
-						...p,
-						open: false,
-					};
-			});
-			tempArray[index].open = !tempArray[index]?.open;
-			return [...tempArray];
-		});
-	};
+  useEffect(() => {
+    // Initialize open with an array of objects with 'open' property
+    setOpen(list.map(() => ({ open: false })));
+  }, [list]);
 
-	useEffect(() => {
-		setOpen(prev => {
-			let tempArray = prev.map(pre => {
-				if (pre.path === pathname)
-					return {
-						...pre,
-						open: true,
-					};
-				else if (Array.isArray(pre?.subItems)) {
-					const active = pre.subItems.some(item =>
-						pathname?.includes(item.path)
-					);
-					if (active)
-						return {
-							...pre,
-							open: true,
-						};
-				}
-				return pre;
-			});
-			return [...tempArray];
-		});
-	}, [pathname]);
+  const handleItemClick = (index) => {
+    setOpen((prev) => {
+      let tempArray = prev.map((p, _index) => ({
+        ...p,
+        open: _index === index ? !p.open : false,
+      }));
+      return tempArray;
+    });
+  };
 
-	return (
-		<Box
-			className='custom-drawer'
-			sx={{
-				width: '100%',
-				paddingTop: '20px',
-			}}
-		>
-			{list?.map((item, index) => (
-				<React.Fragment key={item.name}>
-					<Link to={item?.path} className='subitem'>
-						<ListItem
-							disablePadding
-							onClick={() => handleItemClick(index)}
-							className={`custom-list-item ${
-								pathname === item.path ? 'selected' : ''
-							}`}
-						>
-							<ListItemButton
-								sx={{
-									color: open[index].open
-										? theme.palette.primary.main
-										: theme.palette.dark,
-								}}
-							>
-								<ListItemIcon
-									sx={{
-										color: open[index].open
-											? theme.palette.primary.main
-											: theme.palette.dark,
-									}}
-								>
-									{item.icon}
-								</ListItemIcon>
-								<ListItemText primary={item.name} />
-							</ListItemButton>
-						</ListItem>
-					</Link>
-				</React.Fragment>
-			))}
-		</Box>
-	);
+  useEffect(() => {
+    setOpen((prev) => {
+      let tempArray = prev.map((pre) => ({
+        ...pre,
+        open: pre.path === pathname || (pre.subItems && pre.subItems.some((item) => pathname.includes(item.path))),
+      }));
+      return tempArray;
+    });
+  }, [pathname]);
+
+  return (
+    <Box
+      className='custom-drawer'
+      sx={{
+        width: '100%',
+        paddingTop: '20px',
+      }}
+    >
+      {list?.map((item, index) => (
+        <React.Fragment key={item.name}>
+          <Link to={item?.path} className='subitem'>
+            <ListItem
+              disablePadding
+              onClick={() => handleItemClick(index)}
+              className={`custom-list-item ${pathname === item.path ? 'selected' : ''}`}
+            >
+              <ListItemButton
+                sx={{
+                  color: open[index]?.open ? theme.palette.primary.main : theme.palette.dark,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    color: open[index]?.open ? theme.palette.primary.main : theme.palette.dark,
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.name} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        </React.Fragment>
+      ))}
+    </Box>
+  );
 }
